@@ -3,10 +3,13 @@ import ExerciseFlow from "@/app/domains/exercises/containers/ExerciseFlow";
 import { loadUserWithProgress } from "@/app/domains/layouts/features/loadUserProgress";
 import { assertUserHasCourse } from "@/app/domains/layouts/features/hasCourse";
 
-export default async function Page({ params }: { params: { courseId: string; lessonId: string } }) {
+type Params = Promise<{ courseId: string; lessonId: string }>;
+
+export default async function Page({ params }: { params: Params }) {
   const { courseId, lessonId } = await params;
   const { progress } = await loadUserWithProgress();
   const { user } = await assertUserHasCourse(courseId);
+
   return (
     <LessonExerciseLayout
       user={user}
@@ -15,10 +18,7 @@ export default async function Page({ params }: { params: { courseId: string; les
       showToc={false}
       progress={progress}
     >
-      <ExerciseFlow id={lessonId}
-      courseId={courseId}
-      
-      />
+      <ExerciseFlow id={lessonId} courseId={courseId} />
     </LessonExerciseLayout>
   );
 }
