@@ -1,5 +1,7 @@
 // src/domains/landing/components/ComparePreview.tsx
-import { CheckIcon56 } from "@/icons/CheckIcon56";
+"use client";
+
+import { CheckCircle, XCircle } from "lucide-react";
 
 export default function ComparePreview() {
   return (
@@ -23,7 +25,7 @@ export default function ComparePreview() {
               "Materiały PDF do pobrania",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
-                <CheckIcon56 className="w-6 h-6 shrink-0" />
+                <CheckCircle className="w-6 h-6 shrink-0 text-green-600" />
                 <p className="flex-1 leading-snug text-base">{item}</p>
               </li>
             ))}
@@ -44,9 +46,7 @@ export default function ComparePreview() {
               "Niska motywacja – nie widzisz postępów",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
-                <span className="w-6 h-6 flex items-center justify-center text-red-500 text-lg font-bold">
-                  ×
-                </span>
+                <XCircle className="w-6 h-6 shrink-0 text-red-500" />
                 <p className="flex-1 leading-snug text-base">{item}</p>
               </li>
             ))}
