@@ -1,5 +1,4 @@
 // src/domains/landing/components/ComparePreview.tsx
-"use client";
 
 import { CheckCircle, XCircle } from "lucide-react";
 
