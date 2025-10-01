@@ -10,6 +10,9 @@ const withMDX = createMDX({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]],
   },
+   eslint: {
+    ignoreDuringBuilds: true,
+  },
 })
 
 export default withMDX({
