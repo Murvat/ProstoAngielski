@@ -1,7 +1,7 @@
 import ConfirmEmailContainer from "@/app/domains/auth/containers/ConfirmEmailContainer";
 
-export default function ConfirmPage(props: { searchParams?: { email?: string } }) {
-  const email = props.searchParams?.email ?? "your email";
+export default async  function ConfirmPage(props: { searchParams?: { email?: string } }) {
+  const email =  props.searchParams?.email ?? "your email";
   return (
     <section className="max-w-lg mx-auto min-h-screen flex flex-col justify-center items-center px-6">
       <ConfirmEmailContainer email={email} />
