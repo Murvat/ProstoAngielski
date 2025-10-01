@@ -1,10 +1,10 @@
 import ConfirmEmailContainer from "@/app/domains/auth/containers/ConfirmEmailContainer";
 
-type ConfirmPageProps = {
+export default function Page({
+  searchParams,
+}: {
   searchParams?: { email?: string };
-};
-
-export default function Page({ searchParams }: ConfirmPageProps) {
+}) {
   const email = searchParams?.email ?? "your email";
 
   return (
