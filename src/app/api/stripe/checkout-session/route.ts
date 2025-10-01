@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     ],
     mode: "payment",
     success_url: `${req.nextUrl.origin}/payment-success`,
-    cancel_url: `${req.nextUrl.origin}/payment`,
+    cancel_url: `${req.nextUrl.origin}/profile`,
     metadata: {
       user_id,
       course, // ✅ keep id in metadata so webhook can update correctly
