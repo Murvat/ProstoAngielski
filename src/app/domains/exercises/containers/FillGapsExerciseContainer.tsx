@@ -53,7 +53,6 @@ export default function FillGapsExerciseContainer({
     localStorage.setItem(storageKey, JSON.stringify(state));
   }, [index, value, status, revealed, storageKey, restored]);
 
-  if (!q) return <p>No fill-gaps items.</p>;
 
   const normalize = (s: string) =>
     s.toLowerCase().trim().replace(/\s+/g, " ");
@@ -100,6 +99,7 @@ export default function FillGapsExerciseContainer({
     if (revealed === "none") setRevealed("hint");
     else if (revealed === "hint") setRevealed("answer");
   };
+  if (!q) return <p>No fill-gaps items.</p>;
 
   return (
     <div className="flex flex-col gap-4">

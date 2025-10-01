@@ -9,19 +9,20 @@ export default function ConfirmEmailContainer({ email }: ConfirmEmailCardProps) 
         Confirm Your Email
       </h1>
 
-      <p className="text-gray-600 text-sm mt-4">
-        We've sent a confirmation link to your email address:
-        <br />
-        <span className="font-medium text-gray-800 break-words">{email}</span>
-      </p>
+     <p className="text-gray-600 text-sm mt-4">
+  We&apos;ve sent a confirmation link to your email address:
+  <br />
+  <span className="font-medium text-gray-800 break-words">{email}</span>
+</p>
 
       <p className="text-gray-600 text-sm mt-2">
         Please check your inbox and click the confirmation link to continue.
       </p>
 
-      <p className="text-gray-500 text-xs mt-4">
-        If you don’t see the email, check your spam folder.
-      </p>
+    
+<p className="text-gray-500 text-xs mt-4">
+  If you don&rsquo;t see the email, check your spam folder.
+</p>
     </div>
   );
 }

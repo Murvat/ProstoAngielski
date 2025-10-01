@@ -2,7 +2,7 @@
 
 import Hero from "../components/Hero";
 import Description from "../components/Description";
-import Frame from "../components/Frame";
+// import Frame from "../components/Frame";
 import Prices from "../components/Prices";
 import Compare from "../components/Compare";
 import Difference from "../components/Difference";

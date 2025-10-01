@@ -63,7 +63,6 @@ export default function ChooseDefinitionExerciseContainer({
     localStorage.setItem(storageKey, JSON.stringify(state));
   }, [index, selectedIndex, status, revealed, storageKey, restored]);
 
-  if (!q) return <p>No questions.</p>;
 
   function handleChoice(i: number) {
     if (status === "correct") return;
@@ -94,6 +93,7 @@ export default function ChooseDefinitionExerciseContainer({
     if (revealed === "none") setRevealed("hint");
     else if (revealed === "hint") setRevealed("answer");
   };
+  if (!q) return <p>No questions.</p>;
 
   return (
     <div className="flex flex-col gap-4">

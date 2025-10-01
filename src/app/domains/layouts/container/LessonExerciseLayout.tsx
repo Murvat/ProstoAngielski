@@ -10,9 +10,10 @@ import { buildNavItems, getPrevNext, getPath } from "../hooks/navigation";
 import { usePathname } from "next/navigation";
 import { useCourse } from "../hooks/useCourse";
 import { useProgress } from "../hooks/useProgress";
+import { User } from "@supabase/supabase-js";
 
 type Props = {
-  user: any;
+  user: User;
   courseId: string;
   lessonId: string;
   children: React.ReactNode;
