@@ -1,8 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { CheckIcon38 } from "@/icons/CheckIcon38";
-import { CheckIcon56 } from "@/icons/CheckIcon56";
+import { CheckCircle, BadgeCheck } from "lucide-react";
 import { useCourse } from "../features/useCourse";
 
 export default function PricesPreview() {
@@ -66,9 +65,9 @@ export default function PricesPreview() {
                 {c.features.map((item) => (
                   <li key={item} className="flex items-center gap-3 w-full">
                     {c.id === "intermediate" ? (
-                      <CheckIcon56 className="w-6 h-6 shrink-0" />
+                       <BadgeCheck className="w-6 h-6 shrink-0 text-green-600" />
                     ) : (
-                      <CheckIcon38 className="w-6 h-6 shrink-0" />
+                      <CheckCircle className="w-6 h-6 shrink-0 text-green-600" />
                     )}
                     <span className="leading-snug text-left">{item}</span>
                   </li>

@@ -1,4 +1,6 @@
-import { CheckIcon38 } from "@/icons/CheckIcon38";
+import { BookOpenCheck } from "lucide-react";
+import { ClipboardCheck } from "lucide-react";
+import { MessageSquareText } from "lucide-react";
 
 export default function DifferencePreview() {
   return (
@@ -21,7 +23,7 @@ export default function DifferencePreview() {
               "Materiały PDF do pobrania",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
-                <CheckIcon38 className="w-6 h-6 shrink-0" />
+                <BookOpenCheck className="w-6 h-6 shrink-0" />
                 <p className="flex-1 text-base leading-relaxed">{item}</p>
               </li>
             ))}
@@ -41,7 +43,7 @@ export default function DifferencePreview() {
               "Nauka w dowolnym miejscu (także na telefonie)",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
-                <CheckIcon38 className="w-6 h-6 shrink-0" />
+                <ClipboardCheck className="w-6 h-6 shrink-0" />
                 <p className="flex-1 text-base leading-relaxed">{item}</p>
               </li>
             ))}
@@ -61,7 +63,7 @@ export default function DifferencePreview() {
               "Łatwy dostęp na urządzeniach mobilnych",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
-                <CheckIcon38 className="w-6 h-6 shrink-0" />
+                <MessageSquareText className="w-6 h-6 shrink-0" />
                 <p className="flex-1 text-base leading-relaxed">{item}</p>
               </li>
             ))}
