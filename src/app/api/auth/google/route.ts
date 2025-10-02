@@ -8,14 +8,13 @@ export async function GET() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`, 
+redirectTo: "https://www.prostoangielski.pl/auth/callback",
       queryParams: {
         access_type: "offline", 
         prompt: "consent",
       },
     },
   });
-  console.log(process.env.NEXT_PUBLIC_SITE_URL);
   if (error) {
     console.error("Google OAuth error:", error.message);
     return NextResponse.redirect(`/login?error=${encodeURIComponent(error.message)}`);
