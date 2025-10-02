@@ -41,7 +41,7 @@ export async function GET(request: Request) {
 
   if (!purchases || purchases.length === 0) {
     // No paid purchases → redirect to payment
-    return NextResponse.redirect(`${origin}/payment`);
+    return NextResponse.redirect(`${origin}/profile`);
   }
 
   // At least one paid purchase → redirect to profile

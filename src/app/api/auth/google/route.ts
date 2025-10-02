@@ -15,7 +15,7 @@ export async function GET() {
       },
     },
   });
-
+  console.log(process.env.NEXT_PUBLIC_SITE_URL);
   if (error) {
     console.error("Google OAuth error:", error.message);
     return NextResponse.redirect(`/login?error=${encodeURIComponent(error.message)}`);
