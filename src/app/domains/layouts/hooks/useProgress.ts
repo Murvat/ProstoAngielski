@@ -6,7 +6,6 @@ export function useProgress(
   courseId: string,
   lessonId: string,
   isExercise: boolean,
-  onGoNext?: () => void
 ) {
   const [isFinished, setIsFinished] = useState(false);
   const [loading, setLoading] = useState(false);
