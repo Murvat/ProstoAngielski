@@ -7,26 +7,28 @@ export type NavItem = {
   title: string;
 };
 
-// Flatten course.structure → lessons + exercises
+// 🔹 Build a flat navigation sequence
 export function buildNavItems(course: Course): NavItem[] {
-  return course.structure.chapters.flatMap((ch) =>
-    ch.lessons.flatMap((lesson) => [
+  return course.structure.chapters.flatMap((chapter) =>
+    chapter.lessons.flatMap((lesson) => [
       { id: lesson.id, type: "lesson" as const, title: lesson.title },
       { id: `${lesson.id}-ex`, type: "exercise" as const, title: "Exercise" },
     ])
   );
 }
 
-// Find prev/next around current item
+// 🔹 Find the previous and next items in sequence
 export function getPrevNext(
   items: NavItem[],
   lessonId: string,
   isExercise: boolean
 ) {
-  const currentIndex = items.findIndex((i) =>
-    isExercise ? i.type === "exercise" && i.id === `${lessonId}-ex`
-               : i.type === "lesson" && i.id === lessonId
-  );
+  // current id depends on context
+  const currentId = isExercise ? `${lessonId}-ex` : lessonId;
+  const currentIndex = items.findIndex((i) => i.id === currentId);
+
+  // Defensive fix for unmatched lesson (e.g., course still loading)
+  if (currentIndex === -1) return { prev: null, next: null };
 
   const prev = currentIndex > 0 ? items[currentIndex - 1] : null;
   const next = currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
@@ -34,9 +36,9 @@ export function getPrevNext(
   return { prev, next };
 }
 
-// Build correct path for lesson/exercise
+// 🔹 Build a correct client path
 export function getPath(courseId: string, item: NavItem) {
   const base = item.type === "exercise" ? "exercise" : "lessons";
-  const lessonId = item.type === "exercise" ? item.id.replace("-ex", "") : item.id;
+  const lessonId = item.id.replace("-ex", "");
   return `/${base}/${courseId}/${lessonId}`;
 }

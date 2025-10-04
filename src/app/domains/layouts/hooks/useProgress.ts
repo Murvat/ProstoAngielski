@@ -1,16 +1,24 @@
-// src/app/domains/lesson/hooks/useProgress.ts
 "use client";
+
 import { useState, useEffect } from "react";
 
-export function useProgress(courseId: string, lessonId: string, isExercise: boolean, onGoNext: () => void) {
+export function useProgress(
+  courseId: string,
+  lessonId: string,
+  isExercise: boolean,
+  onGoNext?: () => void
+) {
   const [isFinished, setIsFinished] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // 🔹 Fetch current progress
   useEffect(() => {
     async function fetchProgress() {
       try {
-        const res = await fetch(`/api/progress?courseId=${courseId}&lessonId=${lessonId}`);
-        if (!res.ok) return; // e.g. 401
+        const res = await fetch(
+          `/api/progress?courseId=${courseId}&lessonId=${lessonId}`
+        );
+        if (!res.ok) return;
         const data = await res.json();
         setIsFinished(isExercise ? data?.completed_exercises : data?.completed);
       } catch (err) {
@@ -20,7 +28,8 @@ export function useProgress(courseId: string, lessonId: string, isExercise: bool
     fetchProgress();
   }, [courseId, lessonId, isExercise]);
 
-  const handleNext = async () => {
+  // 🔹 Save progress + callback
+  const handleNext = async (callback?: () => void) => {
     if (!isFinished) {
       try {
         setLoading(true);
@@ -31,13 +40,14 @@ export function useProgress(courseId: string, lessonId: string, isExercise: bool
         });
         if (!res.ok) throw new Error("Progress update failed");
         setIsFinished(true);
+        callback?.(); // run callback after saving
       } catch (err) {
         console.error("❌ Progress update failed:", err);
       } finally {
         setLoading(false);
       }
     } else {
-      onGoNext();
+      callback?.(); // already finished
     }
   };
 

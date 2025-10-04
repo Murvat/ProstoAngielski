@@ -1,6 +1,6 @@
 "use client";
 import { useLessonRedirect } from "../features/useLessonRedirect";
-import { Course, Progress } from "../features/types";
+import { Course } from "../features/types";
 
 interface ProfileCoursesOwnedProps {
   ownedCourses: Course[];
