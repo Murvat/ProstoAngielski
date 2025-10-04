@@ -38,9 +38,9 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
   const [user, setUser] = useState<User | null>(null);
   const [progress, setProgress] = useState<Progress[]>([]);
   const [loadingProgress, setLoadingProgress] = useState(true);
-  const [reloadProgress, setReloadProgress] = useState(false); // ✅ added
+  const [reloadProgress, setReloadProgress] = useState(false);
 
-  // ✅ load user
+  // 🔹 Load user
   useEffect(() => {
     async function loadUser() {
       try {
@@ -55,7 +55,7 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
     loadUser();
   }, []);
 
-  // ✅ load progress (reactive)
+  // 🔹 Load progress (reactive)
   useEffect(() => {
     async function loadProgress() {
       try {
@@ -70,25 +70,15 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
       }
     }
     loadProgress();
-  }, [reloadProgress]); // ✅ re-fetch when toggled
+  }, [reloadProgress]);
 
-  // ✅ course + nav logic
+  // 🔹 Course + navigation
   const { course, loading } = useCourse(courseId);
   const items = course ? buildNavItems(course) : [];
   const { prev, next } = getPrevNext(items, lessonId, isExercise);
 
-  // ✅ progress handler with sidebar reload
-  const { isFinished, handleNext } = useProgress(
-    courseId,
-    lessonId,
-    isExercise,
-    async () => {
-      // refresh sidebar before moving next
-      setReloadProgress((v) => !v);
-      await new Promise((r) => setTimeout(r, 150));
-      if (next) router.push(getPath(courseId, next));
-    }
-  );
+  // 🔹 Progress handler
+  const { isFinished, handleNext } = useProgress(courseId, lessonId, isExercise);
 
   if (!user || !course) {
     return (
@@ -107,7 +97,7 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
 
       {/* 🧩 Page Layout */}
       <div className="flex w-full px-0 py-8">
-        {/* 📚 Left Sidebar */}
+        {/* 📚 Sidebar */}
         <aside className="fixed top-16 bottom-0 left-0 hidden lg:block w-80 bg-gray-50 overflow-y-auto">
           {!loadingProgress ? (
             <SidebarContainer course={course} progress={progress} />
@@ -130,28 +120,24 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
       </div>
 
       {/* 🦶 Footer */}
-{!loading && (
-  <Footer
-    className="absolute bottom-0 left-0 right-0 lg:left-80 lg:right-72"
-    onPrev={() => prev && router.push(getPath(courseId, prev))}
-    onNext={() =>
-      handleNext(async () => {
-        // ✅ trigger sidebar progress reload
-        setReloadProgress((v) => !v);
-
-        // ✅ small wait so progress saves first
-        await new Promise((r) => setTimeout(r, 150));
-
-        // ✅ then navigate forward
-        if (next) router.push(getPath(courseId, next));
-      })
-    }
-    prevDisabled={!prev}
-    nextDisabled={!next}
-    prevLabel="Previous"
-    nextLabel={isFinished ? "Next" : "Finish"}
-    hideFinish={isFinished}
-  />
-)}    </main>
+      {!loading && (
+        <Footer
+          className="absolute bottom-0 left-0 right-0 lg:left-80 lg:right-72"
+          onPrev={() => prev && router.push(getPath(courseId, prev))}
+          onNext={() =>
+            handleNext(async () => {
+              setReloadProgress((v) => !v);
+              await new Promise((r) => setTimeout(r, 150));
+              if (next) router.push(getPath(courseId, next));
+            })
+          }
+          prevDisabled={!prev}
+          nextDisabled={!next}
+          prevLabel="Previous"
+          nextLabel={isFinished ? "Next" : "Finish"}
+          hideFinish={isFinished}
+        />
+      )}
+    </main>
   );
 }
