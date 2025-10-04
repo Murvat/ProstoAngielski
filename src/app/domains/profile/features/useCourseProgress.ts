@@ -1,6 +1,8 @@
 // src/app/domains/profile/hooks/useCourseProgress.ts
 "use client";
 
+import { useCallback } from "react";
+
 type Progress = {
   id: string;
   user_id: string;
@@ -29,7 +31,8 @@ export function useCourseProgress(progress: Progress[]) {
       )[0];
   }
 
-  function getButtonState(course: Course) {
+const getButtonState = useCallback(
+  (course: Course) => {
     const courseProgress = getCourseProgress(course.id);
 
     if (courseProgress?.lesson_id) {
@@ -38,8 +41,10 @@ export function useCourseProgress(progress: Progress[]) {
       return { label: "Start", lessonId: course.first_lesson_id };
     }
 
-    return { label: "Start", lessonId: undefined };
-  }
+    return { label: "Start", lessonId: null }; // ✅ use null instead of undefined
+  },
+  [getCourseProgress]
+);
 
   return { getCourseProgress, getButtonState };
 }

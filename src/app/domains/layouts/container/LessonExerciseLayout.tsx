@@ -1,25 +1,17 @@
-// src/app/domains/lesson/components/LessonExerciseLayout.tsx
 "use client";
+
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { User } from "@supabase/supabase-js";
 
 import SidebarContainer from "@/app/domains/sidebar/containers/SidebarContainer";
 import TocContainer from "@/app/domains/toc/containers/TocContainer";
-import NavbarContainer from "../../navbar/containers/NavbarContainer";
-import Footer from "../../footer/components/Footer";
-import { buildNavItems, getPrevNext, getPath } from "../hooks/navigation";
+import NavbarContainer from "@/app/domains/navbar/containers/NavbarContainer";
+import Footer from "@/app/domains/footer/components/Footer";
 
-import { usePathname } from "next/navigation";
 import { useCourse } from "../hooks/useCourse";
 import { useProgress } from "../hooks/useProgress";
-import { User } from "@supabase/supabase-js";
-
-type Props = {
-  user: User;
-  courseId: string;
-  lessonId: string;
-  children: React.ReactNode;
-  showToc?: boolean;
-  progress?: Progress[];
-};
+import { buildNavItems, getPrevNext, getPath } from "../hooks/navigation";
 
 type Progress = {
   id: string;
@@ -30,59 +22,80 @@ type Progress = {
   updated_at: string;
 };
 
+type Props = {
+  user: User;
+  courseId: string;
+  lessonId: string;
+  children: React.ReactNode;
+  showToc?: boolean;
+};
+
 export default function LessonExerciseLayout({
   user,
   courseId,
   lessonId,
   children,
   showToc = true,
-  progress = [],
 }: Props) {
   const pathname = usePathname();
   const isExercise = pathname?.startsWith("/exercise/");
 
-  // 1. Fetch course
-  const { course, loading } = useCourse(courseId);
+  const [progress, setProgress] = useState<Progress[]>([]);
+  const [loadingProgress, setLoadingProgress] = useState(true);
 
-  // 2. Build navigation from course.structure
+  // ✅ Fetch ALL progress once (server API handles RLS)
+  useEffect(() => {
+    async function loadProgress() {
+      try {
+        const res = await fetch("/api/progress/all", { cache: "no-store" });
+        if (!res.ok) throw new Error("Unauthorized");
+        const { progress } = await res.json();
+        setProgress(progress || []);
+      } catch (err) {
+        console.error("❌ Progress fetch error:", err);
+      } finally {
+        setLoadingProgress(false);
+      }
+    }
+    loadProgress();
+  }, []);
+
+  // ✅ Course + navigation
+  const { course, loading } = useCourse(courseId);
   const items = course ? buildNavItems(course) : [];
   const { prev, next } = getPrevNext(items, lessonId, isExercise);
 
-  // 3. Progress handler
   const { isFinished, handleNext } = useProgress(
     courseId,
     lessonId,
     isExercise,
-    () => {
-      if (next) {
-        window.location.href = getPath(courseId, next);
-      }
-    }
+    () => next && (window.location.href = getPath(courseId, next))
   );
 
   return (
     <main className="flex flex-col min-h-screen bg-white">
-      {/* Navbar */}
+      {/* 🧭 Navbar */}
       <header className="sticky top-0 z-50 h-16 bg-white">
         <NavbarContainer initialUser={user} />
       </header>
 
-      {/* Layout row */}
+      {/* 🧩 Layout */}
       <div className="flex w-full px-0 py-8">
-        {/* LEFT SIDEBAR */}
+        {/* 📚 Left Sidebar */}
         <aside className="fixed top-16 bottom-0 left-0 hidden lg:block w-80 bg-gray-50 overflow-y-auto">
-{course ? (
-  <SidebarContainer course={course} progress={progress} />
-) : (
-  <div className="p-4">Loading sidebar…</div>
-)}        </aside>
+          {!loadingProgress && course ? (
+            <SidebarContainer course={course} progress={progress} />
+          ) : (
+            <div className="p-4 text-gray-500">Ładowanie kursu...</div>
+          )}
+        </aside>
 
-        {/* MAIN CONTENT */}
-        <div className="flex-1 min-w-0 flex flex-col pb-16 px-6 bg-white lg:ml-80 lg:mr-72">
+        {/* 📝 Main Content */}
+        <section className="flex-1 min-w-0 flex flex-col pb-16 px-6 bg-white lg:ml-80 lg:mr-72">
           {children}
-        </div>
+        </section>
 
-        {/* RIGHT SIDEBAR (TOC only if enabled) */}
+        {/* 📖 Right Sidebar */}
         {showToc && (
           <aside className="fixed top-16 bottom-0 right-0 hidden lg:block w-72 bg-gray-50 overflow-y-auto">
             <TocContainer />
@@ -90,22 +103,19 @@ export default function LessonExerciseLayout({
         )}
       </div>
 
-      {/* FOOTER */}
+      {/* 🦶 Footer */}
       {!loading && course && (
-<Footer
-  className="
-    absolute bottom-0
-    left-0 right-0            /* default: full width */
-    lg:left-80 lg:right-72    /* adapt when sidebars visible */
-  "
-  onPrev={() => prev && (window.location.href = getPath(courseId, prev))}
-  onNext={handleNext}
-  prevDisabled={!prev}
-  nextDisabled={!next}
-  prevLabel="Previous"
+        <Footer
+          className="absolute bottom-0 left-0 right-0 lg:left-80 lg:right-72"
+          onPrev={() => prev && (window.location.href = getPath(courseId, prev))}
+          onNext={handleNext}
+          prevDisabled={!prev}
+          nextDisabled={!next}
+          prevLabel="Previous"
           nextLabel={isFinished ? "Next" : "Finish"}
-           hideFinish={isFinished} 
-/>      )}
+          hideFinish={isFinished}
+        />
+      )}
     </main>
   );
 }

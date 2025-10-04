@@ -1,6 +1,6 @@
 // src/app/domains/exercise/features/useExercise.ts
 "use client";
-
+//migrate to api route 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client/supabaseClient";
 import type { ExerciseData } from "./types";
