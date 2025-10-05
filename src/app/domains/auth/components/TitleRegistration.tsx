@@ -2,14 +2,17 @@ import Image from "next/image";
 
 export default function TitleRegistration() {
   return (
-    <div className="w-full max-w-lg bg-green-50 p-6 rounded-xl text-center shadow-sm flex flex-col items-center gap-4">
+    <div
+      className="w-full max-w-lg bg-green-50 p-6 rounded-xl text-center shadow-sm 
+      flex flex-col items-center gap-4 hover:shadow-md transition-shadow cursor-pointer"
+    >
       {/* Logo */}
       <Image
         src="/logoweb.svg"
-        alt="Prosto Angielski Logo"
+        alt="Logo Prosto Angielski"
         width={64}
         height={64}
-        className="mx-auto"
+        className="mx-auto hover:scale-105 transition-transform"
       />
 
       {/* Tytuł */}

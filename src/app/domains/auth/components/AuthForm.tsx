@@ -16,11 +16,11 @@ function SubmitButton({ label }: { label: string }) {
     <button
       type="submit"
       disabled={pending}
-      className={`w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors ${
+      className={`w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold py-3 rounded-lg transition-colors cursor-pointer ${
         pending ? "opacity-70 cursor-not-allowed" : ""
       }`}
     >
-      {pending ? "Loading..." : label}
+      {pending ? "Ładowanie..." : label}
     </button>
   );
 }
@@ -38,9 +38,10 @@ export default function AuthForm({
         <input
           type="text"
           name="email"
-          placeholder="Email"
+          placeholder="Adres e-mail"
           aria-invalid={!!errors?.email}
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
+          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm 
+          focus:border-green-500 focus:ring-green-500 hover:border-green-400 cursor-pointer"
         />
         {errors?.email && (
           <p className="text-red-500 text-sm">{errors.email[0]}</p>
@@ -50,9 +51,10 @@ export default function AuthForm({
         <input
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder="Hasło"
           aria-invalid={!!errors?.password}
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
+          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm 
+          focus:border-green-500 focus:ring-green-500 hover:border-green-400 cursor-pointer"
         />
         {errors?.password && (
           <p className="text-red-500 text-sm">{errors.password[0]}</p>
@@ -64,9 +66,10 @@ export default function AuthForm({
             <input
               type="password"
               name="confirmPassword"
-              placeholder="Confirm password"
+              placeholder="Potwierdź hasło"
               aria-invalid={!!errors?.confirmPassword}
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm 
+              focus:border-green-500 focus:ring-green-500 hover:border-green-400 cursor-pointer"
             />
             {errors?.confirmPassword && (
               <p className="text-red-500 text-sm">
@@ -75,36 +78,41 @@ export default function AuthForm({
             )}
           </>
         )}
+
+        {/* Terms checkbox */}
         {includeConfirmPassword && (
-  <div className="flex items-center gap-2">
-    <input
-      type="checkbox"
-      name="agreeTerms"
-      id="agreeTerms"
-      className="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
-      
-    />
-    <label htmlFor="agreeTerms" className="text-sm text-gray-700">
-      I agree to the{" "}
-      <a href="/terms" className="text-green-600 underline">
-        Terms & Conditions
-      </a>
-    </label>
-  </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="agreeTerms"
+              id="agreeTerms"
+              className="h-4 w-4 text-green-600 border-gray-300 rounded 
+              focus:ring-green-500 cursor-pointer"
+            />
+            <label htmlFor="agreeTerms" className="text-sm text-gray-700">
+              Akceptuję{" "}
+              <a
+                href="/terms"
+                className="text-green-600 underline hover:text-green-700 cursor-pointer"
+              >
+                regulamin
+              </a>
+            </label>
+          </div>
         )}
         {errors?.agreeTerms && (
-  <p className="text-red-500 text-sm">{errors.agreeTerms[0]}</p>
-)}
+          <p className="text-red-500 text-sm">{errors.agreeTerms[0]}</p>
+        )}
 
         {/* Form-level errors */}
         {errors?.form && (
           <p className="text-red-500 text-sm">{errors.form[0]}</p>
         )}
 
-        {/* Password hint (signup only) */}
+        {/* Password hint */}
         {includeConfirmPassword && (
           <p className="text-xs text-gray-500">
-            Must be at least 8 characters, include at least 3 numbers.
+            Hasło musi mieć co najmniej 8 znaków i zawierać minimum 3 cyfry.
           </p>
         )}
       </div>

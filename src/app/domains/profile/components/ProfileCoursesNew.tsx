@@ -23,32 +23,40 @@ export const ProfileCoursesNew = ({
       {newCourses.map((course) => {
         const purchase = purchases.find((p) => p.course === course.id);
         const isBuying = loading === `buy-${course.id}`;
+
         let buttonLabel = `Kup za ${course.price / 100} zł`;
-        if (purchase?.payment_status === "failed") buttonLabel = "Spróbuj ponownie";
+        if (purchase?.payment_status === "failed")
+          buttonLabel = "Spróbuj ponownie";
 
         return (
           <li
             key={course.id}
-            className="p-4 rounded-lg bg-[#E8F5E9] shadow-sm flex justify-between items-center"
+            className="p-5 rounded-xl bg-green-50 border border-green-100 shadow-sm flex justify-between items-center
+                       hover:shadow-md hover:bg-green-100 transition-all duration-200 cursor-pointer"
           >
             <div className="flex flex-col">
-              <p className="font-semibold">{course.title}</p>
-              <span className="inline-block bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full">
+              <p className="font-semibold text-green-800 text-base">
+                {course.title}
+              </p>
+              <span className="inline-block bg-green-200 text-green-800 text-xs font-medium px-2 py-1 rounded-full mt-1">
                 {course.level}
               </span>
               {course.short_description && (
-                <p className="text-sm text-gray-500 mt-1">{course.short_description}</p>
+                <p className="text-sm text-gray-600 mt-1">
+                  {course.short_description}
+                </p>
               )}
             </div>
+
             <button
               onClick={() => buyCourse(course.id)}
               disabled={isBuying}
               className="bg-gradient-to-r from-green-500 to-green-600 
-                       text-white font-semibold px-6 py-2 
-                       rounded-xl shadow-md 
-                       hover:from-green-600 hover:to-green-700 hover:shadow-lg 
-                       disabled:from-green-300 disabled:to-green-400 disabled:cursor-not-allowed
-                       active:scale-95 transition-all duration-200"
+                         text-white font-semibold px-6 py-2 
+                         rounded-xl shadow-md 
+                         hover:from-green-600 hover:to-green-700 hover:shadow-lg 
+                         disabled:from-green-300 disabled:to-green-400 disabled:cursor-not-allowed
+                         active:scale-95 transition-all duration-200 cursor-pointer"
             >
               {isBuying ? "Przetwarzanie..." : buttonLabel}
             </button>

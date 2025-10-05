@@ -21,13 +21,13 @@ export default function FillGapsExerciseContainer({
   const [value, setValue] = useState("");
   const [status, setStatus] = useState<"idle" | "wrong" | "correct">("idle");
   const [revealed, setRevealed] = useState<"none" | "hint" | "answer">("none");
-  const [restored, setRestored] = useState(false); // ✅ guard against overwrite
+  const [restored, setRestored] = useState(false);
 
   const total = items.length;
   const q = items[index];
   const progress = Math.round(((index + 1) / total) * 100);
 
-  // 🔹 Restore saved progress
+  // 🔹 Przywróć zapisany postęp
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     if (saved) {
@@ -40,19 +40,18 @@ export default function FillGapsExerciseContainer({
           setRevealed(parsed.revealed ?? "none");
         }
       } catch {
-        // fallback ignore
+        console.error("❌ Nie udało się odczytać zapisanych danych");
       }
     }
     setRestored(true);
   }, [storageKey, total]);
 
-  // 🔹 Save after restore
+  // 🔹 Zapisz postęp po przywróceniu
   useEffect(() => {
     if (!restored) return;
     const state = { index, value, status, revealed };
     localStorage.setItem(storageKey, JSON.stringify(state));
   }, [index, value, status, revealed, storageKey, restored]);
-
 
   const normalize = (s: string) =>
     s.toLowerCase().trim().replace(/\s+/g, " ");
@@ -78,12 +77,12 @@ export default function FillGapsExerciseContainer({
       setStatus("idle");
       setRevealed("none");
     } else {
-      localStorage.removeItem(storageKey); // ✅ clear when finished
+      localStorage.removeItem(storageKey);
       onComplete();
     }
   }, [index, total, onComplete, storageKey]);
 
-  // Allow Enter key to check/next
+  // Enter = sprawdź / dalej
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
@@ -99,46 +98,51 @@ export default function FillGapsExerciseContainer({
     if (revealed === "none") setRevealed("hint");
     else if (revealed === "hint") setRevealed("answer");
   };
-  if (!q) return <p>No fill-gaps items.</p>;
+
+  if (!q) return <p>Brak zadań typu „uzupełnij luki”.</p>;
 
   return (
     <div className="flex flex-col gap-4">
       <ExerciseHeader
-        title="Fill in the blanks"
-        subtitle="Complete the sentence"
+        title="Uzupełnij luki"
+        subtitle="Wpisz brakujące słowo"
         progress={progress}
         current={index + 1}
         total={total}
       />
 
-      <p className="text-lg">{q.prompt}</p>
+      <p className="text-lg font-medium text-gray-800">{q.prompt}</p>
       <input
-        className="w-full border rounded px-3 py-2"
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-green-500 focus:ring-green-500 
+        hover:border-green-400 transition-colors duration-200 cursor-pointer"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         disabled={status === "correct"}
       />
 
-      {/* ✅ Correct */}
+      {/* ✅ Poprawna odpowiedź */}
       {status === "correct" && (
-        <FeedbackMessage type="correct" message="Correct!" />
+        <FeedbackMessage type="correct" message="✅ Dobrze!" />
       )}
 
-      {/* ❌ Wrong */}
+      {/* ❌ Niepoprawna odpowiedź */}
       {status === "wrong" && revealed === "none" && (
-        <FeedbackMessage type="wrong" message="Not quite right. Try again!" />
+        <FeedbackMessage
+          type="wrong"
+          message="❌ Nie do końca dobrze. Spróbuj ponownie!"
+        />
       )}
 
-      {/* 💡 Hint */}
+      {/* 💡 Podpowiedź */}
       {revealed === "hint" && q.hint && (
-        <FeedbackMessage type="hint" message={q.hint} />
+        <FeedbackMessage type="hint" message={`💡 Podpowiedź: ${q.hint}`} />
       )}
 
-      {/* ✅ Show Answer */}
+      {/* ✅ Pokaż odpowiedź */}
       {revealed === "answer" && (
         <FeedbackMessage
           type="wrong"
-          message={`Correct: ${
+          message={`✅ Poprawna odpowiedź: ${
             Array.isArray(q.answer) ? q.answer.join(", ") : q.answer
           }`}
         />
@@ -147,22 +151,26 @@ export default function FillGapsExerciseContainer({
       <ExerciseFooter
         leftLabel={
           revealed === "none"
-            ? "Show Hint"
+            ? "Pokaż podpowiedź"
             : revealed === "hint"
-            ? "Show Answer"
-            : "Answer Shown"
+            ? "Pokaż odpowiedź"
+            : "Odpowiedź pokazana"
         }
         onLeftClick={handleHintOrAnswer}
         leftDisabled={revealed === "answer"}
         rightLabel={
-          status === "correct" || revealed === "answer" ? "Next" : "Check Answer"
+          status === "correct" || revealed === "answer"
+            ? "Dalej"
+            : "Sprawdź odpowiedź"
         }
         onRightClick={
           status === "correct" || revealed === "answer"
             ? handleNext
             : handleCheck
         }
-        rightDisabled={!value.trim() && revealed !== "answer" && status !== "correct"}
+        rightDisabled={
+          !value.trim() && revealed !== "answer" && status !== "correct"
+        }
       />
     </div>
   );

@@ -24,37 +24,39 @@ export default function RegistrationContainer() {
   return (
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-100 to-green-200 p-6">
       <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 bg-white rounded-2xl shadow-lg overflow-hidden">
-        {/* Left side: Form */}
+        {/* Lewa strona: formularz */}
         <div className="p-6 md:p-10 flex flex-col justify-center">
           <TitleRegistration />
 
           <AuthForm
             errors={state.errors}
-            submitLabel="Sign up"
+            submitLabel="Zarejestruj się"
             includeConfirmPassword
             formAction={formAction}
           />
 
-          {/* Divider */}
-{/* Divider */}
-<div className="flex items-center gap-2 my-4">
-  <hr className="flex-1 border-gray-300" />
-  <span className="text-gray-500 text-sm">or</span>
-  <hr className="flex-1 border-gray-300" />
-</div>
+          {/* Separator */}
+          <div className="flex items-center gap-2 my-4">
+            <hr className="flex-1 border-gray-300" />
+            <span className="text-gray-500 text-sm">lub</span>
+            <hr className="flex-1 border-gray-300" />
+          </div>
 
-{/* Google Button */}
-  <GoogleSignInButton />
+          {/* Google Button */}
+          <GoogleSignInButton />
 
           <p className="mt-6 text-center text-sm text-gray-600">
-            Already have an account?{" "}
-            <Link href="/login" className="text-green-600 hover:underline">
-              Log in
+            Masz już konto?{" "}
+            <Link
+              href="/login"
+              className="text-green-600 hover:underline hover:text-green-700 cursor-pointer"
+            >
+              Zaloguj się
             </Link>
           </p>
         </div>
 
-        {/* Right side: Benefits */}
+        {/* Prawa strona: korzyści */}
         <BenefitsPayment />
       </div>
     </section>

@@ -21,7 +21,7 @@ export default function ChooseDefinitionExerciseContainer({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [status, setStatus] = useState<"idle" | "wrong" | "correct">("idle");
   const [revealed, setRevealed] = useState<"none" | "hint" | "answer">("none");
-  const [restored, setRestored] = useState(false); // ✅ prevent overwrite before restore
+  const [restored, setRestored] = useState(false);
 
   const total = items.length;
   const q = items[index];
@@ -30,44 +30,35 @@ export default function ChooseDefinitionExerciseContainer({
     [index, total]
   );
 
-  // 🔹 Load saved state from localStorage
+  // 🔹 Load saved progress
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
-    console.log("🔄 Loading from localStorage:", saved);
-
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        console.log("✅ Parsed progress:", parsed);
-
         if (parsed.index < total) {
           setIndex(parsed.index ?? 0);
           setSelectedIndex(parsed.selectedIndex ?? null);
           setStatus(parsed.status ?? "idle");
           setRevealed(parsed.revealed ?? "none");
         }
-      } catch (err) {
-        console.error("❌ Failed to parse saved progress", err);
+      } catch {
+        console.error("❌ Nie udało się wczytać postępu");
       }
     }
-
-    setRestored(true); // mark restore complete
+    setRestored(true);
   }, [storageKey, total]);
 
-  // 🔹 Save state to localStorage only after restore
+  // 🔹 Save progress
   useEffect(() => {
-    if (!restored) return; // don’t overwrite before restore
-
+    if (!restored) return;
     const state = { index, selectedIndex, status, revealed };
-    console.log("💾 Saving to localStorage:", state);
     localStorage.setItem(storageKey, JSON.stringify(state));
   }, [index, selectedIndex, status, revealed, storageKey, restored]);
-
 
   function handleChoice(i: number) {
     if (status === "correct") return;
     setSelectedIndex(i);
-
     if (i === q.correctIndex) {
       setStatus("correct");
       setRevealed("none");
@@ -84,7 +75,7 @@ export default function ChooseDefinitionExerciseContainer({
       setStatus("idle");
       setRevealed("none");
     } else {
-      localStorage.removeItem(storageKey); // ✅ clear progress when done
+      localStorage.removeItem(storageKey);
       onComplete();
     }
   }
@@ -93,25 +84,28 @@ export default function ChooseDefinitionExerciseContainer({
     if (revealed === "none") setRevealed("hint");
     else if (revealed === "hint") setRevealed("answer");
   };
-  if (!q) return <p>No questions.</p>;
+
+  if (!q) return <p>Brak pytań.</p>;
 
   return (
     <div className="flex flex-col gap-4">
       <ExerciseHeader
-        title="Choose the definition"
-        subtitle="Pick the correct meaning"
+        title="Wybierz definicję"
+        subtitle="Zaznacz poprawne znaczenie słowa"
         progress={progress}
         current={index + 1}
         total={total}
       />
 
-      <h3 className="text-lg font-bold text-center">{q.word}</h3>
+      <h3 className="text-lg font-bold text-center text-green-800">
+        {q.word}
+      </h3>
 
       <div className="flex flex-col gap-2">
         {q.options.map((opt, i) => {
           const picked = selectedIndex === i;
 
-          let border = "border-green-300 bg-white";
+          let border = "border-green-300 bg-white hover:bg-green-50 cursor-pointer";
           if (picked && status === "correct")
             border = "border-green-600 bg-green-50";
           if (picked && status === "wrong")
@@ -122,7 +116,7 @@ export default function ChooseDefinitionExerciseContainer({
               key={i}
               type="button"
               onClick={() => handleChoice(i)}
-              className={`p-3 border rounded-lg ${border}`}
+              className={`p-3 border rounded-lg transition-colors duration-200 ${border}`}
             >
               {opt}
             </button>
@@ -130,40 +124,43 @@ export default function ChooseDefinitionExerciseContainer({
         })}
       </div>
 
-      {/* ✅ Correct */}
+      {/* ✅ Poprawna odpowiedź */}
       {status === "correct" && (
-        <FeedbackMessage type="correct" message="Correct!" />
+        <FeedbackMessage type="correct" message="✅ Dobrze!" />
       )}
 
-      {/* ❌ Wrong */}
+      {/* ❌ Zła odpowiedź */}
       {status === "wrong" && revealed === "none" && (
-        <FeedbackMessage type="wrong" message="Not quite right. Try again!" />
+        <FeedbackMessage
+          type="wrong"
+          message="❌ Nie do końca. Spróbuj ponownie!"
+        />
       )}
 
-      {/* 💡 Hint */}
+      {/* 💡 Podpowiedź */}
       {revealed === "hint" && q.hint && (
-        <FeedbackMessage type="hint" message={q.hint} />
+        <FeedbackMessage type="hint" message={`💡 Podpowiedź: ${q.hint}`} />
       )}
 
-      {/* ✅ Show Answer */}
+      {/* ✅ Poprawna odpowiedź ujawniona */}
       {revealed === "answer" && (
         <FeedbackMessage
           type="wrong"
-          message={`Correct answer: ${q.options[q.correctIndex]}`}
+          message={`✅ Poprawna odpowiedź: ${q.options[q.correctIndex]}`}
         />
       )}
 
       <ExerciseFooter
         leftLabel={
           revealed === "none"
-            ? "Show Hint"
+            ? "Pokaż podpowiedź"
             : revealed === "hint"
-            ? "Show Answer"
-            : "Answer Shown"
+            ? "Pokaż odpowiedź"
+            : "Odpowiedź pokazana"
         }
         onLeftClick={handleHintOrAnswer}
         leftDisabled={revealed === "answer"}
-        rightLabel={status === "correct" ? "Next" : "Check Answer"}
+        rightLabel={status === "correct" ? "Dalej" : "Sprawdź"}
         onRightClick={status === "correct" ? handleNext : () => {}}
         rightDisabled={selectedIndex == null && status !== "correct"}
       />

@@ -47,21 +47,37 @@ export async function signup(
 ): Promise<SignupState> {
   const supabase = await createClient();
 
-const data = {
-  email: formData.get("email"),
-  password: formData.get("password"),
-  confirmPassword: formData.get("confirmPassword"),
-  agreeTerms: formData.get("agreeTerms"), // 👈 add this
-};
+  const data = {
+    email: formData.get("email"),
+    password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
+    agreeTerms: formData.get("agreeTerms"),
+  };
 
+  // ✅ Walidacja danych wejściowych
   const parsed = RegisterSchema.safeParse(data);
-
   if (!parsed.success) {
     return { success: false, errors: parsed.error.flatten().fieldErrors };
   }
 
-  const { email, password } = parsed.data; // 👈 confirmPassword is validated but not sent to Supabase
+  const { email, password } = parsed.data;
 
+  // ✅ Sprawdzenie, czy adres e-mail już istnieje
+  const { data: existingUser, error: fetchError } = await supabase
+    .from("auth.users")
+    .select("email")
+    .eq("email", email)
+    .maybeSingle();
+
+  if (fetchError && fetchError.code !== "PGRST116") {
+    return { success: false, errors: { form: ["Błąd podczas sprawdzania adresu e-mail."] } };
+  }
+
+  if (existingUser) {
+    return { success: false, errors: { email: ["Ten adres e-mail jest już zarejestrowany."] } };
+  }
+
+  // ✅ Rejestracja nowego użytkownika
   const { error } = await supabase.auth.signUp({
     email,
     password,

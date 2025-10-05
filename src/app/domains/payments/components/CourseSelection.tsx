@@ -1,7 +1,7 @@
 "use client";
 
 import CourseCard from "./CourseCard";
-import { useCourse } from "../../preview/features/useCourse"; 
+import { useCourse } from "../../preview/features/useCourse";
 
 type Props = {
   course: string;
@@ -11,11 +11,20 @@ type Props = {
 export default function CourseSelection({ course, setCourse }: Props) {
   const { courses, loading, error } = useCourse();
 
-  if (loading) return <p>Ładowanie kursów...</p>;
-  if (error) return <p className="text-red-600">Błąd: {error}</p>;
+  if (loading)
+    return (
+      <p className="text-gray-600 text-sm animate-pulse">Ładowanie kursów...</p>
+    );
+
+  if (error)
+    return (
+      <p className="text-red-600 font-medium">
+        ❌ Wystąpił błąd: {error}
+      </p>
+    );
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 cursor-pointer">
       {courses.map((c) => (
         <CourseCard
           key={c.id}

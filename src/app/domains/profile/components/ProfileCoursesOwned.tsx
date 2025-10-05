@@ -15,9 +15,8 @@ export const ProfileCoursesOwned = ({
 }: ProfileCoursesOwnedProps) => {
   const { goToLesson } = useLessonRedirect();
 
-  if (ownedCourses.length === 0) {
+  if (ownedCourses.length === 0)
     return <p className="text-gray-500">Nie masz jeszcze żadnych kursów.</p>;
-  }
 
   return (
     <ul className="space-y-4">
@@ -28,19 +27,29 @@ export const ProfileCoursesOwned = ({
         return (
           <li
             key={course.id}
-            className="p-4 rounded-lg shadow-sm bg-[#E8F5E9] flex justify-between items-center"
+            className="p-5 rounded-xl bg-green-50 border border-green-100 shadow-sm 
+                       flex justify-between items-center hover:bg-green-100 hover:shadow-md 
+                       transition-all duration-200 cursor-pointer"
           >
             <div>
-              <p className="font-semibold">{course.title}</p>
-              <span className="inline-block bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full">
+              <p className="font-semibold text-green-800 text-base">
+                {course.title}
+              </p>
+              <span className="inline-block bg-green-200 text-green-800 text-xs font-medium px-2 py-1 rounded-full mt-1">
                 {course.level}
               </span>
             </div>
+
             {lessonId && (
               <button
                 onClick={() => goToLesson(course.id, lessonId)}
                 disabled={isLoading}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed transition"
+                className="bg-gradient-to-r from-green-500 to-green-600 
+                           text-white font-semibold px-6 py-2 
+                           rounded-xl shadow-md 
+                           hover:from-green-600 hover:to-green-700 hover:shadow-lg 
+                           disabled:from-green-300 disabled:to-green-400 disabled:cursor-not-allowed
+                           active:scale-95 transition-all duration-200 cursor-pointer"
               >
                 {isLoading ? "Ładowanie..." : label}
               </button>

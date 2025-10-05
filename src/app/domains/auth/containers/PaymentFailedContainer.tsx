@@ -14,15 +14,16 @@ export default function PaymentFailedContainer() {
   return (
     <section className="max-w-2xl mx-auto py-12 md:py-20 px-6 flex flex-col items-center gap-8 text-center">
       <PaymentFailedCard
-        message="Something went wrong and we couldn’t process your payment."
-        reason="Your card was declined or the session expired."
+        message="Coś poszło nie tak i nie udało się przetworzyć płatności."
+        reason="Twoja karta została odrzucona lub sesja wygasła."
       />
 
       <button
         onClick={handleRetry}
-        className="bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+        className="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-medium py-3 px-6 rounded-lg 
+        transition-colors duration-200 cursor-pointer"
       >
-        Try Again
+        Spróbuj ponownie
       </button>
     </section>
   );

@@ -27,7 +27,10 @@ type Props = {
   showToc?: boolean;
 };
 
-export default function LessonExerciseLayout({ children, showToc = true }: Props) {
+export default function LessonExerciseLayout({
+  children,
+  showToc = true,
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
@@ -40,7 +43,7 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
   const [loadingProgress, setLoadingProgress] = useState(true);
   const [reloadProgress, setReloadProgress] = useState(false);
 
-  // 🔹 Load user
+  // 🔹 Pobierz użytkownika
   useEffect(() => {
     async function loadUser() {
       try {
@@ -49,13 +52,13 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
         const { user } = await res.json();
         setUser(user);
       } catch (err) {
-        console.error("❌ Failed to fetch user", err);
+        console.error("❌ Błąd pobierania użytkownika:", err);
       }
     }
     loadUser();
   }, []);
 
-  // 🔹 Load progress (reactive)
+  // 🔹 Pobierz postęp
   useEffect(() => {
     async function loadProgress() {
       try {
@@ -64,7 +67,7 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
         const { progress } = await res.json();
         setProgress(progress || []);
       } catch (err) {
-        console.error("❌ Progress fetch error:", err);
+        console.error("❌ Błąd pobierania postępu:", err);
       } finally {
         setLoadingProgress(false);
       }
@@ -72,12 +75,12 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
     loadProgress();
   }, [reloadProgress]);
 
-  // 🔹 Course + navigation
+  // 🔹 Kurs i nawigacja
   const { course, loading } = useCourse(courseId);
   const items = course ? buildNavItems(course) : [];
   const { prev, next } = getPrevNext(items, lessonId, isExercise);
 
-  // 🔹 Progress handler
+  // 🔹 Obsługa postępu
   const { isFinished, handleNext } = useProgress(courseId, lessonId, isExercise);
 
   if (!user || !course) {
@@ -95,10 +98,10 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
         <NavbarContainer initialUser={user} />
       </header>
 
-      {/* 🧩 Page Layout */}
+      {/* 🧩 Układ strony */}
       <div className="flex w-full px-0 py-8">
-        {/* 📚 Sidebar */}
-        <aside className="fixed top-16 bottom-0 left-0 hidden lg:block w-80 bg-gray-50 overflow-y-auto">
+        {/* 📚 Pasek boczny */}
+        <aside className="fixed top-16 bottom-0 left-0 hidden lg:block w-80 bg-gray-50 overflow-y-auto hover:shadow-md transition-shadow">
           {!loadingProgress ? (
             <SidebarContainer course={course} progress={progress} />
           ) : (
@@ -106,20 +109,20 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
           )}
         </aside>
 
-        {/* 📝 Main Content */}
+        {/* 📝 Główna zawartość */}
         <section className="flex-1 min-w-0 flex flex-col pb-16 px-6 bg-white lg:ml-80 lg:mr-72">
           {children}
         </section>
 
-        {/* 📖 TOC */}
+        {/* 📖 Spis treści */}
         {showToc && (
-          <aside className="fixed top-16 bottom-0 right-0 hidden lg:block w-72 bg-gray-50 overflow-y-auto">
+          <aside className="fixed top-16 bottom-0 right-0 hidden lg:block w-72 bg-gray-50 overflow-y-auto hover:shadow-md transition-shadow">
             <TocContainer />
           </aside>
         )}
       </div>
 
-      {/* 🦶 Footer */}
+      {/* 🦶 Stopka */}
       {!loading && (
         <Footer
           className="absolute bottom-0 left-0 right-0 lg:left-80 lg:right-72"
@@ -133,8 +136,8 @@ export default function LessonExerciseLayout({ children, showToc = true }: Props
           }
           prevDisabled={!prev}
           nextDisabled={!next}
-          prevLabel="Previous"
-          nextLabel={isFinished ? "Next" : "Finish"}
+          prevLabel="Wstecz"
+          nextLabel={isFinished ? "Dalej" : "Zakończ"}
           hideFinish={isFinished}
         />
       )}

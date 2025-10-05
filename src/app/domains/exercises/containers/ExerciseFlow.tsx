@@ -26,87 +26,84 @@ export default function ExerciseFlow({
     (exercises?.chooseDefinition.length ? 1 : 0) +
     (exercises?.translate.length ? 1 : 0);
 
-  // 🔹 Load progress on mount
+  // 🔹 Wczytaj postęp
   useEffect(() => {
     const saved = localStorage.getItem(`exercise-progress-${id}`);
-     console.log("🔄 Loaded section progress:", saved);
     if (saved) {
       setCompletedSections(Number(saved));
     }
   }, [id]);
 
-  // 🔹 Save progress when it changes
+  // 🔹 Zapisz postęp
   useEffect(() => {
-     console.log("💾 Saving section progress:", completedSections);
     localStorage.setItem(`exercise-progress-${id}`, String(completedSections));
-    
   }, [id, completedSections]);
 
   const handleSectionComplete = () => {
     setCompletedSections((prev) => Math.min(prev + 1, totalSections));
   };
 
-  if (loading) return <p className="p-6">Loading exercises…</p>;
-  if (error) return <p className="p-6 text-red-500">Error: {error}</p>;
-  if (!exercises) return <p className="p-6">No exercises found.</p>;
+  if (loading) return <p className="p-6">Ładowanie ćwiczeń…</p>;
+  if (error) return <p className="p-6 text-red-500">Błąd: {error}</p>;
+  if (!exercises) return <p className="p-6">Nie znaleziono ćwiczeń.</p>;
 
   return (
-<div className="flex-1 flex flex-col px-2 py-2 bg-white space-y-3">
-      {/* Section 1 - Fill Gaps */}
+    <div className="flex-1 flex flex-col px-2 py-2 bg-white space-y-3">
+      {/* Sekcja 1 - Uzupełnij luki */}
       {exercises.fillGaps.length > 0 && (
-        <div className="space-y-1">
+        <div className="space-y-1 hover:bg-green-50 rounded-lg p-2 transition-colors cursor-pointer">
           <h2 className="text-lg font-semibold flex items-center">
             <span className="mr-2 text-green-600">1.</span>
-            Fill the Gaps
+            Uzupełnij luki
           </h2>
           <p className="text-sm text-gray-500 mb-2">
-            Complete the sentences with the correct missing words.
+            Wpisz brakujące słowa w zdaniach.
           </p>
           <FillGapsExerciseContainer
             items={exercises.fillGaps}
             onComplete={handleSectionComplete}
-              lessonId={id} 
+            lessonId={id}
           />
         </div>
       )}
 
-      {/* Section 2 - Choose Definition */}
+      {/* Sekcja 2 - Wybierz definicję */}
       {exercises.chooseDefinition.length > 0 && (
-        <div className="space-y-1">
+        <div className="space-y-1 hover:bg-green-50 rounded-lg p-2 transition-colors cursor-pointer">
           <h2 className="text-lg font-semibold flex items-center">
             <span className="mr-2 text-green-600">2.</span>
-            Choose the Definition
+            Wybierz definicję
           </h2>
           <p className="text-sm text-gray-500 mb-2">
-            Pick the correct meaning for each word or phrase.
+            Wybierz poprawne znaczenie każdego słowa lub wyrażenia.
           </p>
           <ChooseDefinitionExerciseContainer
             items={exercises.chooseDefinition}
             onComplete={handleSectionComplete}
-              lessonId={id} 
+            lessonId={id}
           />
         </div>
       )}
 
-      {/* Section 3 - Translate */}
+      {/* Sekcja 3 - Przetłumacz */}
       {exercises.translate.length > 0 && (
-        <div className="space-y-1">
+        <div className="space-y-1 hover:bg-green-50 rounded-lg p-2 transition-colors cursor-pointer">
           <h2 className="text-lg font-semibold flex items-center">
             <span className="mr-2 text-green-600">3.</span>
-            Translate
+            Przetłumacz
           </h2>
           <p className="text-sm text-gray-500 mb-2">
-            Translate the Polish sentences into English.
+            Przetłumacz zdania z języka polskiego na angielski.
           </p>
           <TranslateExerciseContainer
             items={exercises.translate}
             onComplete={handleSectionComplete}
-              lessonId={id} 
+            lessonId={id}
           />
         </div>
       )}
 
-      {/* Confetti celebration */}
+      {/* 🎉 Konfetti po ukończeniu */}
       {completedSections === totalSections && totalSections > 0 && (
         <Confetti
           width={width}

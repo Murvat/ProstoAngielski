@@ -21,7 +21,7 @@ export default function TranslateExerciseContainer({
   const [value, setValue] = useState("");
   const [status, setStatus] = useState<"idle" | "wrong" | "correct">("idle");
   const [revealed, setRevealed] = useState<"none" | "hint" | "answer">("none");
-  const [restored, setRestored] = useState(false); // ✅ guard
+  const [restored, setRestored] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const total = items.length;
@@ -31,7 +31,7 @@ export default function TranslateExerciseContainer({
     [index, total]
   );
 
-  // 🔹 Restore full state
+  // 🔹 Przywróć zapisany postęp
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     if (saved) {
@@ -44,19 +44,18 @@ export default function TranslateExerciseContainer({
           setRevealed(parsed.revealed ?? "none");
         }
       } catch {
-        // ignore invalid
+        console.error("❌ Nie udało się odczytać zapisanych danych");
       }
     }
     setRestored(true);
   }, [storageKey, total]);
 
-  // 🔹 Save only after restore
+  // 🔹 Zapisz postęp po przywróceniu
   useEffect(() => {
     if (!restored) return;
     const state = { index, value, status, revealed };
     localStorage.setItem(storageKey, JSON.stringify(state));
   }, [index, value, status, revealed, storageKey, restored]);
-
 
   const normalize = useCallback((s: string) => {
     return s
@@ -92,7 +91,7 @@ export default function TranslateExerciseContainer({
       setRevealed("none");
       requestAnimationFrame(() => textareaRef.current?.focus());
     } else {
-      localStorage.removeItem(storageKey); // ✅ clear when finished
+      localStorage.removeItem(storageKey);
       onComplete();
     }
   };
@@ -101,23 +100,27 @@ export default function TranslateExerciseContainer({
     if (revealed === "none") setRevealed("hint");
     else if (revealed === "hint") setRevealed("answer");
   };
-  if (!q) return <p>No translation items.</p>;
+
+  if (!q) return <p>Brak zadań typu „tłumaczenie”.</p>;
 
   return (
     <div className="flex flex-col gap-4">
       <ExerciseHeader
-        title="Translate the sentence"
-        subtitle="Polish → English"
+        title="Przetłumacz zdanie"
+        subtitle="Polski → Angielski"
         progress={progress}
         current={index + 1}
         total={total}
       />
 
-      <p className="text-lg bg-gray-100 p-2 rounded">{q.source}</p>
+      <p className="text-lg bg-gray-100 p-2 rounded font-medium text-gray-800">
+        {q.source}
+      </p>
 
       <textarea
         ref={textareaRef}
-        className="w-full border rounded p-2 min-h-[100px]"
+        className="w-full border border-gray-300 rounded-lg p-2 min-h-[100px] 
+        focus:border-green-500 focus:ring-green-500 hover:border-green-400 transition-colors duration-200 cursor-pointer"
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
@@ -125,26 +128,29 @@ export default function TranslateExerciseContainer({
         }}
       />
 
-      {/* ✅ Correct */}
+      {/* ✅ Poprawna odpowiedź */}
       {status === "correct" && (
-        <FeedbackMessage type="correct" message="Correct!" />
+        <FeedbackMessage type="correct" message="✅ Dobrze!" />
       )}
 
-      {/* ❌ Wrong */}
+      {/* ❌ Niepoprawna odpowiedź */}
       {status === "wrong" && revealed === "none" && (
-        <FeedbackMessage type="wrong" message="Not quite right. Try again!" />
+        <FeedbackMessage
+          type="wrong"
+          message="❌ Nie do końca dobrze. Spróbuj ponownie!"
+        />
       )}
 
-      {/* 💡 Hint */}
+      {/* 💡 Podpowiedź */}
       {revealed === "hint" && q.hint && (
-        <FeedbackMessage type="hint" message={q.hint} />
+        <FeedbackMessage type="hint" message={`💡 Podpowiedź: ${q.hint}`} />
       )}
 
-      {/* ✅ Show Answer */}
+      {/* ✅ Pokaż odpowiedź */}
       {revealed === "answer" && (
         <FeedbackMessage
           type="wrong"
-          message={`Accepted answers: ${
+          message={`✅ Poprawne odpowiedzi: ${
             Array.isArray(q.target) ? q.target.join(", ") : q.target
           }`}
         />
@@ -153,14 +159,14 @@ export default function TranslateExerciseContainer({
       <ExerciseFooter
         leftLabel={
           revealed === "none"
-            ? "Show Hint"
+            ? "Pokaż podpowiedź"
             : revealed === "hint"
-            ? "Show Answer"
-            : "Answer Shown"
+            ? "Pokaż odpowiedź"
+            : "Odpowiedź pokazana"
         }
         onLeftClick={handleHintOrAnswer}
         leftDisabled={revealed === "answer"}
-        rightLabel={status === "correct" ? "Next" : "Check Answer"}
+        rightLabel={status === "correct" ? "Dalej" : "Sprawdź odpowiedź"}
         onRightClick={status === "correct" ? handleNext : handleCheck}
         rightDisabled={!value.trim() && status !== "correct"}
       />

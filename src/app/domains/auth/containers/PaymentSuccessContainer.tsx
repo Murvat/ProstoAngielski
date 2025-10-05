@@ -27,9 +27,10 @@ export default function PaymentSuccessContainer({ purchase }: PaymentSuccessProp
 
       <button
         onClick={() => router.push("/profile")}
-        className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+        className="bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-medium py-3 px-6 rounded-lg 
+        transition-colors duration-200 cursor-pointer"
       >
-        Zacznij!
+        Rozpocznij naukę
       </button>
     </section>
   );
