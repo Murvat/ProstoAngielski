@@ -6,9 +6,9 @@ import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const slides = [
-  { src: "/feature1.png", alt: "Interaktywne lekcje" },
-  { src: "/feature2.png", alt: "Śledzenie postępów" },
-  { src: "/feature3.png", alt: "Aplikacja mobilna już wkrótce" },
+  { src: "/previewAi.png", alt: "Interaktywne lekcje" },
+  { src: "/previewAi2.png", alt: "Śledzenie postępów" },
+  { src: "/previewAi3.png", alt: "Aplikacja mobilna już wkrótce" },
 ];
 
 export default function FeaturesCarousel() {
@@ -39,7 +39,7 @@ export default function FeaturesCarousel() {
         </p>
 
         {/* 🖼️ Carousel Frame */}
-        <div className="w-full max-w-2xl mt-8 rounded-lg overflow-hidden shadow-md bg-white relative">
+        <div className="w-full max-w-3xl mt-8 rounded-lg overflow-hidden shadow-md bg-white relative">
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">
               {slides.map((s, i) => (

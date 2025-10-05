@@ -12,6 +12,7 @@ import Footer from "@/app/domains/footer/components/Footer";
 import { useCourse } from "../hooks/useCourse";
 import { useProgress } from "../hooks/useProgress";
 import { buildNavItems, getPrevNext, getPath } from "../hooks/navigation";
+import ChatbotSidebar from "../../chatbot/Chatbot";
 
 type Progress = {
   id: string;
@@ -29,7 +30,6 @@ type Props = {
 
 export default function LessonExerciseLayout({
   children,
-  showToc = true,
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
@@ -91,56 +91,65 @@ export default function LessonExerciseLayout({
     );
   }
 
-  return (
-    <main className="flex flex-col min-h-screen bg-white">
-      {/* 🧭 Navbar */}
-      <header className="sticky top-0 z-50 h-16 bg-white border-b">
-        <NavbarContainer initialUser={user} />
-      </header>
+return (
+  <main className="flex flex-col min-h-screen bg-white">
+    {/* 🧭 Navbar */}
+    <header className="sticky top-0 z-50 h-16 bg-white border-b">
+      <NavbarContainer initialUser={user} />
+    </header>
 
-      {/* 🧩 Układ strony */}
-      <div className="flex w-full px-0 py-8">
-        {/* 📚 Pasek boczny */}
-        <aside className="fixed top-16 bottom-0 left-0 hidden lg:block w-80 bg-gray-50 overflow-y-auto hover:shadow-md transition-shadow">
-          {!loadingProgress ? (
-            <SidebarContainer course={course} progress={progress} />
-          ) : (
-            <div className="p-4 text-gray-500">Ładowanie kursu...</div>
-          )}
-        </aside>
-
-        {/* 📝 Główna zawartość */}
-        <section className="flex-1 min-w-0 flex flex-col pb-16 px-6 bg-white lg:ml-80 lg:mr-72">
-          {children}
-        </section>
-
-        {/* 📖 Spis treści */}
-        {showToc && (
-          <aside className="fixed top-16 bottom-0 right-0 hidden lg:block w-72 bg-gray-50 overflow-y-auto hover:shadow-md transition-shadow">
-            <TocContainer />
-          </aside>
+    {/* 🧩 Układ strony */}
+    <div className="flex w-full">
+      {/* 📚 Lewy pasek boczny */}
+      <aside className="fixed top-16 bottom-0 left-0 hidden lg:block w-80 bg-gray-50 overflow-y-auto hover:shadow-md transition-shadow z-40">
+        {!loadingProgress ? (
+          <SidebarContainer course={course} progress={progress} />
+        ) : (
+          <div className="p-4 text-gray-500">Ładowanie kursu...</div>
         )}
-      </div>
+      </aside>
 
-      {/* 🦶 Stopka */}
-      {!loading && (
-        <Footer
-          className="absolute bottom-0 left-0 right-0 lg:left-80 lg:right-72"
-          onPrev={() => prev && router.push(getPath(courseId, prev))}
-          onNext={() =>
-            handleNext(async () => {
-              setReloadProgress((v) => !v);
-              await new Promise((r) => setTimeout(r, 150));
-              if (next) router.push(getPath(courseId, next));
-            })
-          }
-          prevDisabled={!prev}
-          nextDisabled={!next}
-          prevLabel="Wstecz"
-          nextLabel={isFinished ? "Dalej" : "Zakończ"}
-          hideFinish={isFinished}
-        />
-      )}
-    </main>
-  );
+      {/* 📝 Główna zawartość */}
+      <section
+        className="
+          flex-1 min-w-0 flex flex-col pb-16 px-6 bg-white
+          lg:ml-80           /* space for left sidebar */
+          md:mr-72 lg:mr-80 xl:mr-96 /* space for right MurAi */
+        "
+      >
+        {children}
+      </section>
+
+      {/* 💬 Prawy pasek MurAi */}
+      <aside
+        className="fixed top-16 bottom-0 right-0 hidden md:block w-72 lg:w-80 xl:w-96 bg-gray-50 dark:bg-zinc-900 overflow-y-auto hover:shadow-md transition-all duration-300 z-40"
+      >
+        <ChatbotSidebar course={courseId} topic={lessonId} />
+      </aside>
+    </div>
+
+    {/* 🦶 Stopka */}
+    {!loading && (
+      <Footer
+        className="
+          absolute bottom-0 left-0 right-0
+          lg:left-80 md:right-72 lg:right-80 xl:right-96
+        "
+        onPrev={() => prev && router.push(getPath(courseId, prev))}
+        onNext={() =>
+          handleNext(async () => {
+            setReloadProgress((v) => !v);
+            await new Promise((r) => setTimeout(r, 150));
+            if (next) router.push(getPath(courseId, next));
+          })
+        }
+        prevDisabled={!prev}
+        nextDisabled={!next}
+        prevLabel="Wstecz"
+        nextLabel={isFinished ? "Dalej" : "Zakończ"}
+        hideFinish={isFinished}
+      />
+    )}
+  </main>
+);
 }
