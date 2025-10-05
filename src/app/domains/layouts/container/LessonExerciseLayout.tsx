@@ -5,7 +5,6 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { User } from "@supabase/supabase-js";
 
 import SidebarContainer from "@/app/domains/sidebar/containers/SidebarContainer";
-import TocContainer from "@/app/domains/toc/containers/TocContainer";
 import NavbarContainer from "@/app/domains/navbar/containers/NavbarContainer";
 import Footer from "@/app/domains/footer/components/Footer";
 
