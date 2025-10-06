@@ -12,7 +12,6 @@ import { useCourse } from "../hooks/useCourse";
 import { useProgress } from "../hooks/useProgress";
 import { buildNavItems, getPrevNext, getPath } from "../hooks/navigation";
 import ChatbotSidebar from "../../chatbot/Chatbot";
-import { useLessonHeading } from "../hooks/useLessonHeading";
 import { supabase } from "@/lib/supabase/client/supabaseClient";
 
 
@@ -35,7 +34,6 @@ export default function LessonExerciseLayout({
   const [progress, setProgress] = useState<Progress[]>([]);
   const [loadingProgress, setLoadingProgress] = useState(true);
   const [reloadProgress, setReloadProgress] = useState(false);
-// const { lessonHeading } = useLessonHeading();
 
   const [lessonHeading, setLessonHeading] = useState<string>("");
 

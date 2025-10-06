@@ -1,23 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { supabase } from "@/lib/supabase/server/supabaseClient"; // ⚠️ must use SERVICE_ROLE key!
+import { supabase } from "@/lib/supabase/server/supabaseClient"; // service role client!
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-
-export const runtime = "nodejs"; // required for raw body parsing
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
   const sig = req.headers.get("stripe-signature");
 
   let event: Stripe.Event;
-
   try {
     event = stripe.webhooks.constructEvent(body, sig!, webhookSecret);
     console.log("🔔 Event received:", event.type);
-  } catch (err: unknown) {
-    console.error("❌ Signature error:", err);
+  } catch (err) {
+    console.error("❌ Invalid signature:", err);
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
@@ -26,30 +24,64 @@ export async function POST(req: NextRequest) {
     const user_id = session.metadata?.user_id;
     const course = session.metadata?.course;
 
-    console.log("➡️ User:", user_id);
-    console.log("➡️ Course:", course);
-    console.log("➡️ Payment status:", session.payment_status);
+    if (!user_id || !course) {
+      console.warn("⚠️ Missing metadata");
+      return NextResponse.json({ received: true });
+    }
 
-    if (user_id && course && session.payment_status === "paid") {
-      const { data, error } = await supabase
+    if (session.payment_status === "paid") {
+      // ✅ 1. Insert purchase if not exists
+      const { data: existingPurchase } = await supabase
         .from("purchases")
-        .insert({
+        .select("id")
+        .eq("user_id", user_id)
+        .eq("course", course)
+        .maybeSingle();
+
+      if (!existingPurchase) {
+        const { error } = await supabase.from("purchases").insert({
           user_id,
           course,
           payment_status: "paid",
           paid_at: new Date().toISOString(),
           payment_provider: "stripe",
           payment_id: session.payment_intent as string,
-        })
-        .select();
+        });
 
-      if (error) {
-        console.error("❌ Supabase insert error:", error.message);
+        if (error) console.error("❌ Purchase insert error:", error.message);
+        else console.log("✅ Purchase inserted");
       } else {
-        console.log("✅ Purchase inserted:", data);
+        console.log("⚠️ Purchase already exists, skipping insert");
       }
-    } else {
-      console.warn("⚠️ Missing user_id, course, or payment not 'paid'");
+
+      // ✅ 2. Insert free trial subscription if not exists
+      const { data: existingSub } = await supabase
+        .from("subscriptions")
+        .select("id")
+        .eq("user_id", user_id)
+        .maybeSingle();
+
+      if (!existingSub) {
+        const now = new Date();
+        const oneMonthLater = new Date();
+        oneMonthLater.setMonth(now.getMonth() + 1);
+
+        const { error } = await supabase.from("subscriptions").insert({
+          user_id,
+          status: "active",
+          payment_provider: "stripe",
+          payment_id: session.payment_intent as string,
+          started_at: now.toISOString(),
+          period_end: oneMonthLater.toISOString(),
+          plan: "free_trial", // ⚠️ must be added to your CHECK constraint
+          price_id: "free_trial",
+        });
+
+        if (error) console.error("❌ Subscription insert error:", error.message);
+        else console.log("✅ Subscription created (1-month free trial)");
+      } else {
+        console.log("⚠️ Subscription already exists, skipping insert");
+      }
     }
   }
 

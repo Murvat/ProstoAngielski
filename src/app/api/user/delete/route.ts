@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase/server/supabaseClient";
+import { createClient } from "@/lib/supabase/server/server";
 
 // DELETE /api/user/delete
 export async function DELETE() {
   try {
+    const supabase = await createClient();
     // ✅ Get current session user
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) {
