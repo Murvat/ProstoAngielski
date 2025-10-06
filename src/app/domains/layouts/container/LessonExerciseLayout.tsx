@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { User } from "@supabase/supabase-js";
-
+import type { Progress } from "../features/types";
 import SidebarContainer from "@/app/domains/sidebar/containers/SidebarContainer";
 import NavbarContainer from "@/app/domains/navbar/containers/NavbarContainer";
 import Footer from "@/app/domains/footer/components/Footer";
@@ -12,24 +12,18 @@ import { useCourse } from "../hooks/useCourse";
 import { useProgress } from "../hooks/useProgress";
 import { buildNavItems, getPrevNext, getPath } from "../hooks/navigation";
 import ChatbotSidebar from "../../chatbot/Chatbot";
+import { useLessonHeading } from "../hooks/useLessonHeading";
+import { supabase } from "@/lib/supabase/client/supabaseClient";
 
-type Progress = {
-  id: string;
-  user_id: string;
-  course: string;
-  lesson_id: string;
-  completed_exercises: boolean;
-  updated_at: string;
-};
 
 type Props = {
   children: React.ReactNode;
-  showToc?: boolean;
 };
 
 export default function LessonExerciseLayout({
   children,
 }: Props) {
+
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
@@ -41,7 +35,32 @@ export default function LessonExerciseLayout({
   const [progress, setProgress] = useState<Progress[]>([]);
   const [loadingProgress, setLoadingProgress] = useState(true);
   const [reloadProgress, setReloadProgress] = useState(false);
+// const { lessonHeading } = useLessonHeading();
 
+  const [lessonHeading, setLessonHeading] = useState<string>("");
+
+  // ✅ Fetch heading directly from Supabase
+  useEffect(() => {
+    if (!courseId || !lessonId) return;
+
+    const fetchHeading = async () => {
+      const { data, error } = await supabase
+        .from("lessons")
+        .select("heading")
+        .eq("course_id", courseId)
+        .eq("order_index", Number(lessonId))
+        .single();
+
+      if (error) {
+        console.error("❌ Błąd pobierania heading:", error.message);
+      } else if (data?.heading) {
+        setLessonHeading(data.heading);
+        console.log("✅ Heading loaded:", data.heading);
+      }
+    };
+
+    fetchHeading();
+  }, [courseId, lessonId]);
   // 🔹 Pobierz użytkownika
   useEffect(() => {
     async function loadUser() {
@@ -97,9 +116,9 @@ return (
       <NavbarContainer initialUser={user} />
     </header>
 
-    {/* 🧩 Układ strony */}
+    {/*  Układ strony */}
     <div className="flex w-full">
-      {/* 📚 Lewy pasek boczny */}
+      {/*  Lewy pasek boczny */}
       <aside className="fixed top-16 bottom-0 left-0 hidden lg:block w-80 bg-gray-50 overflow-y-auto hover:shadow-md transition-shadow z-40">
         {!loadingProgress ? (
           <SidebarContainer course={course} progress={progress} />
@@ -108,8 +127,9 @@ return (
         )}
       </aside>
 
-      {/* 📝 Główna zawartość */}
+      {/*  Główna zawartość */}
       <section
+        id="htmlContent"
         className="
           flex-1 min-w-0 flex flex-col pb-16 px-6 bg-white
           lg:ml-80           /* space for left sidebar */
@@ -123,7 +143,7 @@ return (
       <aside
         className="fixed top-16 bottom-0 right-0 hidden md:block w-72 lg:w-80 xl:w-96 bg-gray-50 dark:bg-zinc-900 overflow-y-auto hover:shadow-md transition-all duration-300 z-40"
       >
-        <ChatbotSidebar course={courseId} topic={lessonId} />
+        <ChatbotSidebar course={courseId} topic={lessonHeading } />
       </aside>
     </div>
 

@@ -12,7 +12,15 @@ export type Course = {
       }[];
     }[];
   };
-  
+ export  type Progress = {
+  id: string;
+  user_id: string;
+  course: string;
+  lesson_id: string;
+  completed_exercises: boolean;
+  updated_at: string;
+};
+
   export type LessonRef = {
     slug: string;
     href: string;
