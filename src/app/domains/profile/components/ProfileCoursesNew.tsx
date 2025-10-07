@@ -46,6 +46,12 @@ export const ProfileCoursesNew = ({
                   {course.short_description}
                 </p>
               )}
+              <p className="text-[11px] text-gray-400 mt-2 leading-tight max-w-xs">
+                Kupując kurs, wyrażasz zgodę na natychmiastowe rozpoczęcie
+                świadczenia usługi i przyjmujesz do wiadomości, że po
+                uruchomieniu kursu tracisz prawo do odstąpienia od umowy
+                (brak zwrotu).
+              </p>
             </div>
 
             <button
