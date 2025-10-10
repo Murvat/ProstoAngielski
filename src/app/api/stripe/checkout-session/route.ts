@@ -19,10 +19,10 @@ export async function POST(req: NextRequest) {
   const user_id = user.id;
 
   const prices: Record<string, number> = {
-    beginner: 9900,
-    intermediate: 14900,
-    upper: 17900,
-    advanced: 19900,
+    beginner: 11900,
+    intermediate: 16900,
+    upper: 21900,
+    advanced: 24900,
   };
 
   if (!prices[course]) {

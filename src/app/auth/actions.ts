@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server/server' 
+import { supabase } from "@/lib/supabase/client/supabaseClient";
 import { RegisterSchema, LoginSchema } from "@/lib/validation/schemas";
 
 export type SignupState = {
@@ -17,7 +17,6 @@ export async function login(
   prevState: LoginState,
   formData: FormData
 ): Promise<LoginState> {
-  const supabase = await createClient();
 
   const data = {
     email: formData.get("email"),
@@ -45,7 +44,6 @@ export async function signup(
   prevState: SignupState,
   formData: FormData
 ): Promise<SignupState> {
-  const supabase = await createClient();
 
   const data = {
     email: formData.get("email"),
