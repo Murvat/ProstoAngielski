@@ -36,6 +36,14 @@ export function useAuth() {
 
   async function logout() {
     await supabase.auth.signOut();
+    // Clear all cookies
+    document.cookie.split(";").forEach(function(c) { 
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+    // Clear localStorage
+    localStorage.clear();
+    // Clear sessionStorage as well for complete cleanup
+    sessionStorage.clear();
     window.location.href = "/"; // redirect to home after logout
   }
 
