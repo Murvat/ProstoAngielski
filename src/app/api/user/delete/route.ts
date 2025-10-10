@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server/server";
+import { supabase as supabaseAdmin } from "@/lib/supabase/server/supabaseClient"; // service role client
 
 // DELETE /api/user/delete
 export async function DELETE() {
@@ -13,14 +14,14 @@ export async function DELETE() {
 
     const userId = user.id;
 
-    // ✅ Delete related data (optional: add your own tables)
-    await supabase.from("progress").delete().eq("user_id", userId);
-    await supabase.from("courses").delete().eq("user_id", userId);
-    await supabase.from("purchases").delete().eq("user_id", userId);
-    await supabase.from("subscriptions").delete().eq("user_id", userId);
+    // ✅ Delete related data with service role to bypass RLS
+    await supabaseAdmin.from("progress").delete().eq("user_id", userId);
+    await supabaseAdmin.from("courses").delete().eq("user_id", userId);
+    await supabaseAdmin.from("purchases").delete().eq("user_id", userId);
+    await supabaseAdmin.from("subscriptions").delete().eq("user_id", userId);
 
     // ✅ Delete user from Auth
-    const { error: deleteError } = await supabase.auth.admin.deleteUser(userId);
+    const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(userId);
     if (deleteError) throw deleteError;
 
     return NextResponse.json({ message: "User deleted successfully" });
