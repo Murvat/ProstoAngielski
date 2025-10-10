@@ -1,6 +1,6 @@
 export default function LessonContentSkeleton() {
   return (
-    <div className="space-y-6 animate-pulse w-full max-w-4xl mx-auto px-4 min-h-[500px]">
+<div className="space-y-6 animate-pulse w-full max-w-4xl mx-auto px-4 min-h-[500px] bg-white dark:bg-gray-800 rounded-lg">
       {/* Title */}
       <div className="h-8 w-3/4 bg-gray-200 rounded-lg"></div>
 
