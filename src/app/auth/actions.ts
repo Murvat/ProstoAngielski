@@ -1,6 +1,6 @@
 'use server'
 
-import { supabase } from "@/lib/supabase/client/supabaseClient";
+import { createClient } from "@/lib/supabase/server/server"; // ✅ correct import
 import { RegisterSchema, LoginSchema } from "@/lib/validation/schemas";
 
 export type SignupState = {
@@ -17,6 +17,7 @@ export async function login(
   prevState: LoginState,
   formData: FormData
 ): Promise<LoginState> {
+  const supabase = await createClient();
 
   const data = {
     email: formData.get("email"),
@@ -24,13 +25,11 @@ export async function login(
   };
 
   const parsed = LoginSchema.safeParse(data);
-
   if (!parsed.success) {
     return { success: false, errors: parsed.error.flatten().fieldErrors };
   }
 
   const { email, password } = parsed.data;
-
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
@@ -44,6 +43,7 @@ export async function signup(
   prevState: SignupState,
   formData: FormData
 ): Promise<SignupState> {
+  const supabase = await createClient();
 
   const data = {
     email: formData.get("email"),
@@ -52,7 +52,6 @@ export async function signup(
     agreeTerms: formData.get("agreeTerms"),
   };
 
-  // ✅ Walidacja danych wejściowych
   const parsed = RegisterSchema.safeParse(data);
   if (!parsed.success) {
     return { success: false, errors: parsed.error.flatten().fieldErrors };
@@ -60,22 +59,14 @@ export async function signup(
 
   const { email, password } = parsed.data;
 
-  // ✅ Sprawdzenie, czy adres e-mail już istnieje
-  const { data: existingUser, error: fetchError } = await supabase
-    .from("auth.users")
-    .select("email")
-    .eq("email", email)
-    .maybeSingle();
+  // ⚠️ Remove this — not allowed
+  // const { data: existingUser, error: fetchError } = await supabase
+  //   .from("auth.users")
+  //   .select("email")
+  //   .eq("email", email)
+  //   .maybeSingle();
 
-  if (fetchError && fetchError.code !== "PGRST116") {
-    return { success: false, errors: { form: ["Błąd podczas sprawdzania adresu e-mail."] } };
-  }
-
-  if (existingUser) {
-    return { success: false, errors: { email: ["Ten adres e-mail jest już zarejestrowany."] } };
-  }
-
-  // ✅ Rejestracja nowego użytkownika
+  // ✅ Let Supabase handle duplicates automatically
   const { error } = await supabase.auth.signUp({
     email,
     password,
@@ -85,9 +76,18 @@ export async function signup(
   });
 
   if (error) {
+    if (error.message.includes('User already registered')) {
+      return {
+        success: false,
+        errors: {
+          email: [
+            'Ten adres e-mail jest już zarejestrowany. Jeśli używasz logowania Google, zaloguj się przyciskiem „Zaloguj przez Google”.',
+          ],
+        },
+      };
+    }
     return { success: false, errors: { form: [error.message] } };
   }
 
   return { success: true, email };
 }
-
