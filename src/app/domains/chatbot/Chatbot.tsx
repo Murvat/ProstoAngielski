@@ -40,12 +40,12 @@ export default function ChatbotSidebar({ course, topic }: { course: string; topi
   }
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-b from-white to-gray-50 dark:from-zinc-900 dark:to-zinc-950 rounded-3xl shadow-xl overflow-hidden">
+    <div className="flex flex-col h-full bg-gradient-to-b from-white to-gray-50 dark:from-zinc-800 dark:to-zinc-900 rounded-3xl shadow-xl overflow-hidden">
       {/* Header */}
-      <div className="p-4 flex items-center justify-between border-b border-gray-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md rounded-t-3xl">
+      <div className="p-4 flex items-center justify-between border-b border-gray-200 dark:border-zinc-700/50 bg-white/70 dark:bg-zinc-800/70 backdrop-blur-md rounded-t-3xl">
         <div>
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">MurAi</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-50">MurAi</h2>
+          <p className="text-xs text-gray-500 dark:text-gray-300">
             Twój asystent do nauki angielskiego
           </p>
         </div>
@@ -69,7 +69,7 @@ export default function ChatbotSidebar({ course, topic }: { course: string; topi
               className={`px-4 py-2 rounded-3xl text-sm max-w-[85%] shadow-sm transition-all duration-300 cursor-pointer ${
                 message.role === 'user'
                   ? 'bg-gradient-to-r from-green-500 to-green-600 text-white rounded-br-none hover:opacity-90'
-                  : 'bg-white/80 dark:bg-zinc-800/80 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-zinc-700/50 backdrop-blur-md rounded-bl-none hover:bg-gray-100 dark:hover:bg-zinc-700/80'
+                  : 'bg-white/80 dark:bg-zinc-700/60 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-zinc-600/30 backdrop-blur-md rounded-bl-none hover:bg-gray-100 dark:hover:bg-zinc-600/80'
               }`}
             >
               {message.parts
@@ -96,7 +96,7 @@ export default function ChatbotSidebar({ course, topic }: { course: string; topi
       {/* Input */}
       <form
         onSubmit={handleSend}
-        className="p-3 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border-t border-gray-200 dark:border-zinc-800 rounded-b-3xl"
+        className="p-3 bg-white/70 dark:bg-zinc-800/70 backdrop-blur-md border-t border-gray-200 dark:border-zinc-700/50 rounded-b-3xl"
       >
         <div className="flex items-center gap-2">
           <input
@@ -105,7 +105,7 @@ export default function ChatbotSidebar({ course, topic }: { course: string; topi
             onChange={(e) => setInput(e.target.value)}
             placeholder={isThinking ? 'MurAi odpowiada...' : 'Napisz wiadomość...'}
             disabled={isThinking}
-            className="flex-1 px-4 py-3 rounded-full bg-gray-100/80 dark:bg-zinc-800/80 border border-gray-200 dark:border-zinc-700 focus:ring-2 focus:ring-green-500 text-sm transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-zinc-700 cursor-pointer"
+            className="flex-1 px-4 py-3 rounded-full bg-gray-100/80 dark:bg-zinc-700/50 border border-gray-200 dark:border-zinc-600/50 focus:ring-2 focus:ring-green-500 text-sm transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-zinc-600/80 cursor-pointer dark:text-gray-100 dark:placeholder-gray-400"
           />
           <button
             type="submit"
