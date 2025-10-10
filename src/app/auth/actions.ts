@@ -13,6 +13,23 @@ export type LoginState = {
   errors?: Record<string, string[]>;
 };
 
+function normalizeMessage(message: string): string {
+  const lower = message.toLowerCase();
+  if (lower.includes("invalid login credentials")) {
+    return "Nieprawidłowy e-mail lub hasło.";
+  }
+  if (lower.includes("email not confirmed") || lower.includes("not confirmed")) {
+    return "Potwierdź adres e-mail – sprawdź swoją skrzynkę i kliknij link.";
+  }
+  if (lower.includes("over email rate limit") || lower.includes("too many requests")) {
+    return "Zbyt wiele prób. Spróbuj ponownie za kilka minut.";
+  }
+  if (lower.includes("user already registered") || lower.includes("already exists")) {
+    return "Ten adres e-mail jest już zarejestrowany.";
+  }
+  return message;
+}
+
 export async function login(
   prevState: LoginState,
   formData: FormData
@@ -33,7 +50,7 @@ export async function login(
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    return { success: false, errors: { form: [error.message] } };
+    return { success: false, errors: { form: [normalizeMessage(error.message)] } };
   }
 
   return { success: true };
@@ -76,7 +93,7 @@ export async function signup(
   });
 
   if (error) {
-    if (error.message.includes('User already registered')) {
+    if (error.message.toLowerCase().includes('user already registered') || error.message.toLowerCase().includes('already exists')) {
       return {
         success: false,
         errors: {
@@ -86,7 +103,7 @@ export async function signup(
         },
       };
     }
-    return { success: false, errors: { form: [error.message] } };
+    return { success: false, errors: { form: [normalizeMessage(error.message)] } };
   }
 
   return { success: true, email };

@@ -3,7 +3,7 @@
 import { useActionState, useEffect } from "react";
 import { login, type LoginState } from "@/app/auth/actions";
 import GoogleSignInButton from "../components/GoogleSignInButton";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import AuthForm from "../components/AuthForm";
 
 const initialState: LoginState = { success: null, errors: {} };
@@ -11,12 +11,15 @@ const initialState: LoginState = { success: null, errors: {} };
 export default function LoginContainer() {
   const [state, formAction] = useActionState(login, initialState);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (state.success) {
-      router.push("/profile");
+      const next = searchParams?.get("next");
+      const safeNext = next && next.startsWith("/") ? next : "/profile";
+      router.push(safeNext);
     }
-  }, [state.success, router]);
+  }, [state.success, router, searchParams]);
 
   return (
     <section className="w-full max-w-md mx-auto min-h-screen flex flex-col justify-center items-center px-6 py-12 text-center">
