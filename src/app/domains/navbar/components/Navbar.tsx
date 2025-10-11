@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { FiLogOut, FiMenu, FiX } from "react-icons/fi";
 import type { User } from "@supabase/supabase-js";
-import { RefObject, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 type NavbarProps = {
   user: User | null;
@@ -22,6 +23,7 @@ export default function Navbar({
   user,
   isOpen,
   onToggleDropdown,
+  onCloseDropdown,
   dropdownRef,
   onGoProfile,
   onGoContact,
@@ -30,150 +32,202 @@ export default function Navbar({
   onLogin,
 }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Navbar blur on scroll
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="w-full bg-white shadow-md px-4 py-3 flex items-center justify-between">
-      {/* 🟩 Logo */}
-      <div className="flex items-center gap-2 cursor-pointer">
-        <Image
-          src="/logoweb.svg"
-          alt="Logo Prosto Angielski"
-          width={50}
-          height={50}
-          className="hover:scale-105 transition-transform"
-        />
-        <h1 className="text-lg font-bold text-green-600 hidden sm:block">
-          PROSTOANGIELSKI
-        </h1>
+    <motion.nav
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+        scrolled
+          ? "backdrop-blur-lg bg-white/80 shadow-lg border-b border-green-100"
+          : "bg-white/60 backdrop-blur-md"
+      }`}
+    >
+      <div className="max-w-screen-xl mx-auto px-4 py-3 flex items-center justify-between">
+        {/* 🟩 Logo */}
+        <div
+          className="flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform"
+          onClick={onGoProfile}
+        >
+          <Image
+            src="/logoweb.svg"
+            alt="Logo Prosto Angielski"
+            width={45}
+            height={45}
+            className="rounded-md"
+          />
+          <h1 className="text-lg font-extrabold text-green-700 hidden sm:block tracking-tight">
+            PROSTOANGIELSKI
+          </h1>
+        </div>
+
+        {/* 💻 Desktop Menu */}
+        <div className="hidden md:flex items-center gap-6 relative" ref={dropdownRef}>
+          {user ? (
+            <>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={onToggleDropdown}
+                className="px-4 py-2 bg-green-50 border border-green-200 text-green-700 font-semibold rounded-md hover:bg-green-100 transition-all"
+              >
+                Menu ▾
+              </motion.button>
+
+              {/* 🔽 Dropdown */}
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-12 right-0 w-48 bg-white/90 border border-gray-200 rounded-xl shadow-2xl backdrop-blur-md overflow-hidden"
+                  >
+                    <ul className="flex flex-col py-2">
+                      <li
+                        onClick={() => {
+                          onGoProfile();
+                          onCloseDropdown();
+                        }}
+                        className="px-4 py-2 hover:bg-green-50 text-gray-800 cursor-pointer transition-colors"
+                      >
+                        Kursy
+                      </li>
+                      <li
+                        onClick={() => {
+                          onGoContact();
+                          onCloseDropdown();
+                        }}
+                        className="px-4 py-2 hover:bg-green-50 text-gray-800 cursor-pointer transition-colors"
+                      >
+                        Kontakt
+                      </li>
+                      <li
+                        onClick={() => {
+                          onGoPayments();
+                          onCloseDropdown();
+                        }}
+                        className="px-4 py-2 hover:bg-green-50 text-gray-800 cursor-pointer transition-colors"
+                      >
+                        Płatności
+                      </li>
+                      <li
+                        onClick={() => {
+                          onLogout();
+                          onCloseDropdown();
+                        }}
+                        className="px-4 py-2 hover:bg-red-50 text-red-600 flex items-center gap-2 cursor-pointer transition-colors"
+                      >
+                        <FiLogOut /> Wyloguj się
+                      </li>
+                    </ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </>
+          ) : (
+            <div className="flex items-center gap-3">
+              <p className="text-sm text-gray-700">Masz już konto?</p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={onLogin}
+                className="px-4 py-2 border border-green-600 text-green-700 rounded-md hover:bg-green-100 transition-all"
+              >
+                Zaloguj się
+              </motion.button>
+            </div>
+          )}
+        </div>
+
+        {/* 📱 Mobile Hamburger */}
+        <button
+          onClick={() => setMobileOpen((prev) => !prev)}
+          className="md:hidden p-2 rounded-md bg-green-50 hover:bg-green-100 transition-colors"
+        >
+          {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+        </button>
       </div>
 
-      {/* 💻 Desktop menu */}
-      <div
-        className="hidden md:flex items-center gap-4 relative"
-        ref={dropdownRef}
-      >
-        {user ? (
-          <>
-            <button
-              onClick={onToggleDropdown}
-              className="px-3 py-2 bg-gray-100 rounded-md hover:bg-gray-200 active:bg-gray-300 transition-colors cursor-pointer"
-            >
-              Menu ▾
-            </button>
-
-            {isOpen && (
-              <div className="absolute top-12 right-0 w-48 bg-white border border-gray-200 rounded-md shadow-lg animate-fadeIn">
-                <ul className="py-2">
+      {/* 📋 Mobile Dropdown */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-white/90 backdrop-blur-xl border-t border-gray-200 shadow-xl"
+          >
+            <ul className="flex flex-col p-4 gap-4 text-gray-800 font-medium">
+              {user ? (
+                <>
                   <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition-colors"
-                    onClick={onGoProfile}
+                    onClick={() => {
+                      onGoProfile();
+                      setMobileOpen(false);
+                    }}
+                    className="hover:text-green-700 transition-colors cursor-pointer"
                   >
                     Kursy
                   </li>
                   <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition-colors"
-                    onClick={onGoContact}
+                    onClick={() => {
+                      onGoContact();
+                      setMobileOpen(false);
+                    }}
+                    className="hover:text-green-700 transition-colors cursor-pointer"
                   >
                     Kontakt
                   </li>
                   <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition-colors"
-                    onClick={onGoPayments}
+                    onClick={() => {
+                      onGoPayments();
+                      setMobileOpen(false);
+                    }}
+                    className="hover:text-green-700 transition-colors cursor-pointer"
                   >
                     Płatności
                   </li>
                   <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 transition-colors"
-                    onClick={onLogout}
+                    onClick={() => {
+                      onLogout();
+                      setMobileOpen(false);
+                    }}
+                    className="flex items-center gap-2 hover:text-red-600 transition-colors cursor-pointer"
                   >
                     <FiLogOut /> Wyloguj się
                   </li>
-                </ul>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="flex items-center gap-3">
-            <p className="text-sm text-gray-700">Masz już konto?</p>
-            <button
-              onClick={onLogin}
-              className="px-4 py-2 border border-green-600 text-green-600 rounded-md hover:bg-green-100 active:bg-green-200 transition-colors cursor-pointer"
-            >
-              Zaloguj się
-            </button>
-          </div>
+                </>
+              ) : (
+                <li>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      onLogin();
+                      setMobileOpen(false);
+                    }}
+                    className="w-full px-4 py-2 border border-green-600 text-green-700 rounded-md hover:bg-green-100 transition-all"
+                  >
+                    Zaloguj się
+                  </motion.button>
+                </li>
+              )}
+            </ul>
+          </motion.div>
         )}
-      </div>
-
-      {/* 📱 Mobile hamburger */}
-      <div className="md:hidden flex items-center">
-        <button
-          onClick={() => setMobileOpen((prev) => !prev)}
-          className="p-2 rounded-md bg-gray-100 hover:bg-gray-200 active:bg-gray-300 transition-colors"
-        >
-          {mobileOpen ? <FiX size={20} /> : <FiMenu size={20} />}
-        </button>
-      </div>
-
-      {/* 📋 Mobile dropdown */}
-      {mobileOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white border-t border-gray-200 shadow-md md:hidden animate-fadeIn">
-          <ul className="flex flex-col p-4 gap-4 text-gray-700">
-            {user ? (
-              <>
-                <li
-                  className="cursor-pointer hover:text-green-700 transition-colors"
-                  onClick={() => {
-                    onGoProfile();
-                    setMobileOpen(false);
-                  }}
-                >
-                  Kursy
-                </li>
-                <li
-                  className="cursor-pointer hover:text-green-700 transition-colors"
-                  onClick={() => {
-                    onGoContact();
-                    setMobileOpen(false);
-                  }}
-                >
-                  Kontakt
-                </li>
-                <li
-                  className="cursor-pointer hover:text-green-700 transition-colors"
-                  onClick={() => {
-                    onGoPayments();
-                    setMobileOpen(false);
-                  }}
-                >
-                  Płatności
-                </li>
-                <li
-                  className="cursor-pointer flex items-center gap-2 hover:text-red-600 transition-colors"
-                  onClick={() => {
-                    onLogout();
-                    setMobileOpen(false);
-                  }}
-                >
-                  <FiLogOut /> Wyloguj się
-                </li>
-              </>
-            ) : (
-              <li>
-                <button
-                  onClick={() => {
-                    onLogin();
-                    setMobileOpen(false);
-                  }}
-                  className="w-full px-4 py-2 border border-green-600 text-green-600 rounded-md hover:bg-green-100 active:bg-green-200 transition-colors"
-                >
-                  Zaloguj się
-                </button>
-              </li>
-            )}
-          </ul>
-        </div>
-      )}
-    </nav>
+      </AnimatePresence>
+    </motion.nav>
   );
 }

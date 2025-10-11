@@ -8,9 +8,9 @@ export const metadata = {
   },
 };
 
-function page () {
-  return <PreviewPageContainer/>
-      }
-      
+function page() {
+  return <PreviewPageContainer />
+}
+
 
 export default page;
