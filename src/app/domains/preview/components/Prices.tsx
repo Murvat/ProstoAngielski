@@ -141,7 +141,7 @@ export default function PricesPreview() {
               }}
               whileTap={{ scale: 0.95 }}
               onClick={() => router.push("/signup")}
-              className={`mt-8 w-full py-3 rounded-full font-semibold transition-all text-white ${
+              className={`mt-8 w-full py-3 rounded-full pointer font-semibold transition-all text-white ${
                 c.id === "intermediate"
                   ? "bg-gradient-to-r from-green-500 to-emerald-400 hover:from-green-400 hover:to-emerald-300"
                   : "bg-orange-500 hover:bg-orange-600"
