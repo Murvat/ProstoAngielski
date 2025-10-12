@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useBuyCourse } from "../features/useBuyCourse";
 import { Course, Purchase } from "../features/types";
-import { ShoppingCart, ArrowRight } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
 interface ProfileCoursesNewProps {
   newCourses: Course[];

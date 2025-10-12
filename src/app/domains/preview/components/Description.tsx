@@ -41,7 +41,7 @@ export default function Description() {
         className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(16,185,129,0.08),_transparent_70%)]"
       ></motion.div>
 
-      {blocks.map((b, i) => (
+      {blocks.map((b) => (
         <motion.div
           key={b.title}
           initial={{ opacity: 0, y: 60 }}

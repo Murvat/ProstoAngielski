@@ -12,7 +12,6 @@ import { ProfilePayments } from "../components/ProfilePayments";
 import { ProfileMobileApp } from "../components/ProfileMobileApp";
 import { Course, Purchase, Progress, User, Tab, Subscription } from "../features/types";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 
 export default function ProfileClient() {
   const [activeTab, setActiveTab] = useState<Tab>("kursy");
