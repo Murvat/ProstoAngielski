@@ -46,7 +46,7 @@ export default function LoginContainer() {
       <p className="text-sm text-gray-600 mt-4">
         Zapomniałeś hasła?{" "}
         <a
-          href="/auth/reset"
+          href="/reset"
           className="text-green-600 hover:underline hover:text-green-700 cursor-pointer"
         >
           Zresetuj je tutaj
