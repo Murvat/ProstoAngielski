@@ -93,7 +93,7 @@ export default function Footer() {
           viewport={{ once: true }}
           className="text-gray-500"
         >
-          &copy; {new Date().getFullYear()} EnglishApp. Wszelkie prawa zastrzeżone.
+          &copy; {new Date().getFullYear()} ProstoAngielski. Wszelkie prawa zastrzeżone.
         </motion.div>
       </div>
     </footer>
