@@ -1,4 +1,6 @@
 "use client";
+
+import { motion } from "framer-motion";
 import type { Tab } from "../features/types";
 
 interface ProfileTabsProps {
@@ -16,22 +18,36 @@ export const ProfileTabs = ({ activeTab, onChange }: ProfileTabsProps) => {
   ];
 
   return (
-    <div className="flex flex-col sm:flex-row border-b border-gray-200 mb-6">
-      {tabConfig.map((tab) => (
-        <button
-          key={tab.key}
-          onClick={() => onChange(tab.key)}
-          className={`flex-1 text-center px-4 py-2 text-sm sm:text-base font-medium
-            transition-all duration-200 cursor-pointer
-            ${
-              activeTab === tab.key
-                ? "border-b-2 border-green-600 text-green-700 bg-green-50"
-                : "text-gray-500 hover:text-green-700 hover:bg-green-50/40"
-            }`}
-        >
-          {tab.label}
-        </button>
-      ))}
+    <div className="relative w-full overflow-x-auto scrollbar-hide mb-6">
+      <div className="flex min-w-max justify-between sm:justify-center gap-2 sm:gap-6 border-b border-gray-200 px-2 sm:px-0 pb-2">
+        {tabConfig.map((tab) => {
+          const isActive = activeTab === tab.key;
+          return (
+            <button
+              key={tab.key}
+              onClick={() => onChange(tab.key)}
+              className={`relative px-4 py-2 text-sm sm:text-base font-semibold transition-all duration-300 rounded-md
+                ${
+                  isActive
+                    ? "text-green-700"
+                    : "text-gray-500 hover:text-green-700 hover:bg-green-50/70"
+                }`}
+            >
+              {/* Label */}
+              <span className="relative z-10">{tab.label}</span>
+
+              {/* Animated Underline */}
+              {isActive && (
+                <motion.div
+                  layoutId="activeTab"
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  className="absolute left-0 bottom-0 w-full h-[3px] bg-gradient-to-r from-green-600 to-emerald-400 rounded-full"
+                />
+              )}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 };
