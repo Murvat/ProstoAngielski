@@ -11,9 +11,10 @@ import { ProfileSettings } from "../components/ProfileSettings";
 import { ProfilePayments } from "../components/ProfilePayments";
 import { ProfileMobileApp } from "../components/ProfileMobileApp";
 import { Course, Purchase, Progress, User, Tab, Subscription } from "../features/types";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 export default function ProfileClient() {
-  // 1️⃣ All states declared unconditionally
   const [activeTab, setActiveTab] = useState<Tab>("kursy");
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<{
@@ -30,11 +31,9 @@ export default function ProfileClient() {
     subscriptions: [],
   });
 
-  // 2️⃣ Hooks always run (never conditionally)
   const { loading: buyLoading } = useBuyCourse();
   const { getButtonState } = useCourseProgress(data.progress ?? []);
 
-  // 3️⃣ Fetch once
   useEffect(() => {
     let isMounted = true;
 
@@ -57,7 +56,6 @@ export default function ProfileClient() {
     };
   }, []);
 
-  // 4️⃣ Derived data (safe defaults)
   const ownedCourses = useMemo(() => {
     const { allCourses, purchases } = data;
     return allCourses.filter((c) =>
@@ -74,49 +72,142 @@ export default function ProfileClient() {
 
   const handleTabChange = useCallback((tab: Tab) => setActiveTab(tab), []);
 
-  // 5️⃣ Render
-  if (loading) return <p className="text-center mt-8">Ładowanie profilu...</p>;
-  if (!data.user) return <p className="text-center mt-8">Nie udało się pobrać danych.</p>;
+  if (loading)
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+          className="w-10 h-10 border-4 border-green-400 border-t-transparent rounded-full mb-4"
+        />
+        <p className="text-gray-600">Ładowanie profilu...</p>
+      </div>
+    );
+
+  if (!data.user)
+    return (
+      <div className="text-center mt-8 text-red-600 font-medium">
+        Nie udało się pobrać danych użytkownika.
+      </div>
+    );
 
   const { user, allCourses, purchases, subscriptions } = data;
 
   return (
-    <div className="mt-8">
+    <section className="relative max-w-6xl mx-auto px-4 md:px-8 py-10 flex flex-col gap-8">
+      {/* 🟩 Header with logo */}
+      <motion.div
+        initial={{ opacity: 0, y: -15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex items-center justify-center md:justify-between flex-wrap gap-4"
+      >
+        <div className="flex items-center gap-3">
+       
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-700 to-emerald-500 text-transparent bg-clip-text">
+            Mój Profil
+          </h1>
+        </div>
+        <p className="text-sm text-gray-600">
+          Witaj, <span className="font-semibold">{user.email}</span>
+        </p>
+      </motion.div>
+
+      {/* Tabs */}
       <ProfileTabs activeTab={activeTab} onChange={handleTabChange} />
-      <div className="bg-white shadow rounded-xl p-6">
-        {activeTab === "kursy" && (
-          <div className="space-y-10">
-            <section>
-              <h2 className="text-lg font-semibold mb-4">Moje kursy</h2>
-              <ProfileCoursesOwned
-                ownedCourses={ownedCourses}
-                loading={buyLoading}
-                getButtonState={getButtonState}
-              />
-            </section>
 
-            <section>
-              <h2 className="text-lg font-semibold mb-4">Nowe kursy</h2>
-              <ProfileCoursesNew
-                newCourses={newCourses}
+      {/* 🧭 Content area */}
+      <motion.div
+        layout
+        className="bg-white/80 backdrop-blur-lg border border-gray-100 rounded-2xl shadow-lg p-6 transition-all"
+      >
+        <AnimatePresence mode="wait">
+          {activeTab === "kursy" && (
+            <motion.div
+              key="kursy"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-10"
+            >
+              <section>
+                <h2 className="text-lg font-semibold mb-4 text-green-700">
+                  Moje kursy
+                </h2>
+                <ProfileCoursesOwned
+                  ownedCourses={ownedCourses}
+                  loading={buyLoading}
+                  getButtonState={getButtonState}
+                />
+              </section>
+
+              <section>
+                <h2 className="text-lg font-semibold mb-4 text-green-700">
+                  Nowe kursy
+                </h2>
+                <ProfileCoursesNew
+                  newCourses={newCourses}
+                  purchases={purchases}
+                  loading={buyLoading}
+                />
+              </section>
+            </motion.div>
+          )}
+
+          {activeTab === "dane" && (
+            <motion.div
+              key="dane"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ProfileUserData id={user.id} email={user.email} />
+            </motion.div>
+          )}
+
+          {activeTab === "ustalenia" && (
+            <motion.div
+              key="ustalenia"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ProfileSettings />
+            </motion.div>
+          )}
+
+          {activeTab === "platnosci" && (
+            <motion.div
+              key="platnosci"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ProfilePayments
+                subscriptions={subscriptions}
+                allCourses={allCourses}
                 purchases={purchases}
-                loading={buyLoading}
               />
-            </section>
-          </div>
-        )}
+            </motion.div>
+          )}
 
-        {activeTab === "dane" && <ProfileUserData id={user.id} email={user.email} />}
-        {activeTab === "ustalenia" && <ProfileSettings />}
-        {activeTab === "platnosci" && (
-          <ProfilePayments
-            subscriptions={subscriptions}
-            allCourses={allCourses}
-            purchases={purchases}
-          />
-        )}
-        {activeTab === "mobilna" && <ProfileMobileApp />}
-      </div>
-    </div>
+          {activeTab === "mobilna" && (
+            <motion.div
+              key="mobilna"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ProfileMobileApp />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </section>
   );
 }

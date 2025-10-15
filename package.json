@@ -25,6 +25,7 @@
     "@types/mdx": "^2.0.13",
     "ai": "^5.0.60",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^12.23.24",
     "fs": "^0.0.1-security",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.544.0",
