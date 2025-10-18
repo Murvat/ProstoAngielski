@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./tailwind.css"
+import CookieConsentProvider from "./domains/privacy/components/CookieConsentProvider";
 
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body   
       >
-        {children}
+        <CookieConsentProvider>{children}</CookieConsentProvider>
       </body>
     </html>
   );

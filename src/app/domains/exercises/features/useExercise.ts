@@ -5,12 +5,28 @@ import { supabase } from "@/lib/supabase/client/supabaseClient";
 import { getLessonExercises } from "@/lib/supabase/queries";
 import type { ExerciseData } from "@/types";
 
-export function useExercise(lessonId: string, courseId: string) {
+type UseExerciseOptions = {
+  enabled?: boolean;
+};
+
+export function useExercise(
+  lessonId: string,
+  courseId: string,
+  options: UseExerciseOptions = {}
+) {
   const [exercises, setExercises] = useState<ExerciseData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { enabled = true } = options;
 
   useEffect(() => {
+    if (!enabled) {
+      setExercises(null);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
     async function fetchExercises() {
       setLoading(true);
       setError(null);
@@ -46,7 +62,7 @@ export function useExercise(lessonId: string, courseId: string) {
     }
 
     fetchExercises();
-  }, [lessonId, courseId]);
+  }, [lessonId, courseId, enabled]);
 
   return { exercises, loading, error };
 }

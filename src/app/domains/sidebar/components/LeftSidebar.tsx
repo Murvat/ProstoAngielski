@@ -7,17 +7,28 @@ import Item from "./Item";
 import type { CourseWithStructure } from "@/types";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
+import { FREE_LESSON_LIMIT } from "@/app/domains/lessons/constants";
 
 type Props = {
   course: CourseWithStructure;
   completedLessons?: Set<string>;
   completedExercises?: Set<string>;
+  hasFullAccess?: boolean;
+  isAccessLoading?: boolean;
+  onLockedLessonAttempt?: (payload: {
+    lessonId: string;
+    lessonOrder: number;
+    isExercise: boolean;
+  }) => void;
 };
 
 export default function LeftSidebar({
   course,
   completedLessons = new Set(),
   completedExercises = new Set(),
+  hasFullAccess = false,
+  isAccessLoading = false,
+  onLockedLessonAttempt,
 }: Props) {
   const pathname = usePathname();
   const router = useRouter();
@@ -29,6 +40,9 @@ export default function LeftSidebar({
     
     return { currentType: parts[1], currentLessonId: parts[3] };
   }, [pathname]);
+
+  let lessonIndexCounter = 0;
+  const gatingEnabled = !hasFullAccess && !isAccessLoading;
 
   return (
     <SidebarShell isOpen={isOpen}>
@@ -55,19 +69,43 @@ export default function LeftSidebar({
                 >
                   <ul className="space-y-2">
                     {chapter.lessons.map((lesson) => {
+                      const isLesson = lesson.type === "lesson";
+                      if (isLesson) {
+                        lessonIndexCounter += 1;
+                      }
+
+                      const lessonOrder = lessonIndexCounter;
+                      const isLessonLocked =
+                        gatingEnabled &&
+                        isLesson &&
+                        lessonOrder > FREE_LESSON_LIMIT;
+
                       const lessonActive =
                         currentType === "lessons" && currentLessonId === lesson.id;
                       const exerciseActive =
                         currentType === "exercise" && currentLessonId === lesson.id;
+
+                      const handleLockedAttempt = (isExercise: boolean) =>
+                        onLockedLessonAttempt?.({
+                          lessonId: lesson.id,
+                          lessonOrder,
+                          isExercise,
+                        });
 
                       return (
                         <div key={lesson.id} className="space-y-1">
                           <Item
                             item={lesson}
                             active={lessonActive}
-                            onClick={() =>
-                              router.push(`/lessons/${course.id}/${lesson.id}`)
-                            }
+                            locked={isLessonLocked}
+                            onClick={() => {
+                              if (isLessonLocked) {
+                                handleLockedAttempt(false);
+                                return;
+                              }
+
+                              router.push(`/lessons/${course.id}/${lesson.id}`);
+                            }}
                             completed={completedLessons.has(lesson.id)}
                           />
                           <div className="ml-6">
@@ -78,9 +116,15 @@ export default function LeftSidebar({
                                 title: "Exercise",
                               }}
                               active={exerciseActive}
-                              onClick={() =>
-                                router.push(`/exercise/${course.id}/${lesson.id}`)
-                              }
+                              locked={isLessonLocked}
+                              onClick={() => {
+                                if (isLessonLocked) {
+                                  handleLockedAttempt(true);
+                                  return;
+                                }
+
+                                router.push(`/exercise/${course.id}/${lesson.id}`);
+                              }}
                               completed={completedExercises.has(lesson.id)}
                             />
                           </div>

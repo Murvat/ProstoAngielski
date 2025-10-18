@@ -1,5 +1,7 @@
-import { supabase } from "@/lib/supabase/client/supabaseClient";
+import { createClient } from "@/lib/supabase/server/server";
 import { getLessonContentByOrder } from "@/lib/supabase/queries";
+import { resolveCourseAccess } from "@/lib/access/courseAccess";
+import { FREE_LESSON_LIMIT } from "@/app/domains/lessons/constants";
 import { LessonClientWrapper } from "../components/LessonClientWrapper";
 
 export const runtime = "nodejs";
@@ -21,6 +23,27 @@ export async function LessonPageContainer({
       </p>
     );
   }
+
+  const supabase = await createClient();
+
+  if (orderIndex > FREE_LESSON_LIMIT) {
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      // Lack of authenticated user -> gated content must not render.
+      return null;
+    }
+
+    // Double-check payment on the server to keep premium content protected.
+    const access = await resolveCourseAccess(supabase, user.id, courseId);
+    if (!access.hasFullAccess) {
+      return null;
+    }
+  }
+
   const { data: lesson, error } = await getLessonContentByOrder(
     supabase,
     courseId,
@@ -43,7 +66,7 @@ export async function LessonPageContainer({
         course={courseId}
         topic={lesson.heading ?? lesson.title}
         level={courseId}
-        pdfPath={lesson.pdf_path as string}
+        pdfPath={lesson.pdf_path ?? undefined}
       />
     </section>
   );
