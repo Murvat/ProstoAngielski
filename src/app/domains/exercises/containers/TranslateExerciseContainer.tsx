@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
-import type { TranslateItem } from "../features/types";
+import type { TranslateItem } from "@/types";
 import ExerciseHeader from "../components/ExerciseHeader";
 import ExerciseFooter from "../components/ExerciseFooter";
 import FeedbackMessage from "../components/FeedbackMessage";

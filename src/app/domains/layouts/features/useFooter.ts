@@ -1,16 +1,17 @@
 "use client";
+
 import { useRouter } from "next/navigation";
+import type { FooterNav } from "@/types";
 
-export type FooterNav = {
-  type: "lessons" | "exercise";
-  id: string;
-};
-
-export function useFooter(lessons: FooterNav[], current: FooterNav, courseId: string) {
+export function useFooter(
+  lessons: FooterNav[],
+  current: FooterNav,
+  courseId: string
+) {
   const router = useRouter();
 
   const idx = lessons.findIndex(
-    (l) => l.type === current.type && l.id === current.id
+    (lesson) => lesson.type === current.type && lesson.id === current.id
   );
 
   const prev = idx > 0 ? lessons[idx - 1] : null;
@@ -24,7 +25,7 @@ export function useFooter(lessons: FooterNav[], current: FooterNav, courseId: st
   return {
     prevDisabled: !prev,
     nextDisabled: !next,
-    goPrev: () => prev && router.push(buildPath(prev)),   // ✅ navigate client-side
-    goNext: () => next && router.push(buildPath(next)),   // ✅ navigate client-side
+    goPrev: () => prev && router.push(buildPath(prev)),
+    goNext: () => next && router.push(buildPath(next)),
   };
 }

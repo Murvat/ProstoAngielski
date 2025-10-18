@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { Tab } from "../features/types";
+import type { Tab } from "@/types";
 
 interface ProfileTabsProps {
   activeTab: Tab;

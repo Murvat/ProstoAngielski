@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useLessonRedirect } from "../features/useLessonRedirect";
-import { Course } from "../features/types";
+import type { Course } from "@/types";
 import { PlayCircle } from "lucide-react";
 
 interface ProfileCoursesOwnedProps {
@@ -58,7 +58,8 @@ export const ProfileCoursesOwned = ({
             <div className="flex flex-col gap-1">
               <h3 className="font-bold text-lg text-green-800">{course.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
-                {course.description || "Rozpocznij swoją naukę już teraz!"}
+                {/* {course.description as string || "Rozpocznij swoją naukę już teraz!"} */}
+                 Rozpocznij swoją naukę już teraz!
               </p>
               <span className="inline-block bg-green-200 text-green-800 text-xs font-medium px-3 py-1 rounded-full mt-2 self-start">
                 {course.level}
@@ -94,3 +95,4 @@ export const ProfileCoursesOwned = ({
     </motion.ul>
   );
 };
+

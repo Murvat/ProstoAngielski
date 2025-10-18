@@ -10,15 +10,22 @@ import { ProfileUserData } from "../components/ProfileUserData";
 import { ProfileSettings } from "../components/ProfileSettings";
 import { ProfilePayments } from "../components/ProfilePayments";
 import { ProfileMobileApp } from "../components/ProfileMobileApp";
-import { Course, Purchase, Progress, User, Tab, Subscription } from "../features/types";
+import type {
+  Course,
+  Purchase,
+  Progress,
+  AppUser,
+  Tab,
+  Subscription,
+} from "@/types";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+
 
 export default function ProfileClient() {
   const [activeTab, setActiveTab] = useState<Tab>("kursy");
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<{
-    user: User | null;
+    user: AppUser | null;
     allCourses: Course[];
     purchases: Purchase[];
     progress: Progress[];
@@ -33,6 +40,7 @@ export default function ProfileClient() {
 
   const { loading: buyLoading } = useBuyCourse();
   const { getButtonState } = useCourseProgress(data.progress ?? []);
+  const { user, allCourses, purchases, subscriptions } = data;
 
   useEffect(() => {
     let isMounted = true;
@@ -57,18 +65,19 @@ export default function ProfileClient() {
   }, []);
 
   const ownedCourses = useMemo(() => {
-    const { allCourses, purchases } = data;
-    return allCourses.filter((c) =>
-      purchases.some((p) => p.course === c.id && p.payment_status === "paid")
+    return allCourses.filter((course) =>
+      purchases.some((purchase) => purchase.course === course.id && purchase.payment_status === "paid")
     );
-  }, [data.allCourses, data.purchases]);
+  }, [allCourses, purchases]);
 
   const newCourses = useMemo(() => {
-    const { allCourses, purchases } = data;
     return allCourses.filter(
-      (c) => !purchases.some((p) => p.course === c.id && p.payment_status === "paid")
+      (course) =>
+        !purchases.some(
+          (purchase) => purchase.course === course.id && purchase.payment_status === "paid"
+        )
     );
-  }, [data.allCourses, data.purchases]);
+  }, [allCourses, purchases]);
 
   const handleTabChange = useCallback((tab: Tab) => setActiveTab(tab), []);
 
@@ -91,8 +100,6 @@ export default function ProfileClient() {
       </div>
     );
 
-  const { user, allCourses, purchases, subscriptions } = data;
-
   return (
     <section className="relative max-w-6xl mx-auto px-4 md:px-8 py-10 flex flex-col gap-8">
       {/* 🟩 Header with logo */}
@@ -109,7 +116,7 @@ export default function ProfileClient() {
           </h1>
         </div>
         <p className="text-sm text-gray-600">
-          Witaj, <span className="font-semibold">{user.email}</span>
+          Witaj, <span className="font-semibold">{user?.email}</span>
         </p>
       </motion.div>
 
@@ -163,7 +170,7 @@ export default function ProfileClient() {
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.3 }}
             >
-              <ProfileUserData id={user.id} email={user.email} />
+              <ProfileUserData id={user?.id as string} email={user?.email as string} />
             </motion.div>
           )}
 
@@ -211,3 +218,4 @@ export default function ProfileClient() {
     </section>
   );
 }
+

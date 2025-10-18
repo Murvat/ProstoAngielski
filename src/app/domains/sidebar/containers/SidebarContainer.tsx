@@ -1,28 +1,33 @@
 import { useMemo } from "react";
 import LeftSidebar from "../components/LeftSidebar";
-import type { Course } from "../features/types";
+import type { CourseWithStructure, Progress } from "@/types";
 
 type SidebarContainerProps = {
-  course: Course;
-  progress?: {
-    course:string
-    lesson_id: string;
-    completed_exercises: boolean;
-    updated_at: string;
-  }[];
+  course: CourseWithStructure;
+  progress?: Progress[];
 };
 
-export default function SidebarContainer({ course, progress = [] }: SidebarContainerProps) {
-  const filteredProgress = progress.filter((p) => p.course === course.id);
-const completedLessons = useMemo(
-  () => new Set(filteredProgress.map((p) => p.lesson_id)),
-  [progress]
-);
+export default function SidebarContainer({
+  course,
+  progress = [],
+}: SidebarContainerProps) {
+  const completedLessons = useMemo(() => {
+    return new Set(
+      progress
+        .filter((entry) => entry.course === course.id)
+        .map((entry) => entry.lesson_id)
+    );
+  }, [course.id, progress]);
 
-const completedExercises = useMemo(
-  () => new Set(filteredProgress.filter((p) => p.completed_exercises).map((p) => p.lesson_id)),
-  [progress]
-);
+  const completedExercises = useMemo(() => {
+    return new Set(
+      progress
+        .filter(
+          (entry) => entry.course === course.id && entry.completed_exercises
+        )
+        .map((entry) => entry.lesson_id)
+    );
+  }, [course.id, progress]);
 
   return (
     <LeftSidebar
@@ -32,4 +37,3 @@ const completedExercises = useMemo(
     />
   );
 }
-

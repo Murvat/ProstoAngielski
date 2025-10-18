@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import type { LessonItem } from "../features/types";
+import type { LessonItem } from "@/types";
 
- function Item({
+function Item({
   item,
   active,
   onClick,

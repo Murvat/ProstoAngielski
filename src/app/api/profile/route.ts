@@ -1,6 +1,11 @@
-// src/app/api/profile/route.ts
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server/server";
+import {
+  listCourses,
+  getUserPurchases,
+  getUserProgress,
+  getUserSubscriptions,
+} from "@/lib/supabase/queries";
 
 export async function GET() {
   const supabase = await createClient();
@@ -8,20 +13,38 @@ export async function GET() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const [courses, purchases, progress, subscriptions] = await Promise.all([
-    supabase.from("courses").select("*").order("price", { ascending: true }),
-    supabase.from("purchases").select("*").eq("user_id", user.id),
-    supabase.from("progress").select("*").eq("user_id", user.id),
-    supabase.from("subscriptions").select("*").eq("user_id", user.id),
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const [
+    coursesResult,
+    purchasesResult,
+    progressResult,
+    subscriptionsResult,
+  ] = await Promise.all([
+    listCourses(supabase),
+    getUserPurchases(supabase, user.id),
+    getUserProgress(supabase, user.id),
+    getUserSubscriptions(supabase, user.id),
   ]);
+
+  const maybeLogError = (label: string, error: unknown) => {
+    if (!error) return;
+    console.error(`[profile] ${label} error:`, error);
+  };
+
+  maybeLogError("courses", coursesResult.error);
+  maybeLogError("purchases", purchasesResult.error);
+  maybeLogError("progress", progressResult.error);
+  maybeLogError("subscriptions", subscriptionsResult.error);
 
   return NextResponse.json({
     user,
-    allCourses: courses.data ?? [],
-    purchases: purchases.data ?? [],
-    progress: progress.data ?? [],
-    subscriptions: subscriptions.data ?? [],
+    allCourses: coursesResult.data,
+    purchases: purchasesResult.data,
+    progress: progressResult.data,
+    subscriptions: subscriptionsResult.data,
   });
 }

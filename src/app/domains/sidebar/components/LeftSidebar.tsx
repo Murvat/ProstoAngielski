@@ -4,12 +4,12 @@ import SidebarShell from "./SidebarShell";
 import SidebarToggle from "./SidebarToggle";
 import Topic from "./Topic";
 import Item from "./Item";
-import type { Course } from "../features/types";
+import type { CourseWithStructure } from "@/types";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
 
 type Props = {
-  course: Course;
+  course: CourseWithStructure;
   completedLessons?: Set<string>;
   completedExercises?: Set<string>;
 };

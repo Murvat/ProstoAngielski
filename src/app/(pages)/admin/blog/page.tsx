@@ -1,97 +1,133 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client/supabaseClient";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import {
+  listBlogs,
+  createBlog,
+  updateBlog,
+  deleteBlog,
+} from "@/lib/supabase/queries";
+import type { BlogPost } from "@/types";
+
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "admin123";
+
+type BlogFormState = {
+  title: string;
+  imageLink: string;
+  blogText: string;
+};
+
+const initialFormState: BlogFormState = {
+  title: "",
+  imageLink: "",
+  blogText: "",
+};
 
 export default function BlogAdminPage() {
   const router = useRouter();
-  const [blogs, setBlogs] = useState<any[]>([]);
-  const [title, setTitle] = useState(""); // ✅ YENİ
-  const [imageLink, setImageLink] = useState("");
-  const [blogText, setBlogText] = useState("");
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [form, setForm] = useState<BlogFormState>(initialFormState);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [preview, setPreview] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // 🔐 Login state
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginError, setLoginError] = useState("");
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [blogError, setBlogError] = useState<string | null>(null);
 
-  // ✅ Login credentials
-  const ADMIN_USER = "admin";
-  const ADMIN_PASS = "admin123";
-
-  function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
+  const handleLogin = (event: React.FormEvent) => {
+    event.preventDefault();
     if (username === ADMIN_USER && password === ADMIN_PASS) {
       setIsLoggedIn(true);
-      setLoginError("");
+      setLoginError(null);
     } else {
-      setLoginError("Nieprawidłowy login lub hasło!");
+      setLoginError("Niepoprawny login lub haslo.");
     }
-  }
+  };
 
-  // 📦 Fetch blogs
-  async function fetchBlogs() {
-    const { data, error } = await supabase
-      .from("blogs")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (error) console.error("Błąd przy pobieraniu:", error);
-    else setBlogs(data || []);
-  }
+  const loadBlogs = async () => {
+    const { data, error } = await listBlogs(supabase);
+    if (error) {
+      console.error("Failed to load blogs:", error);
+      setBlogError("Blad podczas ladowania wpisow.");
+      return;
+    }
+    setBlogError(null);
+    setBlogs(data);
+  };
 
   useEffect(() => {
-    if (isLoggedIn) fetchBlogs();
+    if (isLoggedIn) {
+      loadBlogs();
+    }
   }, [isLoggedIn]);
 
-  // 💾 Save / Update blog
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
+  const resetForm = () => {
+    setForm(initialFormState);
+    setEditingId(null);
+    setPreview(false);
+  };
 
-    if (editingId) {
-      const { error } = await supabase
-        .from("blogs")
-        .update({ title, image_link: imageLink, blog: blogText })
-        .eq("id", editingId);
-      if (error) alert("Błąd przy aktualizacji!");
-    } else {
-      const { error } = await supabase
-        .from("blogs")
-        .insert([{ title, image_link: imageLink, blog: blogText }]);
-      if (error) alert("Błąd przy dodawaniu!");
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!form.title.trim() || !form.blogText.trim()) {
+      setBlogError("Tytul i tresc wpisu sa wymagane.");
+      return;
     }
 
-    setTitle("");
-    setImageLink("");
-    setBlogText("");
-    setEditingId(null);
+    setLoading(true);
+    setBlogError(null);
+
+    const payload = {
+      title: form.title.trim(),
+      image_link: form.imageLink.trim() || null,
+      blog: form.blogText,
+    };
+
+    const error = editingId
+      ? await updateBlog(supabase, editingId, payload)
+      : await createBlog(supabase, payload);
+
+    if (error) {
+      console.error("Failed to save blog:", error);
+      setBlogError("Nie udalo sie zapisac wpisu.");
+    } else {
+      resetForm();
+      await loadBlogs();
+    }
+
     setLoading(false);
-    fetchBlogs();
-  }
+  };
 
-  // ✏️ Edit
-  function handleEdit(blog: any) {
+  const handleEdit = (blog: BlogPost) => {
     setEditingId(blog.id);
-    setTitle(blog.title || "");
-    setImageLink(blog.image_link);
-    setBlogText(blog.blog);
+    setForm({
+      title: blog.title ?? "",
+      imageLink: blog.image_link ?? "",
+      blogText: blog.blog ?? "",
+    });
+    setPreview(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+  };
 
-  // 🗑 Delete
-  async function handleDelete(id: number) {
-    if (!confirm("Na pewno chcesz usunąć ten wpis?")) return;
-    await supabase.from("blogs").delete().eq("id", id);
-    fetchBlogs();
-  }
+  const handleDelete = async (id: number) => {
+    if (!confirm("Czy na pewno chcesz usunac ten wpis?")) return;
+    const error = await deleteBlog(supabase, id);
+    if (error) {
+      console.error("Failed to delete blog:", error);
+      setBlogError("Nie udalo sie usunac wpisu.");
+      return;
+    }
+    await loadBlogs();
+  };
 
-  // 👤 Login form
   if (!isLoggedIn) {
     return (
       <section className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -104,179 +140,196 @@ export default function BlogAdminPage() {
           </h1>
 
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Nazwa użytkownika
+            Nazwa uzytkownika
           </label>
           <input
             type="text"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(event) => setUsername(event.target.value)}
             placeholder="username"
             className="w-full border rounded-lg px-4 py-2 mb-4 focus:ring-2 focus:ring-green-500 outline-none"
           />
 
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Hasło
+            Haslo
           </label>
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             placeholder="password"
             className="w-full border rounded-lg px-4 py-2 mb-4 focus:ring-2 focus:ring-green-500 outline-none"
           />
 
           {loginError && (
-            <p className="text-red-500 text-sm mb-3 text-center">
-              {loginError}
-            </p>
+            <p className="text-sm text-red-600 mb-4 text-center">{loginError}</p>
           )}
 
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition font-semibold"
+            className="w-full py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold"
           >
-            Zaloguj się
+            Zaloguj
           </button>
         </form>
       </section>
     );
   }
 
-  // 🔧 Admin panel
   return (
-    <section className="max-w-4xl mx-auto py-12 px-6 flex flex-col gap-10">
-      <h1 className="text-3xl font-bold text-green-700 text-center">
-        Panel Blog Admin
-      </h1>
-
-      {/* ✍️ Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-6 bg-white shadow-lg rounded-xl p-6 border border-gray-100"
-      >
-        {/* ✅ Title input */}
-        <div>
-          <label className="block text-sm font-semibold mb-2 text-gray-700">
-            Tytuł wpisu
-          </label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Wpisz tytuł bloga..."
-            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold mb-2 text-gray-700">
-            Link do zdjęcia
-          </label>
-          <input
-            type="text"
-            value={imageLink}
-            onChange={(e) => setImageLink(e.target.value)}
-            placeholder="https://example.com/image.jpg"
-            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold mb-2 text-gray-700">
-            Treść bloga (Markdown)
-          </label>
-          <textarea
-            value={blogText}
-            onChange={(e) => setBlogText(e.target.value)}
-            placeholder="Wpisz treść w formacie Markdown..."
-            rows={10}
-            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none font-mono text-sm"
-          />
-        </div>
-
-        <div className="flex items-center justify-between">
+    <section className="min-h-screen bg-gray-100 py-10">
+      <div className="max-w-5xl mx-auto px-4 space-y-10">
+        <header className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-green-700">
+            Panel blogowy ProstoAngielski
+          </h1>
           <button
-            type="button"
-            onClick={() => setPreview(!preview)}
-            className="px-4 py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition text-sm font-medium"
+            onClick={() => router.push("/")}
+            className="text-sm text-green-600 hover:text-green-800"
           >
-            {preview ? "Edytuj" : "Podgląd"}
+            Wroc do strony
           </button>
+        </header>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold"
-          >
-            {loading
-              ? "Zapisywanie..."
-              : editingId
-              ? "Zaktualizuj wpis"
-              : "Dodaj wpis"}
-          </button>
-        </div>
-      </form>
-
-      {/* 👀 Markdown preview */}
-      {preview && (
-        <div className="p-6 bg-gray-50 border rounded-lg shadow-inner">
-          <h2 className="text-lg font-semibold mb-3 text-gray-800">Podgląd:</h2>
-          <div className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            <ReactMarkdown>{blogText}</ReactMarkdown>
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-6"
+        >
+          <div>
+            <label className="block text-sm font-semibold mb-2 text-gray-700">
+              Tytul wpisu
+            </label>
+            <input
+              type="text"
+              value={form.title}
+              onChange={(event) =>
+                setForm((prev) => ({ ...prev, title: event.target.value }))
+              }
+              placeholder="Wpisz tytul bloga..."
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+            />
           </div>
-        </div>
-      )}
 
-      {/* 📚 Blog list */}
-      <div className="flex flex-col gap-6">
-        <h2 className="text-2xl font-semibold text-green-700">
-          📚 Wszystkie wpisy
-        </h2>
-        {blogs.length === 0 && (
-          <p className="text-gray-500 text-sm">Brak wpisów w bazie danych.</p>
+          <div>
+            <label className="block text-sm font-semibold mb-2 text-gray-700">
+              Link do zdjecia
+            </label>
+            <input
+              type="text"
+              value={form.imageLink}
+              onChange={(event) =>
+                setForm((prev) => ({ ...prev, imageLink: event.target.value }))
+              }
+              placeholder="https://example.com/image.jpg"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold mb-2 text-gray-700">
+              Tresc bloga (Markdown)
+            </label>
+            <textarea
+              value={form.blogText}
+              onChange={(event) =>
+                setForm((prev) => ({ ...prev, blogText: event.target.value }))
+              }
+              placeholder="Wpisz tresc w formacie Markdown..."
+              rows={10}
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none font-mono text-sm"
+            />
+          </div>
+
+          {blogError && (
+            <p className="text-sm text-red-600">{blogError}</p>
+          )}
+
+          <div className="flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => setPreview((value) => !value)}
+              className="px-4 py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition text-sm font-medium"
+            >
+              {preview ? "Edytuj" : "Podglad"}
+            </button>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold disabled:opacity-60"
+            >
+              {loading
+                ? "Zapisywanie..."
+                : editingId
+                ? "Zaktualizuj wpis"
+                : "Dodaj wpis"}
+            </button>
+          </div>
+        </form>
+
+        {preview && (
+          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
+            <h2 className="text-lg font-semibold mb-3 text-gray-800">
+              Podglad:
+            </h2>
+            <div className="text-gray-800 whitespace-pre-wrap leading-relaxed">
+              <ReactMarkdown>{form.blogText}</ReactMarkdown>
+            </div>
+          </div>
         )}
-        {blogs.map((blog) => (
-          <div
-            key={blog.id}
-            className="bg-white p-5 border rounded-xl shadow-sm hover:shadow-md transition flex flex-col sm:flex-row gap-4"
-          >
-            {blog.image_link && (
-              <img
-                src={blog.image_link}
-                alt="thumbnail"
-                className="w-40 h-28 object-cover rounded-lg border"
-              />
-            )}
-            <div className="flex-1">
-              {/* ✅ Title render */}
-              <h3 className="font-bold text-lg text-green-700 mb-2">
-                {blog.title || "Bez tytułu"}
-              </h3>
 
-              <div className="text-gray-800 line-clamp-4 text-sm">
-                <ReactMarkdown>{blog.blog}</ReactMarkdown>
+        <div className="flex flex-col gap-6">
+          <h2 className="text-2xl font-semibold text-green-700">
+            Wszystkie wpisy
+          </h2>
+          {blogs.length === 0 && (
+            <p className="text-gray-500 text-sm">Brak wpisow w bazie danych.</p>
+          )}
+          {blogs.map((blog) => (
+            <article
+              key={blog.id}
+              className="bg-white p-5 border rounded-xl shadow-sm hover:shadow-md transition flex flex-col sm:flex-row gap-4"
+            >
+              {blog.image_link && (
+                <img
+                  src={blog.image_link}
+                  alt="thumbnail"
+                  className="w-40 h-28 object-cover rounded-lg border"
+                />
+              )}
+              <div className="flex-1">
+                <h3 className="font-bold text-lg text-green-700 mb-2">
+                  {blog.title || "Bez tytulu"}
+                </h3>
+
+                <div className="text-gray-800 line-clamp-4 text-sm">
+                  <ReactMarkdown>{blog.blog}</ReactMarkdown>
+                </div>
+                <p className="text-xs text-gray-400 mt-2">
+                  Dodano: {new Date(blog.created_at).toLocaleString("pl-PL")}
+                </p>
               </div>
-              <p className="text-xs text-gray-400 mt-2">
-                Dodano: {new Date(blog.created_at).toLocaleString("pl-PL")}
-              </p>
-            </div>
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={() => handleEdit(blog)}
-                className="px-3 py-1 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
-              >
-                Edytuj
-              </button>
-              <button
-                onClick={() => handleDelete(blog.id)}
-                className="px-3 py-1 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-              >
-                Usuń
-              </button>
-            </div>
-          </div>
-        ))}
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => handleEdit(blog)}
+                  className="px-3 py-1 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                >
+                  Edytuj
+                </button>
+                <button
+                  onClick={() => handleDelete(blog.id)}
+                  className="px-3 py-1 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                >
+                  Usun
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
+
+
+

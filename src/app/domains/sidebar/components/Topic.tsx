@@ -2,7 +2,7 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
-import type { Chapter } from "../features/types";
+import type { Chapter } from "@/types";
 import React from "react";
 
 type TopicProps = {

@@ -121,7 +121,7 @@ export default function PricesPreview() {
               </p>
 
               <ul className="text-sm md:text-base text-gray-700 leading-relaxed flex flex-col gap-3">
-                {c.features.map((item) => (
+                {(c.features ?? []).map((item) => (
                   <li key={item} className="flex items-center gap-3">
                     {c.id === "intermediate" ? (
                       <BadgeCheck className="w-6 h-6 text-green-600 shrink-0 drop-shadow-[0_0_6px_rgba(16,185,129,0.4)]" />

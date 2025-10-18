@@ -1,9 +1,9 @@
-// src/app/domains/exercise/features/useExercise.ts
 "use client";
-//migrate to api route 
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client/supabaseClient";
-import type { ExerciseData } from "./types";
+import { getLessonExercises } from "@/lib/supabase/queries";
+import type { ExerciseData } from "@/types";
 
 export function useExercise(lessonId: string, courseId: string) {
   const [exercises, setExercises] = useState<ExerciseData | null>(null);
@@ -14,23 +14,22 @@ export function useExercise(lessonId: string, courseId: string) {
     async function fetchExercises() {
       setLoading(true);
       setError(null);
-console.log("📡 Fetching exercises for", { lessonId, courseId });
+
       const orderIndex = Number(lessonId);
-      if (isNaN(orderIndex)) {
+      if (Number.isNaN(orderIndex)) {
         setError("Invalid lessonId format");
         setLoading(false);
         return;
       }
 
-      const { data, error } = await supabase
-        .from("lessons")
-        .select("exercises")
-        .eq("course_id", courseId)
-        .eq("order_index", orderIndex)
-        .maybeSingle();
+      const { data, error } = await getLessonExercises(
+        supabase,
+        courseId,
+        orderIndex
+      );
 
       if (error) {
-        console.error("❌ Failed to fetch exercises", error);
+        console.error("Failed to fetch exercises", error);
         setError(error.message);
         setLoading(false);
         return;
@@ -41,13 +40,8 @@ console.log("📡 Fetching exercises for", { lessonId, courseId });
         setLoading(false);
         return;
       }
- console.log("✅ Got exercises from DB:", data.exercises);
-      const raw = data.exercises || {};
-      setExercises({
-        fillGaps: raw.fillGaps ?? [],
-        chooseDefinition: raw.chooseDefinition ?? [],
-        translate: raw.translate ?? [],
-      });
+
+      setExercises(data);
       setLoading(false);
     }
 
