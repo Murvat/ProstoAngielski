@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { useBuyCourse } from "../features/useBuyCourse";
 import { useCourseProgress } from "../features/useCourseProgress";
 import { ProfileTabs } from "../components/ProfileTabs";
-import { ProfileCoursesOwned } from "../components/ProfileCoursesOwned";
 import { ProfileCoursesNew } from "../components/ProfileCoursesNew";
 import { ProfileUserData } from "../components/ProfileUserData";
 import { ProfileSettings } from "../components/ProfileSettings";
@@ -19,7 +17,6 @@ import type {
   Subscription,
 } from "@/types";
 import { motion, AnimatePresence } from "framer-motion";
-
 
 export default function ProfileClient() {
   const [activeTab, setActiveTab] = useState<Tab>("kursy");
@@ -38,9 +35,31 @@ export default function ProfileClient() {
     subscriptions: [],
   });
 
-  const { loading: buyLoading } = useBuyCourse();
   const { getButtonState } = useCourseProgress(data.progress ?? []);
   const { user, allCourses, purchases, subscriptions } = data;
+
+  const paidCourseIds = useMemo<Set<string>>(
+    () =>
+      new Set(
+        purchases
+          .filter((purchase) => purchase.payment_status === "paid")
+          .map((purchase) =>
+            typeof purchase.course === "string" ? purchase.course : purchase.course.id
+          )
+      ),
+    [purchases]
+  );
+
+  const hasActiveSubscription = useMemo(
+    () =>
+      subscriptions.some(
+        (subscription) =>
+          subscription.status === "active" &&
+          subscription.period_end &&
+          new Date(subscription.period_end).getTime() > Date.now()
+      ),
+    [subscriptions]
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -63,21 +82,6 @@ export default function ProfileClient() {
       isMounted = false;
     };
   }, []);
-
-  const ownedCourses = useMemo(() => {
-    return allCourses.filter((course) =>
-      purchases.some((purchase) => purchase.course === course.id && purchase.payment_status === "paid")
-    );
-  }, [allCourses, purchases]);
-
-  const newCourses = useMemo(() => {
-    return allCourses.filter(
-      (course) =>
-        !purchases.some(
-          (purchase) => purchase.course === course.id && purchase.payment_status === "paid"
-        )
-    );
-  }, [allCourses, purchases]);
 
   const handleTabChange = useCallback((tab: Tab) => setActiveTab(tab), []);
 
@@ -102,7 +106,7 @@ export default function ProfileClient() {
 
   return (
     <section className="relative max-w-6xl mx-auto px-4 md:px-8 py-10 flex flex-col gap-8">
-      {/* 🟩 Header with logo */}
+      {/* 🟩 Header */}
       <motion.div
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -110,7 +114,6 @@ export default function ProfileClient() {
         className="flex items-center justify-center md:justify-between flex-wrap gap-4"
       >
         <div className="flex items-center gap-3">
-       
           <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-700 to-emerald-500 text-transparent bg-clip-text">
             Mój Profil
           </h1>
@@ -123,7 +126,7 @@ export default function ProfileClient() {
       {/* Tabs */}
       <ProfileTabs activeTab={activeTab} onChange={handleTabChange} />
 
-      {/* 🧭 Content area */}
+      {/* 🧭 Content */}
       <motion.div
         layout
         className="bg-white/80 backdrop-blur-lg border border-gray-100 rounded-2xl shadow-lg p-6 transition-all"
@@ -140,23 +143,14 @@ export default function ProfileClient() {
             >
               <section>
                 <h2 className="text-lg font-semibold mb-4 text-green-700">
-                  Moje kursy
-                </h2>
-                <ProfileCoursesOwned
-                  ownedCourses={ownedCourses}
-                  loading={buyLoading}
-                  getButtonState={getButtonState}
-                />
-              </section>
-
-              <section>
-                <h2 className="text-lg font-semibold mb-4 text-green-700">
-                  Nowe kursy
+                  Dostępne kursy
                 </h2>
                 <ProfileCoursesNew
-                  newCourses={newCourses}
+                  newCourses={allCourses}
                   purchases={purchases}
-                  loading={buyLoading}
+                  paidCourseIds={paidCourseIds}
+                  hasActiveSubscription={hasActiveSubscription}
+                  getButtonState={getButtonState}
                 />
               </section>
             </motion.div>
@@ -170,7 +164,10 @@ export default function ProfileClient() {
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.3 }}
             >
-              <ProfileUserData id={user?.id as string} email={user?.email as string} />
+              <ProfileUserData
+                id={user?.id as string}
+                email={user?.email as string}
+              />
             </motion.div>
           )}
 
@@ -218,4 +215,9 @@ export default function ProfileClient() {
     </section>
   );
 }
+
+
+
+
+
 
