@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import type { ChooseDefinitionItem } from "../features/types";
+import type { ChooseDefinitionItem } from "@/types";
 import ExerciseHeader from "../components/ExerciseHeader";
 import ExerciseFooter from "../components/ExerciseFooter";
 import FeedbackMessage from "../components/FeedbackMessage";

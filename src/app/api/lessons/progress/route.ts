@@ -1,11 +1,12 @@
 import { createClient } from "@/lib/supabase/server/server";
+import { getProgressEntry } from "@/lib/supabase/queries";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const lesson_id = searchParams.get("lesson_id");
-  const course = searchParams.get("course"); // ✅ add course param
+  const lessonId = searchParams.get("lesson_id");
+  const courseId = searchParams.get("course");
 
-  if (!lesson_id || !course) {
+  if (!lessonId || !courseId) {
     return Response.json(
       { error: "Missing lesson_id or course" },
       { status: 400 }
@@ -14,7 +15,6 @@ export async function GET(req: Request) {
 
   const supabase = await createClient();
 
-  // ✅ Get logged-in user
   const {
     data: { user },
     error: userError,
@@ -24,20 +24,18 @@ export async function GET(req: Request) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // ✅ Query progress for this user + course + lesson
-  const { data, error } = await supabase
-    .from("progress")
-    .select("regenerate_count")
-    .eq("user_id", user.id)
-    .eq("course", course)
-    .eq("lesson_id", lesson_id)
-    .maybeSingle();
+  const { data, error } = await getProgressEntry(supabase, {
+    userId: user.id,
+    courseId,
+    lessonId,
+  });
 
   if (error) {
     console.error("Supabase error:", error);
     return Response.json({ error: "Database error" }, { status: 500 });
   }
 
-  // ✅ Return count or default to 0
-  return Response.json(data || { regenerate_count: 0 });
+  const regenerateCount = data?.regenerate_count ?? 0;
+
+  return Response.json({ regenerate_count: regenerateCount });
 }

@@ -1,45 +1,42 @@
-// src/app/payment/success/page.tsx
-import { createClient } from "@/lib/supabase/server/server"; 
-import PaymentSuccessContainer from "@/app/domains/auth/containers/PaymentSuccessContainer";  
+import { createClient } from "@/lib/supabase/server/server";
+import PaymentSuccessContainer from "@/app/domains/auth/containers/PaymentSuccessContainer";
+import { getLatestPaidPurchase, getCourseSummary } from "@/lib/supabase/queries";
 
 export default async function PaymentSuccessPage() {
-    const supabase = await createClient();
-  // 1. Get logged-in user from cookies/session
-    const { data: { user } } = await supabase.auth.getUser();
-    
-console.log(user)
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) {
     return <p className="text-center py-20 text-red-500">User not logged in</p>;
   }
 
-  // 2. Get the latest paid purchase for this user
-  const { data: purchase, error: purchaseError } = await supabase
-    .from("purchases")
-    .select("course, paid_at")
-    .eq("user_id", user.id)
-    .eq("payment_status", "paid")
-    .order("paid_at", { ascending: false })
-    .limit(1)
-    .single();
+  const { data: purchase, error: purchaseError } = await getLatestPaidPurchase(
+    supabase,
+    user.id
+  );
 
   if (purchaseError || !purchase) {
-    return <p className="text-center py-20 text-red-500">No valid purchase found</p>;
+    return (
+      <p className="text-center py-20 text-red-500">
+        No valid purchase found
+      </p>
+    );
   }
 
-  // 3. Get course info
-  const { data: course } = await supabase
-    .from("courses")
-    .select("title, price, duration")
-    .eq("id", purchase.course)
-    .single();
+  const { data: course } = await getCourseSummary(
+    supabase,
+    String(purchase.course)
+  );
 
-  // 4. Pass resolved props into container
   return (
     <PaymentSuccessContainer
       purchase={{
         userName: user.email ?? "User",
-        courseTitle: course?.title ?? purchase.course,
-        amount: course ? `${course.price / 100} zł` : "",
+        courseTitle: course?.title ?? String(purchase.course),
+        amount: course ? `${course.price / 100} zl` : "",
         access: course?.duration ?? "Full access",
       }}
     />

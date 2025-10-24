@@ -1,6 +1,6 @@
 "use client";
 
-import { Purchase, Course, Subscription } from "../features/types";
+import type { Purchase, Course, Subscription } from "@/types";
 import { motion } from "framer-motion";
 import { CreditCard, Wallet, Clock, AlertCircle } from "lucide-react";
 

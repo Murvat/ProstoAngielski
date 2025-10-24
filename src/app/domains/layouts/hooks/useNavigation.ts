@@ -2,11 +2,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { buildNavItems, getPrevNext, getPath } from "./navigation"
-import type { Course } from "../../sidebar/features/types";
+import { buildNavItems, getPrevNext, getPath } from "./navigation";
+import type { CourseWithStructure } from "@/types";
 
 export function useLessonNavigation(
-  course: Course | null,
+  course: CourseWithStructure | null,
   courseId: string,
   lessonId: string,
   isExercise: boolean

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import type { FillGapsItem } from "../features/types";
+import type { FillGapsItem } from "@/types";
 import ExerciseHeader from "../components/ExerciseHeader";
 import ExerciseFooter from "../components/ExerciseFooter";
 import FeedbackMessage from "../components/FeedbackMessage";

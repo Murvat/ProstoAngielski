@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { supabase } from "@/lib/supabase/server/supabaseClient"; // service role client!
+import { supabase } from "@/lib/supabase/server/supabaseClient";
+import {
+  getPurchaseForCourse,
+  insertPurchase,
+  getSubscriptionByUser,
+  insertSubscription,
+} from "@/lib/supabase/queries";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -13,9 +19,9 @@ export async function POST(req: NextRequest) {
   let event: Stripe.Event;
   try {
     event = stripe.webhooks.constructEvent(body, sig!, webhookSecret);
-    console.log("🔔 Event received:", event.type);
+    console.log("Event received:", event.type);
   } catch (err) {
-    console.error("❌ Invalid signature:", err);
+    console.error("Invalid signature:", err);
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
@@ -25,62 +31,67 @@ export async function POST(req: NextRequest) {
     const course = session.metadata?.course;
 
     if (!user_id || !course) {
-      console.warn("⚠️ Missing metadata");
+      console.warn("Missing metadata");
       return NextResponse.json({ received: true });
     }
 
     if (session.payment_status === "paid") {
-      // ✅ 1. Insert purchase if not exists
-      const { data: existingPurchase } = await supabase
-        .from("purchases")
-        .select("id")
-        .eq("user_id", user_id)
-        .eq("course", course)
-        .maybeSingle();
+      const { data: existingPurchase, error: purchaseLookupError } =
+        await getPurchaseForCourse(supabase, user_id, course);
 
-      if (!existingPurchase) {
-        const { error } = await supabase.from("purchases").insert({
+      if (purchaseLookupError) {
+        console.error("Purchase lookup error:", purchaseLookupError.message);
+      } else if (!existingPurchase) {
+        const purchaseError = await insertPurchase(supabase, {
           user_id,
           course,
           payment_status: "paid",
           paid_at: new Date().toISOString(),
           payment_provider: "stripe",
           payment_id: session.payment_intent as string,
+          price_id: session.line_items?.data?.[0]?.price?.id ?? null,
         });
 
-        if (error) console.error("❌ Purchase insert error:", error.message);
-        else console.log("✅ Purchase inserted");
+        if (purchaseError) {
+          console.error("Purchase insert error:", purchaseError.message);
+        } else {
+          console.log("Purchase inserted");
+        }
       } else {
-        console.log("⚠️ Purchase already exists, skipping insert");
+        console.log("Purchase already exists, skipping insert");
       }
 
-      // ✅ 2. Insert free trial subscription if not exists
-      const { data: existingSub } = await supabase
-        .from("subscriptions")
-        .select("id")
-        .eq("user_id", user_id)
-        .maybeSingle();
+      const { data: existingSub, error: subLookupError } =
+        await getSubscriptionByUser(supabase, user_id);
 
-      if (!existingSub) {
+      if (subLookupError) {
+        console.error("Subscription lookup error:", subLookupError.message);
+      } else if (!existingSub) {
         const now = new Date();
-        const oneMonthLater = new Date();
+        const oneMonthLater = new Date(now);
         oneMonthLater.setMonth(now.getMonth() + 1);
 
-        const { error } = await supabase.from("subscriptions").insert({
+        const subscriptionError = await insertSubscription(supabase, {
           user_id,
           status: "active",
           payment_provider: "stripe",
           payment_id: session.payment_intent as string,
           started_at: now.toISOString(),
           period_end: oneMonthLater.toISOString(),
-          plan: "free_trial", // ⚠️ must be added to your CHECK constraint
+          plan: "free_trial",
           price_id: "free_trial",
         });
 
-        if (error) console.error("❌ Subscription insert error:", error.message);
-        else console.log("✅ Subscription created (1-month free trial)");
+        if (subscriptionError) {
+          console.error(
+            "Subscription insert error:",
+            subscriptionError.message
+          );
+        } else {
+          console.log("Subscription created (1-month free trial)");
+        }
       } else {
-        console.log("⚠️ Subscription already exists, skipping insert");
+        console.log("Subscription already exists, skipping insert");
       }
     }
   }

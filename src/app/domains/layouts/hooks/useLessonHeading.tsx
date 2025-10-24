@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabase/client/supabaseClient";
+import { getLessonHeading } from "@/lib/supabase/queries";
 
 export function useLessonHeading() {
   const params = useParams();
@@ -11,26 +12,29 @@ export function useLessonHeading() {
 
   const [lessonHeading, setLessonHeading] = useState<string>("");
 
-useEffect(() => {
-  if (!courseId || !lessonId) return;
+  useEffect(() => {
+    if (!courseId || !lessonId) return;
 
-  const fetchHeading = async () => {
-    console.log("🔍 Fetching heading for", { courseId, lessonId }); // debug 1
-const { data, error } = await supabase
-  .from("lessons")
-  .select("heading")
-  .eq("course_id", courseId)
-  .eq("order_index", parseInt(lessonId, 10))
-  .single();
-    if (error) console.error("❌ Supabase error:", error.message);
-    else if (data?.heading) {
-      console.log("✅ Heading found:", data.heading); // debug 2
-      setLessonHeading(data.heading);
-    } else console.warn("⚠️ No heading found for", { courseId, lessonId });
-  };
+    const orderIndex = Number(lessonId);
+    if (Number.isNaN(orderIndex)) return;
 
-  fetchHeading();
-}, [courseId, lessonId]);
+    const fetchHeading = async () => {
+      const { data, error } = await getLessonHeading(
+        supabase,
+        courseId,
+        orderIndex
+      );
+
+      if (error) {
+        console.error("Failed to fetch lesson heading:", error.message);
+        return;
+      }
+
+      setLessonHeading(data ?? "");
+    };
+
+    fetchHeading();
+  }, [courseId, lessonId]);
 
   return { lessonHeading };
 }

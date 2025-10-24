@@ -1,6 +1,6 @@
-// src/app/auth/callback/route.ts
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server/server";
+import { hasPaidPurchase } from "@/lib/supabase/queries";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -26,24 +26,16 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}/login?error=no_user`);
   }
 
-  // 🔑 Check purchases instead of courses
-  const { data: purchases, error: purchasesError } = await supabase
-    .from("purchases")
-    .select("id")
-    .eq("user_id", user.id)
-    .eq("payment_status", "paid")
-    .limit(1);
+  const { data: hasPurchase, error: purchaseError } = await hasPaidPurchase(
+    supabase,
+    user.id
+  );
 
-  if (purchasesError) {
-    console.error("Error fetching purchases:", purchasesError.message);
+  if (purchaseError) {
+    console.error("Error fetching purchases:", purchaseError.message);
     return NextResponse.redirect(`${origin}/login?error=db_error`);
   }
 
-  if (!purchases || purchases.length === 0) {
-    // No paid purchases → redirect to payment
-    return NextResponse.redirect(`${origin}/profile`);
-  }
-
-  // At least one paid purchase → redirect to profile
-  return NextResponse.redirect(`${origin}/profile`);
+  const redirectPath = hasPurchase ? "/profile" : "/profile";
+  return NextResponse.redirect(`${origin}${redirectPath}`);
 }
