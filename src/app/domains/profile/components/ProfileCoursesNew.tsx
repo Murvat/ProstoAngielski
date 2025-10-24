@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+// import { useMemo } from "react";
 import { PlayCircle, ShoppingCart } from "lucide-react";
 import type { Course, Purchase } from "@/types";
 import { useBuyCourse } from "../features/useBuyCourse";
@@ -17,14 +17,13 @@ interface ProfileCoursesNewProps {
   getButtonState: (course: Course) => ButtonState;
 }
 
-const resolvePurchaseCourseId = (purchase: Purchase) => {
-  if (typeof purchase.course === "string") return purchase.course;
-  return purchase.course?.id ?? null;
-};
+// const resolvePurchaseCourseId = (purchase: Purchase) => {
+//   if (typeof purchase.course === "string") return purchase.course;
+//   return purchase.course?.id ?? null;
+// };
 
 export const ProfileCoursesNew = ({
   newCourses,
-  purchases,
   paidCourseIds,
   getButtonState,
 }: ProfileCoursesNewProps) => {
