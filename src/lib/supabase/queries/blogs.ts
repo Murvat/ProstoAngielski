@@ -1,7 +1,7 @@
 import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
 import type { BlogPost } from "@/types";
 import { supabase } from "../client/supabaseClient";
-type Client = SupabaseClient<any, "public", any>;
+type Client = SupabaseClient<any, "public">;
 
 type BlogInput = {
   title: string;

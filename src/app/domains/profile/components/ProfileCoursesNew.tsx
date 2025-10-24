@@ -26,22 +26,21 @@ export const ProfileCoursesNew = ({
   newCourses,
   purchases,
   paidCourseIds,
-  hasActiveSubscription,
   getButtonState,
 }: ProfileCoursesNewProps) => {
   const { buyCourse, loading } = useBuyCourse();
   const { goToLesson } = useLessonRedirect();
 
-  const purchasesByCourse = useMemo(() => {
-    const map = new Map<string, Purchase>();
-    for (const purchase of purchases) {
-      const id = resolvePurchaseCourseId(purchase);
-      if (id) {
-        map.set(id, purchase);
-      }
-    }
-    return map;
-  }, [purchases]);
+  // const purchasesByCourse = useMemo(() => {
+  //   const map = new Map<string, Purchase>();
+  //   for (const purchase of purchases) {
+  //     const id = resolvePurchaseCourseId(purchase);
+  //     if (id) {
+  //       map.set(id, purchase);
+  //     }
+  //   }
+  //   return map;
+  // }, [purchases]);
 
   if (newCourses.length === 0) {
     return (

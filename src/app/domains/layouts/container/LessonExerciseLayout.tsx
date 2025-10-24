@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import type { AppUser, Purchase, Progress, Subscription, Course, CourseWithStructure } from "@/types";
+import type { AppUser, Purchase, Progress, Subscription, CourseWithStructure } from "@/types";
 import NavbarContainer from "@/app/domains/navbar/containers/NavbarContainer";
 import SidebarContainer from "@/app/domains/sidebar/containers/SidebarContainer";
 import Footer from "@/app/domains/footer/components/Footer";
