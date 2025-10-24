@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import type { AppUser, Course, Purchase, Progress, Subscription } from "@/types";
+import type { AppUser, Purchase, Progress, Subscription, Course, CourseWithStructure } from "@/types";
 import NavbarContainer from "@/app/domains/navbar/containers/NavbarContainer";
 import SidebarContainer from "@/app/domains/sidebar/containers/SidebarContainer";
 import Footer from "@/app/domains/footer/components/Footer";
@@ -17,6 +17,7 @@ import { CourseAccessContext } from "@/app/domains/lessons/context/CourseAccessC
 import { Lock, ShoppingCart, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FREE_LESSON_LIMIT } from "../../lessons/constants";
+import { User } from "@supabase/supabase-js";
 const TRIAL_LIMIT = FREE_LESSON_LIMIT;
 
 export default function LessonExerciseLayout({ children }: { children: React.ReactNode }) {
@@ -133,13 +134,13 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
     <CourseAccessContext.Provider value={accessContextValue}>
       <main className="flex flex-col min-h-screen bg-white">
         <header className="sticky top-0 z-50 h-16 bg-white border-b">
-          <NavbarContainer initialUser={profile.user as any} />
+          <NavbarContainer initialUser={profile.user as User} />
         </header>
 
         <div className="flex w-full">
           <aside className="fixed top-16 bottom-0 left-0 hidden lg:block w-80 bg-gray-50 overflow-y-auto hover:shadow-md z-40">
             <SidebarContainer
-              course={course as any}
+              course={course as CourseWithStructure}
               progress={profile.progress}
               hasFullAccess={hasFullAccess}
               isAccessLoading={loading}
@@ -215,8 +216,10 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
                   whileHover={{ scale: 1.03 }}
                   onClick={async () => {
                     try {
-                      const url = await buyCourse(courseId);
-                      if (url as any) window.open(url as any, "_blank");
+const url = (await buyCourse(courseId)) as string | undefined;
+if (typeof url === "string" && url.trim() !== "") {
+  window.open(url, "_blank");
+}
                     } catch (err) {
                       console.error("Buy course redirect failed:", err);
                     }

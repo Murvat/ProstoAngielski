@@ -5,13 +5,13 @@ import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import Navbar from "@/app/domains/navbar/components/Navbar";
-import { fetchBlogs, type Blog } from "@/lib/supabase/queries/blogs";
-import { tree } from "next/dist/build/templates/app-page";
+import { fetchBlogs } from "@/lib/supabase/queries/blogs";
+import type { BlogPost } from "@/types";
+import NavbarContainer from "@/app/domains/navbar/containers/NavbarContainer";
 
 export default function BlogPage() {
-    const [blogs, setBlogs] = useState<Blog[]>([]);
-    const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([]);
+    const [blogs, setBlogs] = useState<BlogPost[]>([]);
+    const [filteredBlogs, setFilteredBlogs] = useState<BlogPost[]>([]);
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(true);
 
@@ -58,7 +58,7 @@ export default function BlogPage() {
 
     return (
         <>
-            <Navbar  />
+            <NavbarContainer  initialUser={null}  />
 
             <section className="relative max-w-screen-xl mx-auto px-6 md:px-12 py-28 transition-all">
                 {/* 🌟 Header with logo */}
