@@ -7,22 +7,22 @@ import { FaInstagram, FaFacebook, FaYoutube, FaLinkedin } from "react-icons/fa";
 
 const socialLinks = [
   {
-    href: "https://instagram.com/prostoangielski.pl",
+    href: "https://www.instagram.com/prostoangielski.pl/",
     label: "Instagram",
     Icon: FaInstagram,
   },
   {
-    href: "https://facebook.com/prostoangielski",
+    href: "https://www.facebook.com/profile.php?id=61582136725311",
     label: "Facebook",
     Icon: FaFacebook,
   },
   {
-    href: "https://youtube.com/@prostoangielski",
+    href: "https://www.youtube.com/@prostoangielski",
     label: "YouTube",
     Icon: FaYoutube,
   },
   {
-    href: "https://linkedin.com/company/prostoangielski",
+    href: "https://www.linkedin.com/company/109429439",
     label: "LinkedIn",
     Icon: FaLinkedin,
   },
