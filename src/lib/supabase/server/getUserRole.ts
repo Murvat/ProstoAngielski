@@ -26,9 +26,9 @@ export async function getUserRole(
     .from("profiles")
     .select("role")
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
-  if (error || !data) return null;
+  if (error || !data || !data.role) return null;
 
-  return data.role as "user" | "admin";
+  return data.role;
 }

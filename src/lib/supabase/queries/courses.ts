@@ -1,22 +1,20 @@
 import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
-import type { Course, CourseStructure, CourseWithStructure } from "@/types";
+import type { Course, CourseWithStructure } from "@/types";
+import type { Database } from "@/lib/supabase/types";
 
-type Client = SupabaseClient<any, "public", any>;
-
-type CourseRow = {
-  id: string;
-  title: string;
-  price: number | null;
-  level?: string | null;
-  short_description?: string | null;
-  duration?: string | null;
-  features?: string[] | null;
-  created_at?: string | null;
-  first_lesson_id?: string | null;
-};
-
-type CourseWithStructureRow = CourseRow & {
-  structure?: CourseStructure | null;
+type Client = SupabaseClient<Database>;
+type CourseRow = Database["public"]["Tables"]["courses"]["Row"];
+type CourseProjection = {
+  id: CourseRow["id"];
+  title: CourseRow["title"];
+  price: CourseRow["price"];
+  level: CourseRow["level"];
+  short_description: CourseRow["short_description"];
+  duration: CourseRow["duration"];
+  features: CourseRow["features"];
+  first_lesson_id: CourseRow["first_lesson_id"];
+  created_at?: CourseRow["created_at"];
+  structure?: CourseRow["structure"];
 };
 
 function normalizeFeatures(recordFeatures: unknown): string[] | undefined {
@@ -24,7 +22,7 @@ function normalizeFeatures(recordFeatures: unknown): string[] | undefined {
   return Array.isArray(recordFeatures) ? recordFeatures : undefined;
 }
 
-function normalizeCourse(record: CourseRow): Course {
+function normalizeCourse(record: CourseProjection): Course {
   return {
     id: record.id,
     title: record.title,
@@ -51,12 +49,13 @@ export async function listCourses(
     )
     .order(orderBy, { ascending });
 
-  if (error || !data) {
+  if (error) {
     return { data: [], error };
   }
 
+  const rows = (data ?? []) as CourseProjection[];
   return {
-    data: (data as CourseRow[]).map(normalizeCourse),
+    data: rows.map(normalizeCourse),
     error: null,
   };
 }
@@ -73,15 +72,13 @@ export async function getCourseWithStructure(
     .eq("id", courseId)
     .maybeSingle();
 
-  const row = data as CourseWithStructureRow | null;
-
-  if (error || !row?.structure) {
+  if (error || !data || !data.structure) {
     return { data: null, error };
   }
 
   const course: CourseWithStructure = {
-    ...normalizeCourse(row),
-    structure: row.structure,
+    ...normalizeCourse(data),
+    structure: data.structure,
   };
 
   return { data: course, error: null };
@@ -100,18 +97,16 @@ export async function getCourseSummary(
     .eq("id", courseId)
     .maybeSingle();
 
-  const row = data as CourseRow | null;
-
-  if (error || !row) {
+  if (error || !data) {
     return { data: null, error };
   }
 
   return {
     data: {
-      id: row.id,
-      title: row.title,
-      price: row.price ?? 0,
-      duration: row.duration ?? null,
+      id: data.id,
+      title: data.title,
+      price: data.price ?? 0,
+      duration: data.duration ?? null,
     },
     error: null,
   };

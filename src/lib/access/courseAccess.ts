@@ -1,8 +1,9 @@
 import { getPurchaseForCourse, getUserSubscriptions } from "@/lib/supabase/queries";
 import type { Subscription } from "@/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/lib/supabase/types";
 
-type DatabaseClient = SupabaseClient<unknown, "public", unknown>;
+type DatabaseClient = SupabaseClient<Database>;
 
 export type AccessCheckResult = {
   hasPaidPurchase: boolean;

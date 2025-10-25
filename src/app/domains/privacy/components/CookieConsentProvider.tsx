@@ -64,7 +64,7 @@ function initialiseGoogleAnalytics() {
   }
 
   const disableFlag = `ga-disable-${GA_MEASUREMENT_ID}`;
-  const extendedWindow = window as ExtendedWindow;
+  const extendedWindow = window as unknown as ExtendedWindow;
   extendedWindow[disableFlag] = false;
 
   if (!document.getElementById(GA_REMOTE_SCRIPT_ID)) {
@@ -98,7 +98,7 @@ function disableGoogleAnalytics(status: ConsentSelection) {
   if (!GA_MEASUREMENT_ID) return;
 
   const disableFlag = `ga-disable-${GA_MEASUREMENT_ID}`;
-  const extendedWindow = window as ExtendedWindow;
+  const extendedWindow = window as unknown as ExtendedWindow;
   extendedWindow[disableFlag] = true;
   removeAnalyticsArtifacts();
 

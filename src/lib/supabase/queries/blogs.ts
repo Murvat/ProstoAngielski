@@ -1,7 +1,10 @@
 import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
 import type { BlogPost } from "@/types";
 import { supabase } from "../client/supabaseClient";
-type Client = SupabaseClient<any, "public", any>;
+import type { Database } from "@/lib/supabase/types";
+
+type Client = SupabaseClient<Database>;
+type BlogRow = Database["public"]["Tables"]["blogs"]["Row"];
 
 type BlogInput = {
   title: string;
@@ -9,15 +12,13 @@ type BlogInput = {
   blog: string;
 };
 
-function normalizeBlog(record: Record<string, any>): BlogPost {
-  return {
-    id: record.id,
-    title: record.title ?? "",
-    image_link: record.image_link ?? null,
-    blog: record.blog ?? "",
-    created_at: record.created_at ?? new Date().toISOString(),
-  };
-}
+const normalizeBlog = (record: BlogRow): BlogPost => ({
+  id: record.id,
+  title: record.title,
+  image_link: record.image_link ?? null,
+  blog: record.blog,
+  created_at: record.created_at ?? new Date().toISOString(),
+});
 
 export async function listBlogs(
   client: Client
@@ -27,11 +28,12 @@ export async function listBlogs(
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error || !data) {
+  if (error) {
     return { data: [], error };
   }
 
-  return { data: data.map(normalizeBlog), error: null };
+  const rows = (data ?? []) as BlogRow[];
+  return { data: rows.map(normalizeBlog), error: null };
 }
 
 export async function createBlog(
@@ -63,29 +65,36 @@ export async function fetchBlogs(): Promise<BlogPost[]> {
   try {
     const { data, error } = await supabase
       .from("blogs")
-      .select("id, title, image_link, created_at")
+      .select("id, title, image_link, blog, created_at")
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return data as any || [];
+
+    const rows = (data ?? []) as BlogRow[];
+    return rows.map(normalizeBlog);
   } catch (err) {
-    console.error("❌ Fetch error:", err);
+    console.error("[Supabase] fetchBlogs error:", err);
     return [];
   }
 }
 
-export async function fetchBlogById(id: string | number) {
+export async function fetchBlogById(id: string | number): Promise<BlogPost | null> {
+  const blogId = typeof id === "string" ? Number(id) : id;
+  if (!Number.isFinite(blogId)) {
+    return null;
+  }
+
   try {
     const { data, error } = await supabase
       .from("blogs")
       .select("id, title, image_link, blog, created_at")
-      .eq("id", id)
-      .single();
+      .eq("id", blogId)
+      .maybeSingle();
 
     if (error) throw error;
-    return data;
+    return data ? normalizeBlog(data as BlogRow) : null;
   } catch (err) {
-    console.error("❌ fetchBlogById error:", err);
+    console.error("[Supabase] fetchBlogById error:", err);
     return null;
   }
 }
