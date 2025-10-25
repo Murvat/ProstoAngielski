@@ -38,15 +38,20 @@ export function useBlogs() {
   return { blogs, filteredBlogs, search, setSearch, loading };
 }
 
-export function useBlog(id: number) {
+export function useBlog(id: number | string | null | undefined) {
   const [blog, setBlog] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) return;
+    const numericId =
+      typeof id === "string" ? Number(id) : typeof id === "number" ? id : NaN;
+    if (!Number.isFinite(numericId)) {
+      return;
+    }
+
     async function load() {
       setLoading(true);
-      const data = await fetchBlogById(id);
+      const data = await fetchBlogById(numericId);
       setBlog(data);
       setLoading(false);
     }

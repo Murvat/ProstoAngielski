@@ -7,7 +7,7 @@ import { FaInstagram, FaFacebook, FaYoutube, FaLinkedin } from "react-icons/fa";
 
 const socialLinks = [
   {
-    href: "https://instagram.com/prostoangielski",
+    href: "https://instagram.com/prostoangielski.pl",
     label: "Instagram",
     Icon: FaInstagram,
   },

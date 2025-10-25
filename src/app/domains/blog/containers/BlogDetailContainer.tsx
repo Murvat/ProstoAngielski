@@ -8,8 +8,9 @@ import { useBlog } from "../features/useBlogs";
 
 export default function BlogDetailContainer() {
   const { id } = useParams();
+  const blogId = Array.isArray(id) ? id[0] : id;
   const router = useRouter();
-  const { blog, loading } = useBlog(id as string);
+  const { blog, loading } = useBlog(blogId);
 
   const handleGoBack = () => {
     if (window.history.length > 1) router.back();

@@ -1,9 +1,11 @@
 import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
 import type { Subscription } from "@/types";
+import type { Database } from "@/lib/supabase/types";
 
-type Client = SupabaseClient<any, "public", any>;
+type Client = SupabaseClient<Database>;
+type SubscriptionRow = Database["public"]["Tables"]["subscriptions"]["Row"];
 
-function normalizeSubscription(record: Record<string, any>): Subscription {
+function normalizeSubscription(record: SubscriptionRow): Subscription {
   return {
     id: record.id,
     user_id: record.user_id,
@@ -27,11 +29,12 @@ export async function getUserSubscriptions(
     .select("*")
     .eq("user_id", userId);
 
-  if (error || !data) {
+  if (error) {
     return { data: [], error };
   }
 
-  return { data: data.map(normalizeSubscription), error: null };
+  const rows = (data ?? []) as SubscriptionRow[];
+  return { data: rows.map(normalizeSubscription), error: null };
 }
 
 export async function getSubscriptionByUser(
@@ -44,11 +47,14 @@ export async function getSubscriptionByUser(
     .eq("user_id", userId)
     .maybeSingle();
 
-  if (error || !data) {
+  if (error) {
     return { data: null, error };
   }
 
-  return { data: normalizeSubscription(data), error: null };
+  return {
+    data: data ? normalizeSubscription(data as SubscriptionRow) : null,
+    error: null,
+  };
 }
 
 type InsertSubscriptionPayload = {

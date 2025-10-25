@@ -1,7 +1,11 @@
 import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
 import type { Progress } from "@/types";
+import type { Database } from "@/lib/supabase/types";
 
-type Client = SupabaseClient<any, "public", any>;
+type Client = SupabaseClient<Database>;
+type ProgressRow = Database["public"]["Tables"]["progress"]["Row"];
+type ProgressInsert = Database["public"]["Tables"]["progress"]["Insert"];
+type ProgressUpdate = Database["public"]["Tables"]["progress"]["Update"];
 
 type ProgressKey = {
   userId: string;
@@ -18,7 +22,15 @@ export async function getUserProgress(
     .select("*")
     .eq("user_id", userId);
 
-  return { data: (data as Progress[]) ?? [], error };
+  if (error) {
+    return { data: [], error };
+  }
+
+  const rows = (data ?? []) as ProgressRow[];
+  return {
+    data: rows.map(normalizeProgress),
+    error: null,
+  };
 }
 
 export async function getProgressEntry(
@@ -33,12 +45,19 @@ export async function getProgressEntry(
     .eq("lesson_id", lessonId)
     .maybeSingle();
 
-  return { data: (data as Progress) ?? null, error };
+  if (error) {
+    return { data: null, error };
+  }
+
+  return {
+    data: data ? normalizeProgress(data as ProgressRow) : null,
+    error: null,
+  };
 }
 
 export async function insertProgress(
   client: Client,
-  payload: Omit<Progress, "id">
+  payload: ProgressInsert
 ): Promise<PostgrestError | null> {
   const { error } = await client.from("progress").insert(payload);
   return error ?? null;
@@ -47,7 +66,7 @@ export async function insertProgress(
 export async function updateProgressById(
   client: Client,
   id: string,
-  updates: Partial<Progress>
+  updates: ProgressUpdate
 ): Promise<PostgrestError | null> {
   const { error } = await client.from("progress").update(updates).eq("id", id);
   return error ?? null;
@@ -55,7 +74,7 @@ export async function updateProgressById(
 
 export async function upsertProgress(
   client: Client,
-  payload: Omit<Progress, "id">
+  payload: ProgressInsert
 ): Promise<PostgrestError | null> {
   const { error } = await client
     .from("progress")
@@ -69,4 +88,16 @@ export async function deleteProgressByUser(
 ): Promise<PostgrestError | null> {
   const { error } = await client.from("progress").delete().eq("user_id", userId);
   return error ?? null;
+}
+
+function normalizeProgress(row: ProgressRow): Progress {
+  return {
+    id: row.id,
+    user_id: row.user_id,
+    course: row.course,
+    lesson_id: row.lesson_id,
+    completed_exercises: row.completed_exercises,
+    updated_at: row.updated_at,
+    regenerate_count: row.regenerate_count ?? null,
+  };
 }

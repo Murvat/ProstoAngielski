@@ -1,7 +1,8 @@
 import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
 import type { ExerciseData, LessonContent } from "@/types";
+import type { Database } from "@/lib/supabase/types";
 
-type Client = SupabaseClient<any, "public", any>;
+type Client = SupabaseClient<Database>;
 
 export async function getLessonContentByOrder(
   client: Client,
@@ -66,7 +67,7 @@ export async function getLessonExercises(
     return { data: null, error };
   }
 
-  const raw = data.exercises || {};
+  const raw = (data.exercises ?? {}) as Partial<ExerciseData>;
   const exercises: ExerciseData = {
     fillGaps: raw.fillGaps ?? [],
     chooseDefinition: raw.chooseDefinition ?? [],

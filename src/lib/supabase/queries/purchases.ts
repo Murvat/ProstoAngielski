@@ -1,13 +1,15 @@
 import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
-import type { Purchase } from "@/types";
+import type { Purchase, PurchaseCourseRef } from "@/types";
+import type { Database } from "@/lib/supabase/types";
 
-type Client = SupabaseClient<any, "public", any>;
+type Client = SupabaseClient<Database>;
+type PurchaseRow = Database["public"]["Tables"]["purchases"]["Row"];
 
-function normalizePurchase(record: Record<string, any>): Purchase {
+function normalizePurchase(record: PurchaseRow): Purchase {
   return {
     id: record.id,
     user_id: record.user_id,
-    course: record.course,
+    course: normalizeCourseRef(record.course),
     payment_status: record.payment_status,
     paid_at: record.paid_at ?? null,
     payment_provider: record.payment_provider ?? null,
@@ -15,6 +17,16 @@ function normalizePurchase(record: Record<string, any>): Purchase {
     created_at: record.created_at ?? new Date().toISOString(),
     price_id: record.price_id ?? null,
   };
+}
+
+function normalizeCourseRef(course: PurchaseRow["course"]): PurchaseCourseRef {
+  if (typeof course === "string" || !course) {
+    return course ?? "";
+  }
+  if (typeof course === "object" && "id" in course) {
+    return course as PurchaseCourseRef;
+  }
+  return "";
 }
 
 export async function getUserPurchases(
@@ -26,11 +38,12 @@ export async function getUserPurchases(
     .select("*")
     .eq("user_id", userId);
 
-  if (error || !data) {
+  if (error) {
     return { data: [], error };
   }
 
-  return { data: data.map(normalizePurchase), error: null };
+  const rows = (data ?? []) as PurchaseRow[];
+  return { data: rows.map(normalizePurchase), error: null };
 }
 
 export async function getLatestPaidPurchase(
@@ -46,11 +59,14 @@ export async function getLatestPaidPurchase(
     .limit(1)
     .maybeSingle();
 
-  if (error || !data) {
+  if (error) {
     return { data: null, error };
   }
 
-  return { data: normalizePurchase(data), error: null };
+  return {
+    data: data ? normalizePurchase(data as PurchaseRow) : null,
+    error: null,
+  };
 }
 
 export async function hasPaidPurchase(
@@ -84,11 +100,14 @@ export async function getPurchaseForCourse(
     .eq("course", courseId)
     .maybeSingle();
 
-  if (error || !data) {
+  if (error) {
     return { data: null, error };
   }
 
-  return { data: normalizePurchase(data), error: null };
+  return {
+    data: data ? normalizePurchase(data as PurchaseRow) : null,
+    error: null,
+  };
 }
 
 type InsertPurchasePayload = {
