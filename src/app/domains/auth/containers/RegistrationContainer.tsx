@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
-import { signup, type SignupState } from "@/app/(pages)/auth/actions";
+import { useEffect } from "react";
+import { useFormState } from "react-dom";
+import { signup, type SignupState } from "@/app/(pages)/(auth)/actions";
 import TitleRegistration from "../components/TitleRegistration";
 import BenefitsPayment from "../../payments/components/BenefitsPayment";
 import GoogleSignInButton from "../components/GoogleSignInButton";
@@ -14,7 +15,7 @@ import Image from "next/image";
 const initialState: SignupState = { success: null, errors: {} };
 
 export default function RegistrationContainer() {
-  const [state, formAction] = useActionState(signup, initialState);
+  const [state, formAction] = useFormState(signup, initialState);
   const router = useRouter();
 
   useEffect(() => {

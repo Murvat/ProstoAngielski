@@ -37,7 +37,9 @@ export async function updateSession(request: NextRequest) {
     path.startsWith("/contact") ||
     path.startsWith("/blog") ||
     path.startsWith("/confirm") ||
-    path.startsWith("/privacy");
+    path.startsWith("/privacy") ||
+    path.startsWith("/reset") ||
+    path.startsWith("/update-password");
 
   // 1️⃣ Not logged in → redirect to /login
   if ((!user || error) && !isPublic) {

@@ -1,24 +1,37 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
-import { login, type LoginState } from "@/app/(pages)/auth/actions";
+import { useEffect, useMemo } from "react";
+import { useFormState } from "react-dom";
+import { login, type LoginState } from "@/app/(pages)/(auth)/actions";
 import GoogleSignInButton from "../components/GoogleSignInButton";
 import { useRouter } from "next/navigation";
 import AuthForm from "../components/AuthForm";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 const initialState: LoginState = { success: null, errors: {} };
 
 export default function LoginContainer() {
-  const [state, formAction] = useActionState(login, initialState);
+  const [state, formAction] = useFormState(login, initialState);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const redirectTarget = useMemo(() => {
+    const candidate = searchParams.get("next");
+    if (!candidate) return "/profile";
+    // only allow same-origin relative paths
+    if (!candidate.startsWith("/") || candidate.startsWith("//")) return "/profile";
+    if (candidate === "/login") return "/profile";
+    return candidate;
+  }, [searchParams]);
 
   useEffect(() => {
     if (state.success) {
-      router.push("/profile");
+      router.push(redirectTarget);
     }
-  }, [state.success, router]);
+  }, [state.success, router, redirectTarget]);
 
   return (
     <section className="min-h-screen w-full flex flex-col md:flex-row bg-gradient-to-br from-green-50 via-white to-emerald-100 overflow-hidden">
@@ -107,12 +120,9 @@ export default function LoginContainer() {
 
           <p className="text-sm text-gray-600 mt-6 text-center">
             Zapomniałeś hasła?{" "}
-            <a
-              href="/auth/reset"
-              className="text-green-600 hover:text-green-700 hover:underline"
-            >
+            <Link href="/reset" className="text-green-600 hover:text-green-700 hover:underline">
               Zresetuj je tutaj
-            </a>
+            </Link>
           </p>
         </div>
       </motion.div>
