@@ -12,19 +12,26 @@ export default function ResetPasswordForm() {
   const [message, setMessage] = useState<string | null>(null);
 
   const redirectTo = useMemo(() => {
-    const base =
-      process.env.NEXT_PUBLIC_SITE_URL ??
-      (typeof window !== "undefined" ? window.location.origin : undefined);
+    const candidateOrigins: Array<string | undefined> = [];
 
-    if (!base) return undefined;
-
-    try {
-      const url = new URL("/auth/update-password", base);
-      return url.toString();
-    } catch (error) {
-      console.error("Invalid NEXT_PUBLIC_SITE_URL value:", error);
-      return undefined;
+    if (typeof window !== "undefined") {
+      candidateOrigins.push(window.location.origin);
     }
+
+    candidateOrigins.push(process.env.NEXT_PUBLIC_SITE_URL);
+
+    for (const origin of candidateOrigins) {
+      if (!origin) continue;
+
+      try {
+        const url = new URL("/auth/update-password", origin);
+        return url.toString();
+      } catch (error) {
+        console.error("Invalid redirect origin supplied for password reset:", origin, error);
+      }
+    }
+
+    return undefined;
   }, []);
 
   async function handleReset(event: FormEvent<HTMLFormElement>) {
@@ -58,7 +65,8 @@ export default function ResetPasswordForm() {
         <form onSubmit={handleReset} className="space-y-4">
           {!redirectTo && (
             <p className="rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-3 text-sm text-yellow-700">
-              Brakuje adresu przekierowania. Ustaw zmienna NEXT_PUBLIC_SITE_URL lub sproboj ponownie pozniej.
+              Brakuje adresu przekierowania. Ustaw zmienna NEXT_PUBLIC_SITE_URL (np. http://localhost:3000)
+              i dodaj ja w Supabase Auth Redirect URLs, aby link dzialal poprawnie.
             </p>
           )}
           <div className="space-y-2">

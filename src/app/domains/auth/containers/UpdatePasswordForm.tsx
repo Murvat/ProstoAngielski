@@ -46,6 +46,19 @@ export default function UpdatePasswordForm() {
           }
         }
 
+        const redirectError = searchParams.get("error");
+        const redirectErrorDescription = searchParams.get("error_description");
+
+        if (redirectError) {
+          const description =
+            redirectErrorDescription?.replace(/\+/g, " ") ?? "Link resetujacy jest nieprawidlowy lub wygasl.";
+          const errorText = decodeURIComponent(description);
+          setStatus("error");
+          setMessage(`❌ ${errorText}`);
+          setCheckingLink(false);
+          return;
+        }
+
         const rawCode = searchParams.get("code") ?? searchParams.get("token");
         const recoveryEmail = searchParams.get("email");
 
