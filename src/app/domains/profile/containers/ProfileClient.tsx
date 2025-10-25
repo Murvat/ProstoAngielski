@@ -7,7 +7,6 @@ import { ProfileCoursesNew } from "../components/ProfileCoursesNew";
 import { ProfileUserData } from "../components/ProfileUserData";
 import { ProfileSettings } from "../components/ProfileSettings";
 import { ProfilePayments } from "../components/ProfilePayments";
-import { ProfileMobileApp } from "../components/ProfileMobileApp";
 import type {
   Course,
   Purchase,
