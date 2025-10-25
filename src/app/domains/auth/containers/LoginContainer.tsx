@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { login, type LoginState } from "@/app/auth/actions";
+import { login, type LoginState } from "@/app/(pages)/auth/actions";
 import GoogleSignInButton from "../components/GoogleSignInButton";
 import { useRouter } from "next/navigation";
 import AuthForm from "../components/AuthForm";
