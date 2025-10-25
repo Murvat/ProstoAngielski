@@ -41,7 +41,7 @@ export default function FramePreview() {
         className="w-full max-w-3xl mt-12 rounded-xl overflow-hidden shadow-2xl"
       >
         <iframe
-          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+          src="https://www.youtube.com/embed/42PngmYR2xg?si=BtsE1MNuo7U7n_Lk"
           className="w-full aspect-video rounded-t-xl"
           style={{ border: "none" }}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
