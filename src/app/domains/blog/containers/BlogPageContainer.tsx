@@ -5,6 +5,7 @@ import Image from "next/image";
 import NavbarContainer from "@/app/domains/navbar/containers/NavbarContainer";
 import BlogCard from "../components/BlogCard";
 import { useBlogs } from "../features/useBlogs";
+import PromoBanner from "../../layouts/components/PromoBanner";
 
 export default function BlogPageContainer() {
   const { filteredBlogs, search, setSearch, loading } = useBlogs();
@@ -12,6 +13,7 @@ export default function BlogPageContainer() {
   return (
     <>
       <NavbarContainer initialUser={null} />
+      <PromoBanner />
 
       <section className="relative max-w-screen-xl mx-auto px-6 md:px-12 py-28 transition-all">
         <motion.div
