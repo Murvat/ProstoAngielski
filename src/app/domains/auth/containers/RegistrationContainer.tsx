@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { signup, type SignupState } from "@/app/(pages)/auth/actions";
+import { signup, type SignupState } from "@/app/auth/actions";
 import TitleRegistration from "../components/TitleRegistration";
 import BenefitsPayment from "../../payments/components/BenefitsPayment";
 import GoogleSignInButton from "../components/GoogleSignInButton";
