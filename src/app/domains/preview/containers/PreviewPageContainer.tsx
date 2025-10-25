@@ -14,6 +14,7 @@ export default function PreviewPageContainer() {
   return (
     <>
       <NavbarContainer initialUser={null} />
+      <PromoBanner />
       <Hero />
       <FramePreview />
       <Description />

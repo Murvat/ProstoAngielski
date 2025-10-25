@@ -1,59 +1,109 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase/client/supabaseClient";
+
+type Status = "idle" | "loading" | "success" | "error";
 
 export default function ResetPasswordForm() {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<Status>("idle");
+  const [message, setMessage] = useState<string | null>(null);
 
-  async function handleReset(e: React.FormEvent) {
-    e.preventDefault();
+  const redirectTo = useMemo(() => {
+    const base =
+      process.env.NEXT_PUBLIC_SITE_URL ??
+      (typeof window !== "undefined" ? window.location.origin : undefined);
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/update-password`,
-    });
+    if (!base) return undefined;
 
-    if (error)
-      setMessage(
-        "✅ Jeśli konto z tym adresem e-mail istnieje, wysłaliśmy link do resetu hasła."
-      );
-    else
-      setMessage(
-        "✅ Jeśli konto z tym adresem e-mail istnieje, wysłaliśmy link do resetu hasła."
-      );
+    try {
+      const url = new URL("/auth/update-password", base);
+      return url.toString();
+    } catch (error) {
+      console.error("Invalid NEXT_PUBLIC_SITE_URL value:", error);
+      return undefined;
+    }
+  }, []);
+
+  async function handleReset(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setStatus("loading");
+    setMessage(null);
+
+    const options = redirectTo ? { redirectTo } : undefined;
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), options);
+
+    if (error) {
+      console.error("Reset password error:", error);
+      setStatus("error");
+      setMessage("❌ Nie udalo sie wyslac wiadomosci. Sprobuj ponownie za chwile.");
+      return;
+    }
+
+    setStatus("success");
+    setMessage("✅ Jesli konto z tym adresem istnieje, wyslalismy link do ustawienia nowego hasla.");
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-green-50">
-      <form
-        onSubmit={handleReset}
-        className="bg-white p-8 rounded-xl shadow-md w-full max-w-md hover:shadow-lg transition-shadow cursor-pointer"
-      >
-        <h1 className="text-xl font-semibold text-green-700 mb-4">
-          Zresetuj hasło
-        </h1>
+    <section className="min-h-screen bg-green-50 flex items-center justify-center px-4 py-16 pt-28">
+      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg ring-1 ring-green-100">
+        <h1 className="text-2xl font-bold text-green-700 mb-2 text-center">Odzyskaj dostep do konta</h1>
+        <p className="text-sm text-gray-600 mb-6 text-center">
+          Podaj adres e-mail, z ktorego korzystasz na platformie. Wyslemy link do ustawienia nowego hasla.
+        </p>
 
-        <input
-          type="email"
-          placeholder="Twój adres e-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 
-          focus:border-green-500 focus:ring-green-500 hover:border-green-400 cursor-pointer"
-        />
+        <form onSubmit={handleReset} className="space-y-4">
+          {!redirectTo && (
+            <p className="rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-3 text-sm text-yellow-700">
+              Brakuje adresu przekierowania. Ustaw zmienna NEXT_PUBLIC_SITE_URL lub sproboj ponownie pozniej.
+            </p>
+          )}
+          <div className="space-y-2">
+            <label htmlFor="reset-email" className="block text-sm font-medium text-gray-700">
+              Adres e-mail
+            </label>
+            <input
+              id="reset-email"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+              placeholder="twojmail@domena.pl"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm shadow-sm transition focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 
-          text-white font-semibold py-3 rounded-lg transition-colors duration-200 cursor-pointer"
-        >
-          Wyślij link do resetu
-        </button>
+          <button
+            type="submit"
+            disabled={status === "loading" || status === "success"}
+            className="w-full rounded-lg bg-green-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {status === "loading" ? "Wysylamy link..." : "Wyslij link resetujacy"}
+          </button>
+        </form>
 
-        {message && <p className="mt-3 text-sm text-gray-700">{message}</p>}
-      </form>
+        {message && (
+          <p
+            className={`mt-4 text-sm text-center ${
+              status === "success" ? "text-green-600" : "text-red-600"
+            }`}
+            role="status"
+            aria-live="polite"
+          >
+            {message}
+          </p>
+        )}
+
+        <div className="mt-6 text-center text-sm text-gray-600">
+          Pamietasz haslo?{" "}
+          <Link href="/login" className="font-semibold text-green-700 hover:text-green-800">
+            Wroc do logowania
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }
