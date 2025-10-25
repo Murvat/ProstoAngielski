@@ -7,7 +7,6 @@ import { ProfileCoursesNew } from "../components/ProfileCoursesNew";
 import { ProfileUserData } from "../components/ProfileUserData";
 import { ProfileSettings } from "../components/ProfileSettings";
 import { ProfilePayments } from "../components/ProfilePayments";
-import { ProfileMobileApp } from "../components/ProfileMobileApp";
 import type {
   Course,
   Purchase,
@@ -199,17 +198,6 @@ export default function ProfileClient() {
             </motion.div>
           )}
 
-          {activeTab === "mobilna" && (
-            <motion.div
-              key="mobilna"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-            >
-              <ProfileMobileApp />
-            </motion.div>
-          )}
         </AnimatePresence>
       </motion.div>
     </section>

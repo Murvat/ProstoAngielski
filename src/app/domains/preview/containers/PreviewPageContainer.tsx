@@ -8,8 +8,7 @@ import Compare from "../components/Compare";
 import Difference from "../components/Difference";
 import Footer from "../components/Footer";
 import NavbarContainer from "../../navbar/containers/NavbarContainer";
-import PromoBanner from "../../layouts/components/PromoBanner";
-import Carousel from "../components/Carousel";
+
 import FramePreview from "../components/Frame";
 export default function PreviewPageContainer() {
   return (
@@ -17,7 +16,6 @@ export default function PreviewPageContainer() {
       <NavbarContainer initialUser={null} />
       <PromoBanner />
       <Hero />
-      {/* <Carousel /> */}
       <FramePreview />
       <Description />
       <Prices />

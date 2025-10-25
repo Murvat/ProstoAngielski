@@ -1,1 +1,1 @@
-export const FREE_LESSON_LIMIT = 14;
+export const FREE_LESSON_LIMIT = 25;
