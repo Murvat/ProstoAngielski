@@ -1,31 +1,39 @@
 "use client";
+
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import LessonContentSkeleton from "./LessonContentSkeleton";
 
-export default function LessonContent({
-  content,
-  isLoading = false,
-}: {
+type LessonContentProps = {
   content: string;
   isLoading?: boolean;
-}) {
+};
+
+export default function LessonContent({ content, isLoading = false }: LessonContentProps) {
   if (isLoading) {
     return (
-      <div className="max-w-4xl mx-auto p-6 ">
-                <LessonContentSkeleton />
-
+      <div className="h-full rounded-3xl">
+        <LessonContentSkeleton />
       </div>
     );
   }
 
   if (!content) {
-    return <p className="text-gray-500 text-center mt-10">Brak treści lekcji.</p>;
+    return (
+      <div className="flex h-full flex-col items-center justify-center gap-2 rounded-3xl bg-white p-10 text-center">
+        <p className="text-base font-semibold text-emerald-700">Brak treści lekcji.</p>
+        <p className="text-sm text-gray-500">
+          Spróbuj ponownie za chwilę lub użyj przycisku po prawej, aby wygenerować nową wersję materiału.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <section className="prose dark:prose-invert max-w-4xl mx-auto p-6 transition-opacity duration-500">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
-    </section>
+    <article className="rounded-3xl bg-white px-5 py-8 sm:px-8 md:px-12 md:py-12">
+      <div className="prose prose-emerald max-w-none leading-relaxed md:prose-lg">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+      </div>
+    </article>
   );
 }

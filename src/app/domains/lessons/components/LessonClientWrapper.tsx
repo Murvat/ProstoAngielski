@@ -1,8 +1,18 @@
 "use client";
+
 import { useState } from "react";
-import LessonContent from "../components/LessonContent";
-import LessonRegenerateButton from "../components/LessonRegenerateButton";
-import { LessonPdfButton } from "../components/LessonPdfButton";
+import LessonContent from "./LessonContent";
+import LessonRegenerateButton from "./LessonRegenerateButton";
+import { LessonPdfButton } from "./LessonPdfButton";
+
+type LessonClientWrapperProps = {
+  initialContent: string;
+  course: string;
+  lessonId: string;
+  topic: string;
+  level: string;
+  pdfPath?: string;
+};
 
 export function LessonClientWrapper({
   initialContent,
@@ -11,31 +21,31 @@ export function LessonClientWrapper({
   topic,
   level,
   pdfPath,
-}: {
-    initialContent: string;
-    course: string;
-    lessonId: string;
-  topic: string;
-  level: string;
-  pdfPath?: string;
-}) {
+}: LessonClientWrapperProps) {
   const [content, setContent] = useState(initialContent);
-  const [loading, setLoading] = useState(false); // 👈 track regeneration loading state
+  const [loading, setLoading] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_PDF_BASE_URL ?? "";
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-8">
       <LessonRegenerateButton
         topic={topic}
         level={level}
-        course={course} 
+        course={course}
         lessonId={lessonId}
-        onRegenerate={(newContent) => setContent(newContent)}
-        setLoading={setLoading} // 👈 pass setter down
+        onRegenerate={(nextContent) => setContent(nextContent)}
+        setLoading={setLoading}
       />
-      <LessonContent content={content} isLoading={loading} /> {/* 👈 pass state */}
-      {pdfPath && <LessonPdfButton baseUrl={baseUrl} pdfPath={pdfPath} />}
+
+      <div className="rounded-3xl border border-emerald-100 bg-white shadow-md shadow-emerald-100/40">
+        <LessonContent content={content} isLoading={loading} />
+      </div>
+
+      {pdfPath && (
+        <div className="flex justify-end">
+          <LessonPdfButton baseUrl={baseUrl} pdfPath={pdfPath} />
+        </div>
+      )}
     </div>
   );
 }
-

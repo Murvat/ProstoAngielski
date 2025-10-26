@@ -12,6 +12,10 @@ type SidebarContainerProps = {
     lessonOrder: number;
     isExercise: boolean;
   }) => void;
+  variant?: "desktop" | "mobile";
+  className?: string;
+  onClose?: () => void;
+  onNavigate?: () => void;
 };
 
 export default function SidebarContainer({
@@ -20,6 +24,10 @@ export default function SidebarContainer({
   hasFullAccess = false,
   isAccessLoading = false,
   onLockedLessonAttempt,
+  variant = "desktop",
+  className,
+  onClose,
+  onNavigate,
 }: SidebarContainerProps) {
   const completedLessons = useMemo(() => {
     return new Set(
@@ -32,12 +40,12 @@ export default function SidebarContainer({
   const completedExercises = useMemo(() => {
     return new Set(
       progress
-        .filter(
-          (entry) => entry.course === course.id && entry.completed_exercises
-        )
+        .filter((entry) => entry.course === course.id && entry.completed_exercises)
         .map((entry) => entry.lesson_id)
     );
   }, [course.id, progress]);
+
+  const forwardedClassName = className ?? (variant === "mobile" ? "h-full" : undefined);
 
   return (
     <LeftSidebar
@@ -47,6 +55,10 @@ export default function SidebarContainer({
       hasFullAccess={hasFullAccess}
       isAccessLoading={isAccessLoading}
       onLockedLessonAttempt={onLockedLessonAttempt}
+      variant={variant}
+      className={forwardedClassName}
+      onClose={onClose}
+      onNavigate={onNavigate}
     />
   );
 }
