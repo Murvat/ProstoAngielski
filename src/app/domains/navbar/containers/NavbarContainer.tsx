@@ -21,6 +21,7 @@ export default function NavbarContainer({ initialUser }: { initialUser: User | n
   const goLogin = () => router.push("/login");
   const goContact = () => router.push("/contact");
   const goBlog = () => router.push("/blog");
+  const goPractices = () => router.push("/practices");
 
 
   return (
@@ -34,6 +35,7 @@ export default function NavbarContainer({ initialUser }: { initialUser: User | n
       onGoContact={goContact}
       onGoPayments={goPayments}
       onGoBlog={goBlog}
+      onGoPractices={goPractices}
       onLogout={logout}
       onLogin={goLogin}
     />
