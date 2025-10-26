@@ -15,7 +15,7 @@ import { useBuyCourse } from "../../profile/features/useBuyCourse";
 import { supabase } from "@/lib/supabase/client/supabaseClient";
 import { getLessonHeading } from "@/lib/supabase/queries";
 import { CourseAccessContext } from "@/app/domains/lessons/context/CourseAccessContext";
-import { Lock, ShoppingCart, X } from "lucide-react";
+import { Lock, ShoppingCart, X, Menu, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FREE_LESSON_LIMIT } from "../../lessons/constants";
 const TRIAL_LIMIT = FREE_LESSON_LIMIT;
@@ -40,6 +40,8 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
   const [loading, setLoading] = useState(true);
   const [lessonHeading, setLessonHeading] = useState("");
   const [showLockModal, setShowLockModal] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [mobileChatOpen, setMobileChatOpen] = useState(false);
 
   const [profile, setProfile] = useState<ProfileState>({
     user: null,
@@ -115,6 +117,11 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
     }
   }, [loading, hasFullAccess, lessonOrderNumber, freeLessonLimit]);
 
+  useEffect(() => {
+    setMobileSidebarOpen(false);
+    setMobileChatOpen(false);
+  }, [pathname]);
+
   const accessContextValue = useMemo(
     () => ({
       hasFullAccess,
@@ -144,8 +151,106 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
           <NavbarContainer initialUser={profile.user} />
         </header>
 
+        {!mobileSidebarOpen && (
+          <button
+            type="button"
+            disabled={!course}
+            onClick={() => setMobileSidebarOpen(true)}
+            className="fixed bottom-5 left-5 z-40 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white shadow-lg shadow-emerald-200/60 transition hover:from-emerald-400 hover:to-teal-400 focus:outline-none focus:ring-2 focus:ring-emerald-200 disabled:cursor-not-allowed disabled:opacity-60 md:hidden"
+            aria-label="Otwórz nawigację kursu"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        )}
+
+        {!mobileChatOpen && (
+          <button
+            type="button"
+            onClick={() => setMobileChatOpen(true)}
+            className="fixed bottom-5 right-5 z-40 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white shadow-lg shadow-emerald-200/60 transition hover:from-emerald-400 hover:to-teal-400 focus:outline-none focus:ring-2 focus:ring-emerald-200 md:hidden"
+            aria-label="Otwórz czat z MurAi"
+          >
+            <MessageCircle className="h-5 w-5" />
+          </button>
+        )}
+
+        <AnimatePresence>
+          {mobileSidebarOpen && course && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex md:hidden"
+              onClick={() => setMobileSidebarOpen(false)}
+            >
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+              />
+              <motion.div
+                initial={{ x: "-100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "-100%" }}
+                transition={{ type: "spring", stiffness: 260, damping: 30 }}
+                className="relative z-10 h-full w-5/6 max-w-sm"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <SidebarContainer
+                  course={course}
+                  progress={profile.progress}
+                  hasFullAccess={hasFullAccess}
+                  isAccessLoading={loading}
+                  variant="mobile"
+                  onClose={() => setMobileSidebarOpen(false)}
+                  onNavigate={() => setMobileSidebarOpen(false)}
+                />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {mobileChatOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex md:hidden"
+              onClick={() => setMobileChatOpen(false)}
+            >
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+              />
+              <motion.div
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "100%" }}
+                transition={{ type: "spring", stiffness: 260, damping: 30 }}
+                className="relative z-10 flex h-full w-full items-end px-4 pb-4"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className="h-[88vh] w-full overflow-hidden rounded-3xl border border-emerald-100 bg-white shadow-xl">
+                  <ChatbotSidebar
+                    course={courseId}
+                    topic={lessonHeading}
+                    onCollapse={() => setMobileChatOpen(false)}
+                  />
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <div className="flex w-full">
-          <aside className="fixed top-16 bottom-0 left-0 hidden lg:block w-80 bg-gray-50 overflow-y-auto hover:shadow-md z-40">
+          <aside
+            className="fixed top-16 bottom-0 left-0 hidden overflow-y-auto bg-white/90 shadow-md lg:block z-40"
+            style={{ width: "var(--lesson-sidebar-width)" }}
+          >
             {course && (
               <SidebarContainer
                 course={course}
@@ -158,12 +263,12 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
 
           <section
             id="lessonContent"
-            className="relative flex-1 min-w-0 flex flex-col pb-16 px-6 bg-white lg:ml-80 md:mr-72 lg:mr-80 xl:mr-96"
+            className="lesson-content-offset relative flex min-w-0 flex-1 flex-col bg-white px-4 pb-16 md:px-6"
           >
             {children}
           </section>
 
-          <aside className="fixed top-16 bottom-0 right-0 hidden md:block w-72 lg:w-80 xl:w-96 bg-gray-50 overflow-y-auto hover:shadow-md z-40">
+          <aside className="lesson-chatbot-container fixed top-16 bottom-0 right-0 hidden md:flex flex-col overflow-hidden bg-white/90 shadow-md z-40">
             <ChatbotSidebar course={courseId} topic={lessonHeading} />
           </aside>
         </div>
@@ -171,7 +276,7 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
         {/* Footer */}
         {!courseLoading && (
           <Footer
-            className="absolute bottom-0 left-0 right-0 lg:left-80 md:right-72 lg:right-80 xl:right-96"
+            className="lesson-footer-offset absolute bottom-0 left-0 right-0"
             onPrev={() => prev && router.push(getPath(courseId, prev))}
             onNext={() =>
               handleNext(async () => {

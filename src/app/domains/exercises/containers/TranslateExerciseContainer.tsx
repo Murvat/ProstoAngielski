@@ -6,15 +6,17 @@ import ExerciseHeader from "../components/ExerciseHeader";
 import ExerciseFooter from "../components/ExerciseFooter";
 import FeedbackMessage from "../components/FeedbackMessage";
 
+type TranslateExerciseContainerProps = {
+  items: TranslateItem[];
+  onComplete: () => void;
+  lessonId: string;
+};
+
 export default function TranslateExerciseContainer({
   items,
   onComplete,
   lessonId,
-}: {
-  items: TranslateItem[];
-  onComplete: () => void;
-  lessonId: string;
-}) {
+}: TranslateExerciseContainerProps) {
   const storageKey = `exercise-progress-${lessonId}-translate`;
 
   const [index, setIndex] = useState(0);
@@ -22,56 +24,58 @@ export default function TranslateExerciseContainer({
   const [status, setStatus] = useState<"idle" | "wrong" | "correct">("idle");
   const [revealed, setRevealed] = useState<"none" | "hint" | "answer">("none");
   const [restored, setRestored] = useState(false);
+
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const total = items.length;
-  const q = items[index];
-  const progress = useMemo(
-    () => Math.round(((index + 1) / total) * 100),
-    [index, total]
-  );
+  const question = items[index];
+  const progress = useMemo(() => Math.round(((index + 1) / total) * 100), [index, total]);
 
-  // 🔹 Przywróć zapisany postęp
   useEffect(() => {
-    const saved = localStorage.getItem(storageKey);
+    if (typeof window === "undefined") return;
+    const saved = window.localStorage.getItem(storageKey);
     if (saved) {
       try {
-        const parsed = JSON.parse(saved);
-        if (parsed.index < total) {
-          setIndex(parsed.index ?? 0);
+        const parsed = JSON.parse(saved) as {
+          index?: number;
+          value?: string;
+          status?: "idle" | "wrong" | "correct";
+          revealed?: "none" | "hint" | "answer";
+        };
+
+        if (typeof parsed.index === "number" && parsed.index < total) {
+          setIndex(parsed.index);
           setValue(parsed.value ?? "");
           setStatus(parsed.status ?? "idle");
           setRevealed(parsed.revealed ?? "none");
         }
-      } catch {
-        console.error("❌ Nie udało się odczytać zapisanych danych");
+      } catch (err) {
+        console.error("Nie udało się odczytać zapisanego postępu ćwiczenia tłumaczeniowego.", err);
       }
     }
     setRestored(true);
   }, [storageKey, total]);
 
-  // 🔹 Zapisz postęp po przywróceniu
   useEffect(() => {
-    if (!restored) return;
+    if (!restored || typeof window === "undefined") return;
     const state = { index, value, status, revealed };
-    localStorage.setItem(storageKey, JSON.stringify(state));
+    window.localStorage.setItem(storageKey, JSON.stringify(state));
   }, [index, value, status, revealed, storageKey, restored]);
 
-  const normalize = useCallback((s: string) => {
-    return s
+  const normalize = useCallback((text: string) => {
+    return text
       .toLowerCase()
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[“”‘’]/g, '"')
-      .replace(/[^a-z0-9'\s]/g, " ")
+      .replace(/[^a-z0-9'’\s]/g, " ")
       .replace(/\s+/g, " ")
       .trim();
   }, []);
 
   const acceptableAnswers = useMemo(() => {
-    const arr = Array.isArray(q.target) ? q.target : [q.target];
-    return arr.map((a) => normalize(String(a)));
-  }, [q, normalize]);
+    const answers = Array.isArray(question.target) ? question.target : [question.target];
+    return answers.map((answer) => normalize(String(answer)));
+  }, [question, normalize]);
 
   const handleCheck = () => {
     if (!value.trim()) return;
@@ -85,75 +89,75 @@ export default function TranslateExerciseContainer({
 
   const handleNext = () => {
     if (index + 1 < total) {
-      setIndex(index + 1);
+      setIndex((prev) => prev + 1);
       setValue("");
       setStatus("idle");
       setRevealed("none");
       requestAnimationFrame(() => textareaRef.current?.focus());
     } else {
-      localStorage.removeItem(storageKey);
+      if (typeof window !== "undefined") {
+        window.localStorage.removeItem(storageKey);
+      }
       onComplete();
     }
   };
 
-  const handleHintOrAnswer = () => {
+  const handleReveal = () => {
     if (revealed === "none") setRevealed("hint");
     else if (revealed === "hint") setRevealed("answer");
   };
 
-  if (!q) return <p>Brak zadań typu „tłumaczenie”.</p>;
+  if (!question) {
+    return <p className="text-sm text-gray-500">Brak ćwiczeń tłumaczeniowych dla tej lekcji.</p>;
+  }
+
+  const formattedAnswers = Array.isArray(question.target) ? question.target.join(", ") : question.target;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <ExerciseHeader
         title="Przetłumacz zdanie"
-        subtitle="Polski → Angielski"
+        subtitle="Napisz naturalne tłumaczenie na język angielski."
         progress={progress}
         current={index + 1}
         total={total}
       />
 
-      <p className="text-lg bg-gray-100 p-2 rounded font-medium text-gray-800">
-        {q.source}
-      </p>
+      <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-5 text-base font-medium text-emerald-900 shadow-inner md:text-lg">
+        {question.source}
+      </div>
 
-      <textarea
-        ref={textareaRef}
-        className="w-full border border-gray-300 rounded-lg p-2 min-h-[100px] 
-        focus:border-green-500 focus:ring-green-500 hover:border-green-400 transition-colors duration-200 cursor-pointer"
-        value={value}
-        onChange={(e) => {
-          setValue(e.target.value);
-          if (status !== "idle") setStatus("idle");
-        }}
-      />
+      <label className="space-y-3">
+        <span className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-500">Twoje tłumaczenie</span>
+        <div className="group relative">
+          <textarea
+            ref={textareaRef}
+            value={value}
+            onChange={(event) => {
+              setValue(event.target.value);
+              if (status !== "idle") setStatus("idle");
+            }}
+            placeholder="Zapisz pełne zdanie po angielsku..."
+            className="min-h-[150px] w-full rounded-2xl border border-emerald-100 bg-white px-5 py-3 text-base text-gray-800 shadow-sm transition focus:border-transparent focus:outline-none focus:ring-2 focus:ring-emerald-200"
+          />
+          <div className="pointer-events-none absolute inset-0 rounded-2xl border border-transparent bg-gradient-to-r from-emerald-100/20 to-teal-100/20 opacity-0 transition group-focus-within:opacity-100" />
+        </div>
+      </label>
 
-      {/* ✅ Poprawna odpowiedź */}
       {status === "correct" && (
-        <FeedbackMessage type="correct" message="✅ Dobrze!" />
+        <FeedbackMessage type="correct" message="Świetnie! Twoje tłumaczenie brzmi naturalnie." />
       )}
 
-      {/* ❌ Niepoprawna odpowiedź */}
       {status === "wrong" && revealed === "none" && (
-        <FeedbackMessage
-          type="wrong"
-          message="❌ Nie do końca dobrze. Spróbuj ponownie!"
-        />
+        <FeedbackMessage type="wrong" message="Jeszcze chwila! Sprawdź szyk zdania i użyte słownictwo." />
       )}
 
-      {/* 💡 Podpowiedź */}
-      {revealed === "hint" && q.hint && (
-        <FeedbackMessage type="hint" message={`💡 Podpowiedź: ${q.hint}`} />
+      {revealed === "hint" && question.hint && (
+        <FeedbackMessage type="hint" message={`Podpowiedź: ${question.hint}`} />
       )}
 
-      {/* ✅ Pokaż odpowiedź */}
       {revealed === "answer" && (
-        <FeedbackMessage
-          type="wrong"
-          message={`✅ Poprawne odpowiedzi: ${
-            Array.isArray(q.target) ? q.target.join(", ") : q.target
-          }`}
-        />
+        <FeedbackMessage type="hint" message={`Poprawne odpowiedzi: ${formattedAnswers}`} />
       )}
 
       <ExerciseFooter
@@ -162,13 +166,13 @@ export default function TranslateExerciseContainer({
             ? "Pokaż podpowiedź"
             : revealed === "hint"
             ? "Pokaż odpowiedź"
-            : "Odpowiedź pokazana"
+            : "Odpowiedź została pokazana"
         }
-        onLeftClick={handleHintOrAnswer}
+        onLeftClick={handleReveal}
         leftDisabled={revealed === "answer"}
-        rightLabel={status === "correct" ? "Dalej" : "Sprawdź odpowiedź"}
-        onRightClick={status === "correct" ? handleNext : handleCheck}
-        rightDisabled={!value.trim() && status !== "correct"}
+        rightLabel={status === "correct" || revealed === "answer" ? "Przejdź dalej" : "Sprawdź odpowiedź"}
+        onRightClick={status === "correct" || revealed === "answer" ? handleNext : handleCheck}
+        rightDisabled={!value.trim() && revealed !== "answer" && status !== "correct"}
       />
     </div>
   );
