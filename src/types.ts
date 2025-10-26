@@ -154,3 +154,67 @@ export type BlogPost = {
   blog: string;
   created_at: string;
 };
+
+export type PracticeTaskType =
+  | "cloze_test"
+  | "fill_in_blank"
+  | "multiple_choice"
+  | "error_correction"
+  | "sentence_builder";
+
+export type PracticeTaskBase = {
+  id: number;
+  hint?: string;
+  type: PracticeTaskType;
+  errors?: string[];
+  answers: string[];
+  question: string;
+  answer_key?: string;
+};
+
+export type ClozePracticeTask = PracticeTaskBase & {
+  type: "cloze_test" | "fill_in_blank" | "error_correction";
+};
+
+export type MultipleChoicePracticeTask = PracticeTaskBase & {
+  type: "multiple_choice";
+  options: string[];
+};
+
+export type SentenceBuilderPracticeTask = PracticeTaskBase & {
+  type: "sentence_builder";
+  words: string[];
+};
+
+export type PracticeTask =
+  | ClozePracticeTask
+  | MultipleChoicePracticeTask
+  | SentenceBuilderPracticeTask;
+
+export type PracticeFlashcard = {
+  id: number;
+  hint?: string;
+  level?: string | null;
+  question: string;
+  correct_answer: string;
+  example_sentence?: string;
+};
+
+export type PracticeVocabularyItem = {
+  id: number;
+  word: string;
+  options: string[];
+  correct_answer: string;
+  hint?: string;
+};
+
+export type PracticeVocabularyMap = Record<string, PracticeVocabularyItem[]>;
+
+export type MobileLevel = {
+  id: string;
+  level: string;
+  tasks: PracticeTask[];
+  flashcards: PracticeFlashcard[];
+  vocabulary: PracticeVocabularyMap;
+  created_at: string | null;
+};

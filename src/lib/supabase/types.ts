@@ -1,4 +1,11 @@
-import type { CourseStructure, ExerciseData, PurchaseCourseRef } from "@/types";
+import type {
+  CourseStructure,
+  ExerciseData,
+  PracticeFlashcard,
+  PracticeTask,
+  PracticeVocabularyMap,
+  PurchaseCourseRef,
+} from "@/types";
 
 export type Json =
   | string
@@ -214,6 +221,33 @@ export type Database = {
           created_at?: string;
           plan?: "monthly" | "yearly" | "free_trial";
           price_id?: string;
+        };
+        Relationships: [];
+      };
+      mobile_levels: {
+        Row: {
+          id: string;
+          level: string;
+          tasks: PracticeTask[];
+          flashcards: PracticeFlashcard[];
+          vocabulary: PracticeVocabularyMap;
+          created_at: Nullable<string>;
+        };
+        Insert: {
+          id?: string;
+          level: string;
+          tasks: PracticeTask[];
+          flashcards: PracticeFlashcard[];
+          vocabulary?: PracticeVocabularyMap;
+          created_at?: Nullable<string>;
+        };
+        Update: {
+          id?: string;
+          level?: string;
+          tasks?: PracticeTask[];
+          flashcards?: PracticeFlashcard[];
+          vocabulary?: PracticeVocabularyMap;
+          created_at?: Nullable<string>;
         };
         Relationships: [];
       };
