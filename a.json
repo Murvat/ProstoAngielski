@@ -1,0 +1,3287 @@
+{
+  "cloze_test": [
+    {
+      "id": 1,
+      "hint": "Means 'damaged' or 'harmed'.",
+      "type": "cloze_test",
+      "errors": ["effected", "influenced", "repaired"],
+      "answers": ["tarnished"],
+      "question": "Despite the CEO's public apology, the company's reputation was severely ___ by the scandal.",
+      "answer_key": "'Tarnished' means to damage or diminish the purity or integrity of something, which suits the context of reputation."
+    },
+    {
+      "id": 2,
+      "hint": "Means 'disbelief' or 'skepticism'.",
+      "type": "cloze_test",
+      "errors": ["admiration", "credence", "complacency"],
+      "answers": ["skepticism"],
+      "question": "The scientist's theory was initially met with ___, but later gained widespread acceptance.",
+      "answer_key": "'Skepticism' refers to doubt or disbelief, which fits the reaction described."
+    },
+    {
+      "id": 3,
+      "hint": "Means 'clever' or 'skillful'.",
+      "type": "cloze_test",
+      "errors": ["trite", "inept", "clumsy"],
+      "answers": ["deft"],
+      "question": "The author’s latest novel is a ___ blend of fantasy and historical fiction.",
+      "answer_key": "'Deft' describes something done skillfully and with ease, appropriate for a well-blended novel."
+    },
+    {
+      "id": 4,
+      "hint": "Means 'unyielding' or 'persistent'.",
+      "type": "cloze_test",
+      "errors": ["lax", "tepid", "vacillating"],
+      "answers": ["relentless"],
+      "question": "She completed the marathon with ___ determination, never once considering giving up.",
+      "answer_key": "'Relentless' means showing no signs of stopping or weakening, matching the described determination."
+    },
+    {
+      "id": 5,
+      "hint": "Means 'tactful' or 'discreet'.",
+      "type": "cloze_test",
+      "errors": ["blunt", "abrasive", "indiscreet"],
+      "answers": ["nuanced"],
+      "question": "The diplomat’s speech was praised for its ___ approach to a sensitive issue.",
+      "answer_key": "'Nuanced' describes a subtle and sensitive approach, especially in complex or delicate situations."
+    },
+    {
+      "id": 6,
+      "hint": "A situation where progress is blocked.",
+      "type": "cloze_test",
+      "errors": ["consensus", "breakthrough", "solution"],
+      "answers": ["stalemate", "deadlock", "impasse"],
+      "question": "The committee reached a ___ after hours of heated debate, as neither side was willing to compromise.",
+      "answer_key": "All three words—'stalemate', 'deadlock', and 'impasse'—describe a situation where no progress can be made, fitting the context."
+    },
+    {
+      "id": 7,
+      "hint": "Means 'openly showing'.",
+      "type": "cloze_test",
+      "errors": ["covert", "tacit", "veiled"],
+      "answers": ["blatant"],
+      "question": "Her ___ disregard for the rules eventually led to her dismissal from the company.",
+      "answer_key": "'Blatant' means done openly and unashamedly, suitable for describing obvious rule-breaking."
+    },
+    {
+      "id": 8,
+      "hint": "Means 'deceptively simple'.",
+      "type": "cloze_test",
+      "errors": ["complicated", "opaque", "obscure"],
+      "answers": ["superficial"],
+      "question": "While the solution may seem ___, it actually involves several complex processes.",
+      "answer_key": "'Superficial' refers to something that appears simple on the surface but lacks depth, matching the context."
+    },
+    {
+      "id": 9,
+      "hint": "Means 'controversial' or 'provocative'.",
+      "type": "cloze_test",
+      "errors": ["conciliatory", "neutral", "timid"],
+      "answers": ["incendiary"],
+      "question": "His ___ comments sparked a heated debate among the members of the committee.",
+      "answer_key": "'Incendiary' means tending to stir up conflict, which fits the effect described."
+    },
+    {
+      "id": 10,
+      "hint": "Means 'brilliantly clear or easy to understand'.",
+      "type": "cloze_test",
+      "errors": ["obscure", "enigmatic", "convoluted"],
+      "answers": ["lucid"],
+      "question": "The professor’s explanation was so ___ that even the most complex concepts became easy to grasp.",
+      "answer_key": "'Lucid' means expressed clearly and easy to understand, appropriate for the context of clear explanations."
+    },
+    {
+      "id": 11,
+      "hint": "Means confused or bewildered.",
+      "type": "cloze_test",
+      "errors": ["bored", "relaxed", "unconcerned"],
+      "answers": ["nonplussed"],
+      "question": "Despite his extensive experience, the manager was completely ______ by the unprecedented crisis.",
+      "answer_key": "'Nonplussed' means so surprised and confused that one is unsure how to react; it fits the context of facing an unprecedented crisis."
+    },
+    {
+      "id": 12,
+      "hint": "Means regarded with suspicion or doubt.",
+      "type": "cloze_test",
+      "errors": ["lauded", "celebrated", "embraced"],
+      "answers": ["dubious"],
+      "question": "The scientist's theory, though initially ______, eventually revolutionized the field.",
+      "answer_key": "'Dubious' means hesitating or doubting; here, the theory was doubted at first but later accepted."
+    },
+    {
+      "id": 13,
+      "hint": "Means insincere or empty talk.",
+      "type": "cloze_test",
+      "errors": ["candor", "clarity", "precision"],
+      "answers": ["platitudes"],
+      "question": "The politician's speech was full of ______, offering vague promises with little substance.",
+      "answer_key": "'Platitudes' are remarks or statements, especially those with moral content, that have been used too often to be interesting or thoughtful."
+    },
+    {
+      "id": 14,
+      "hint": "Means to examine carefully and in detail.",
+      "type": "cloze_test",
+      "errors": ["ignore", "neglect", "distort"],
+      "answers": ["scrutinize"],
+      "question": "It is important to ______ the data before drawing any definitive conclusions.",
+      "answer_key": "'Scrutinize' means to examine or inspect closely and thoroughly, which is important before making conclusions."
+    },
+    {
+      "id": 15,
+      "hint": "Means clarity and brevity.",
+      "type": "cloze_test",
+      "errors": ["verbosity", "obscurity", "redundancy"],
+      "answers": ["conciseness"],
+      "question": "Her writing style is marked by ______, avoiding unnecessary complexity and verbosity.",
+      "answer_key": "'Conciseness' refers to expressing much in few words, which avoids unnecessary complexity."
+    },
+    {
+      "id": 16,
+      "hint": "Means praised enthusiastically.",
+      "type": "cloze_test",
+      "errors": ["derided", "ignored", "rejected"],
+      "answers": ["acclaimed"],
+      "question": "The artist's latest work was ______ as a masterpiece by critics across the globe.",
+      "answer_key": "'Acclaimed' means praised publicly and enthusiastically, fitting the context of critical praise."
+    },
+    {
+      "id": 17,
+      "hint": "Means a misleading or irrelevant point.",
+      "type": "cloze_test",
+      "errors": ["breakthrough", "corroboration", "epiphany"],
+      "answers": ["red herring"],
+      "question": "His argument was weakened by a ______, as it failed to address the main issue.",
+      "answer_key": "A 'red herring' is something, especially a clue, that is or is intended to be misleading or distracting."
+    },
+    {
+      "id": 18,
+      "hint": "Means stubbornly unyielding.",
+      "type": "cloze_test",
+      "errors": ["wavering", "tentative", "vacillating"],
+      "answers": ["adamant"],
+      "question": "The CEO's decision was ______; no one could persuade her to change her mind.",
+      "answer_key": "'Adamant' means refusing to be persuaded or to change one's mind."
+    },
+    {
+      "id": 19,
+      "hint": "Means fair and impartial.",
+      "type": "cloze_test",
+      "errors": ["subjective", "partisan", "biased"],
+      "answers": ["objective"],
+      "question": "The documentary offered an ______ account of the events, free from bias or embellishment.",
+      "answer_key": "'Objective' means not influenced by personal feelings or opinions, representing facts."
+    },
+    {
+      "id": 20,
+      "hint": "Means a general agreement.",
+      "type": "cloze_test",
+      "errors": ["deadlock", "disagreement", "impasse"],
+      "answers": ["consensus"],
+      "question": "The committee reached a ______ after hours of heated debate.",
+      "answer_key": "'Consensus' means a general agreement, which fits the context of committee decision-making."
+    },
+    {
+      "id": 21,
+      "hint": "Opposite of arrogant.",
+      "type": "cloze_test",
+      "errors": ["arrogant", "proud", "boastful"],
+      "answers": ["humble", "modest"],
+      "question": "Despite her many achievements, she remained remarkably ______ and never boasted about her success.",
+      "answer_key": "The correct answer is 'humble' or 'modest', as both words describe someone who does not boast about their success, which fits the context given."
+    },
+    {
+      "id": 22,
+      "hint": "Means disbelief or skepticism.",
+      "type": "cloze_test",
+      "errors": ["trust", "enthusiasm", "certainty"],
+      "answers": ["skepticism", "incredulity"],
+      "question": "The scientist's theory was initially met with ______, but later gained widespread acceptance.",
+      "answer_key": "The correct answer is 'skepticism' or 'incredulity', meaning disbelief, matching the reaction described."
+    },
+    {
+      "id": 23,
+      "hint": "Means 'to give' in a legal or formal sense.",
+      "type": "cloze_test",
+      "errors": ["donated", "sold", "lent"],
+      "answers": ["bequeathed"],
+      "question": "He ______ his entire fortune to charity, hoping to make a lasting difference.",
+      "answer_key": "'Bequeathed' is a formal term commonly used to describe leaving possessions, especially money, to someone or an organization, usually after death."
+    },
+    {
+      "id": 24,
+      "hint": "Means 'patronizing or condescending'.",
+      "type": "cloze_test",
+      "errors": ["friendly", "supportive", "neutral"],
+      "answers": ["condescending"],
+      "question": "The manager's ______ attitude towards her subordinates created a toxic work environment.",
+      "answer_key": "'Condescending' means displaying a superior attitude, which fits the negative tone of the sentence."
+    },
+    {
+      "id": 25,
+      "hint": "Means 'realistic and unembellished'.",
+      "type": "cloze_test",
+      "errors": ["fictional", "biased", "romanticized"],
+      "answers": ["candid", "unvarnished"],
+      "question": "The documentary provided a ______ account of the historical events, sparing no unpleasant details.",
+      "answer_key": "'Candid' and 'unvarnished' both describe an honest, straightforward portrayal without sugar-coating."
+    },
+    {
+      "id": 26,
+      "hint": "Means 'to give in'.",
+      "type": "cloze_test",
+      "errors": ["refused", "insisted", "resisted"],
+      "answers": ["acquiesced", "yielded", "conceded"],
+      "question": "Although initially reluctant, she eventually ______ to their demands after prolonged negotiations.",
+      "answer_key": "The verbs 'acquiesced', 'yielded', and 'conceded' all mean to agree or give in after some resistance."
+    },
+    {
+      "id": 27,
+      "hint": "Means 'principles' or 'established rules'.",
+      "type": "cloze_test",
+      "errors": ["opinion", "emotion", "instinct"],
+      "answers": ["precedent", "doctrine", "tenets"],
+      "question": "The judge's decision was guided strictly by legal ______, not by personal feelings.",
+      "answer_key": "'Precedent', 'doctrine', and 'tenets' all refer to formal principles or rules guiding legal decisions."
+    },
+    {
+      "id": 28,
+      "hint": "Means 'strengthened or supported'.",
+      "type": "cloze_test",
+      "errors": ["contradicted", "undermined", "ignored"],
+      "answers": ["bolstered", "corroborated"],
+      "question": "His argument was ______ by recent research, which provided additional evidence in support of his claims.",
+      "answer_key": "'Bolstered' and 'corroborated' both mean that the argument was made stronger or given more support by the research."
+    },
+    {
+      "id": 29,
+      "hint": "Means 'a reminder or memorial'.",
+      "type": "cloze_test",
+      "errors": ["celebration", "rejection", "obstacle"],
+      "answers": ["testament", "monument"],
+      "question": "The ancient ruins stood as a ______ to the once-great civilization that had flourished there.",
+      "answer_key": "'Testament' and 'monument' both refer to something that serves as a reminder or evidence of the past."
+    },
+    {
+      "id": 30,
+      "hint": "Means 'calm and unemotional'.",
+      "type": "cloze_test",
+      "errors": ["hysterical", "impulsive", "anxious"],
+      "answers": ["stoic", "imperturbable"],
+      "question": "His ______ response to the crisis demonstrated his ability to remain calm under pressure.",
+      "answer_key": "'Stoic' and 'imperturbable' both mean showing little or no emotion, especially in difficult situations."
+    },
+    {
+      "id": 31,
+      "hint": "Phrase meaning 'be as good as expected'.",
+      "type": "cloze_test",
+      "errors": ["meet up with", "fulfill", "reach"],
+      "answers": ["meet"],
+      "question": "Despite the manager's optimistic projections, the project ultimately failed to ______ expectations.",
+      "answer_key": "The correct phrase is 'meet expectations', meaning to be as good as anticipated. 'Meet up with' and 'fulfill' are not standard in this context."
+    },
+    {
+      "id": 32,
+      "hint": "Word meaning 'new and original'.",
+      "type": "cloze_test",
+      "errors": ["novelty", "novelistic", "novelize"],
+      "answers": ["novel"],
+      "question": "The scientist's findings were so ______ that they challenged the prevailing theories in the field.",
+      "answer_key": "'Novel' means new and original, which fits the sentence. 'Novelty' is a noun and doesn't fit grammatically; 'novelistic' relates to novels, not originality."
+    },
+    {
+      "id": 33,
+      "hint": "Noun meaning 'evidence or proof'.",
+      "type": "cloze_test",
+      "errors": ["testimony", "testimonium", "testamentary"],
+      "answers": ["testament"],
+      "question": "She completed the marathon in spite of her injuries, which is a ______ to her determination.",
+      "answer_key": "'A testament to' is the correct phrase meaning proof of something. 'Testimony' generally refers to spoken evidence in court."
+    },
+    {
+      "id": 34,
+      "hint": "Word meaning 'thorough and careful'.",
+      "type": "cloze_test",
+      "errors": ["conscious", "conscionable", "conscience"],
+      "answers": ["conscientious"],
+      "question": "The committee reached a consensus after hours of ______ deliberation.",
+      "answer_key": "'Conscientious' means thorough and careful. The other options are either unrelated or incorrect forms."
+    },
+    {
+      "id": 35,
+      "hint": "Adjective meaning 'shameless and obvious'.",
+      "type": "cloze_test",
+      "errors": ["blatantness", "blatancy", "blatance"],
+      "answers": ["blatant"],
+      "question": "His ______ disregard for the rules eventually led to his dismissal.",
+      "answer_key": "'Blatant' is the correct adjective to describe shameless and obvious disregard."
+    },
+    {
+      "id": 36,
+      "hint": "Word meaning 'penetrating and perceptive'.",
+      "type": "cloze_test",
+      "errors": ["incisively", "incision", "inciteful"],
+      "answers": ["incisive"],
+      "question": "The book provides a ______ analysis of the political situation, offering insights rarely found elsewhere.",
+      "answer_key": "'Incisive' means penetrating and perceptive. The other options are incorrect forms or misspellings."
+    },
+    {
+      "id": 37,
+      "hint": "Adverb meaning 'almost entirely'.",
+      "type": "cloze_test",
+      "errors": ["virtually", "virtuously", "virtue"],
+      "answers": ["virtually"],
+      "question": "While the two proposals differ in details, they are ______ identical in their objectives.",
+      "answer_key": "'Virtually identical' is a common advanced phrase meaning almost exactly the same."
+    },
+    {
+      "id": 38,
+      "hint": "Verb meaning 'have as a result'.",
+      "type": "cloze_test",
+      "errors": ["imply", "infer", "affect"],
+      "answers": ["entail"],
+      "question": "The decision will ______ profound implications for the industry as a whole.",
+      "answer_key": "'Entail' means to have something as a necessary result. The other verbs do not fit this advanced context."
+    },
+    {
+      "id": 39,
+      "hint": "Noun meaning 'tact and carefulness'.",
+      "type": "cloze_test",
+      "errors": ["discretionary", "discrete", "discreet"],
+      "answers": ["discretion"],
+      "question": "The diplomat spoke with remarkable ______, avoiding any statements that could be deemed controversial.",
+      "answer_key": "'Discretion' is the noun meaning tact or carefulness. 'Discreet' is an adjective; 'discrete' means separate."
+    },
+    {
+      "id": 40,
+      "hint": "Verb meaning 'deliberately hiding'.",
+      "type": "cloze_test",
+      "errors": ["obscuring", "obfuscate", "omit"],
+      "answers": ["concealing"],
+      "question": "The government was accused of ______ information, leading to widespread distrust among the public.",
+      "answer_key": "'Concealing information' means deliberately hiding it from others, which fits the advanced tone of the sentence."
+    },
+    {
+      "id": 41,
+      "hint": "Think of a word meaning 'qualified or suitable.'",
+      "type": "cloze_test",
+      "errors": ["eligible", "allowed", "capable"],
+      "answers": ["considered"],
+      "question": "Despite his extensive experience, he was not ______ for the managerial position because he lacked leadership skills.",
+      "answer_key": "'Considered' is correct because it means he was not thought of or evaluated for the position, which fits the context."
+    },
+    {
+      "id": 42,
+      "hint": "A word meaning 'doubt or disbelief.'",
+      "type": "cloze_test",
+      "errors": ["hostility", "rejection", "denial"],
+      "answers": ["skepticism"],
+      "question": "The scientist's theory was initially met with ______, but later gained widespread acceptance.",
+      "answer_key": "'Skepticism' means a doubting or questioning attitude, which matches the initial reaction described."
+    },
+    {
+      "id": 43,
+      "hint": "A word meaning 'harsh or severe.'",
+      "type": "cloze_test",
+      "errors": ["delicate", "modest", "gentle"],
+      "answers": ["grim"],
+      "question": "The documentary shed light on the ______ realities faced by migrants in the region.",
+      "answer_key": "'Grim' is used to describe something severe, harsh, or uninviting, especially in a social context."
+    },
+    {
+      "id": 44,
+      "hint": "A synonym for 'moving' or 'emotionally touching.'",
+      "type": "cloze_test",
+      "errors": ["provoking", "elaborate", "painful"],
+      "answers": ["poignant"],
+      "question": "Her speech was so ______ that it left a lasting impact on everyone in the audience.",
+      "answer_key": "'Poignant' is correct as it describes something that evokes a keen sense of emotion or sadness."
+    },
+    {
+      "id": 45,
+      "hint": "A word meaning 'increased a lot.'",
+      "type": "cloze_test",
+      "errors": ["amplified", "grew", "exploded"],
+      "answers": ["surged"],
+      "question": "The company’s profits have ______ considerably since the new CEO took over.",
+      "answer_key": "'Surged' refers to a sudden and great increase, which fits the context of rising profits."
+    },
+    {
+      "id": 46,
+      "hint": "A word meaning 'praised or admired.'",
+      "type": "cloze_test",
+      "errors": ["rewarded", "appreciated", "famous"],
+      "answers": ["lauded"],
+      "question": "He was universally ______ for his tireless dedication to the cause.",
+      "answer_key": "'Lauded' means highly praised or commended, especially in a public context."
+    },
+    {
+      "id": 47,
+      "hint": "A word meaning 'neutral or impartial.'",
+      "type": "cloze_test",
+      "errors": ["subjective", "unbiased", "disinterested"],
+      "answers": ["objective"],
+      "question": "The book provides a(n) ______ analysis of the political landscape, free from bias or personal opinion.",
+      "answer_key": "'Objective' means not influenced by personal feelings, fitting the description of the analysis."
+    },
+    {
+      "id": 48,
+      "hint": "A word meaning 'clear and easy to understand.'",
+      "type": "cloze_test",
+      "errors": ["lucid", "evident", "elucidated"],
+      "answers": ["unequivocal"],
+      "question": "Her explanation was so ______ that nobody could misunderstand her intentions.",
+      "answer_key": "'Unequivocal' means leaving no doubt, which best fits the context of absolute clarity."
+    },
+    {
+      "id": 49,
+      "hint": "A word meaning 'reduce or make less severe.'",
+      "type": "cloze_test",
+      "errors": ["diminish", "lower", "limit"],
+      "answers": ["mitigate"],
+      "question": "The policy changes were implemented to ______ the risk of data breaches.",
+      "answer_key": "'Mitigate' is the formal term for making something less severe or serious."
+    },
+    {
+      "id": 50,
+      "hint": "A word meaning 'using several different styles or sources.'",
+      "type": "cloze_test",
+      "errors": ["diverse", "varied", "mixed"],
+      "answers": ["eclectic"],
+      "question": "The director's approach was ______, blending traditional techniques with innovative ideas.",
+      "answer_key": "'Eclectic' describes a style or approach that incorporates ideas, styles, or tastes from a broad and diverse range of sources."
+    }
+  ],
+  "fill_in_blank": [
+    {
+      "id": 1,
+      "hint": "Means difficult to understand or obscure.",
+      "type": "fill_in_blank",
+      "errors": ["obvious", "lucid", "transparent"],
+      "answers": ["esoteric", "opaque", "enigmatic"],
+      "question": "Despite the professor's lengthy explanation, the concept remained __________ to many students.",
+      "answer_key": "The correct answers all refer to something that is difficult to understand. 'Esoteric' means intended for or likely to be understood by only a small number of people, 'opaque' means not able to be seen through; not transparent (often used for unclear writing), and 'enigmatic' means mysterious or difficult to interpret."
+    },
+    {
+      "id": 2,
+      "hint": "Meaning impossible to damage or attack.",
+      "type": "fill_in_blank",
+      "errors": ["vulnerable", "fragile", "permeable"],
+      "answers": ["impervious", "invulnerable", "unassailable"],
+      "question": "Her argument was so well-constructed that it was virtually __________ to criticism.",
+      "answer_key": "'Impervious', 'invulnerable', and 'unassailable' all mean not able to be affected or attacked. 'Impervious' is often used for things that cannot be penetrated, and 'unassailable' for arguments or positions that cannot be attacked."
+    },
+    {
+      "id": 3,
+      "hint": "Means arrogant or dictatorial.",
+      "type": "fill_in_blank",
+      "errors": ["democratic", "inclusive", "collaborative"],
+      "answers": ["autocratic", "authoritarian", "dictatorial"],
+      "question": "The CEO's decision was criticized for being __________, lacking any consideration of the employees' perspectives.",
+      "answer_key": "'Autocratic', 'authoritarian', and 'dictatorial' all describe someone who makes decisions unilaterally, without input from others, which matches the context."
+    },
+    {
+      "id": 4,
+      "hint": "Means irrelevant or unrelated.",
+      "type": "fill_in_blank",
+      "errors": ["pertinent", "relevant", "crucial"],
+      "answers": ["extraneous", "irrelevant", "immaterial"],
+      "question": "The jury was instructed to disregard any __________ information that had not been formally introduced as evidence.",
+      "answer_key": "'Extraneous', 'irrelevant', and 'immaterial' all mean not relating to the subject at hand, which is why the jury should ignore such information."
+    },
+    {
+      "id": 5,
+      "hint": "Means intentionally vague or difficult to interpret.",
+      "type": "fill_in_blank",
+      "errors": ["explicit", "straightforward", "unambiguous"],
+      "answers": ["equivocal", "ambiguous", "cryptic"],
+      "question": "His explanation was so __________ that even the experts were left uncertain about his true intentions.",
+      "answer_key": "'Equivocal', 'ambiguous', and 'cryptic' all refer to something that is unclear or open to multiple interpretations, which matches the context of the sentence."
+    },
+    {
+      "id": 6,
+      "hint": "Means tact or sensitivity in dealing with others.",
+      "type": "fill_in_blank",
+      "errors": ["bluntness", "candor", "abruptness"],
+      "answers": ["diplomacy", "tact", "finesse"],
+      "question": "She delivered her critique with remarkable __________, avoiding any personal attacks.",
+      "answer_key": "'Diplomacy', 'tact', and 'finesse' signify skillful and sensitive handling of situations or people, which is the point of the sentence."
+    },
+    {
+      "id": 7,
+      "hint": "Means made up of diverse elements.",
+      "type": "fill_in_blank",
+      "errors": ["homogeneous", "uniform", "monolithic"],
+      "answers": ["fragmented", "multifaceted", "kaleidoscopic"],
+      "question": "The novel's __________ narrative structure challenges the reader to piece together the story from multiple perspectives.",
+      "answer_key": "'Fragmented', 'multifaceted', and 'kaleidoscopic' all describe something composed of various different elements, fitting the context of a complex narrative."
+    },
+    {
+      "id": 8,
+      "hint": "Means to alter or falsify information.",
+      "type": "fill_in_blank",
+      "errors": ["verifying", "authenticating", "validating"],
+      "answers": ["manipulating", "fabricating", "distorting"],
+      "question": "The scientist was accused of __________ results to fit his hypothesis.",
+      "answer_key": "'Manipulating', 'fabricating', and 'distorting' all mean changing data or information, often dishonestly, to serve a particular purpose."
+    },
+    {
+      "id": 9,
+      "hint": "Means thorough or detailed.",
+      "type": "fill_in_blank",
+      "errors": ["cursory", "superficial", "perfunctory"],
+      "answers": ["meticulous", "scrupulous", "comprehensive"],
+      "question": "A __________ examination of the painting revealed details that were previously unnoticed.",
+      "answer_key": "'Meticulous', 'scrupulous', and 'comprehensive' all refer to being very thorough and attentive to detail, which is necessary for such an examination."
+    },
+    {
+      "id": 10,
+      "hint": "Means showing disregard for rules or traditions.",
+      "type": "fill_in_blank",
+      "errors": ["conformist", "respectful", "reverent"],
+      "answers": ["iconoclastic", "irreverent", "defiant"],
+      "question": "His __________ attitude towards the traditions of his community made him unpopular among his peers.",
+      "answer_key": "'Iconoclastic', 'irreverent', and 'defiant' describe someone who challenges or shows a lack of respect for established customs or traditions."
+    },
+    {
+      "id": 11,
+      "hint": "Refers to the act of being dishonest, especially by someone in a position of trust.",
+      "type": "fill_in_blank",
+      "errors": ["corruption", "embezzling", "fraudulency"],
+      "answers": ["malfeasance"],
+      "question": "Despite his reputation for honesty, many were surprised when he was accused of financial ______________.",
+      "answer_key": "‘Malfeasance’ specifically refers to wrongdoing or misconduct by a public official or person in authority, making it the most precise and advanced choice here."
+    },
+    {
+      "id": 12,
+      "hint": "Means extremely complex and difficult to follow.",
+      "type": "fill_in_blank",
+      "errors": ["confusing", "complicated", "convoluted"],
+      "answers": ["esoteric"],
+      "question": "The scientist’s explanation was so ______________ that even her colleagues struggled to understand her point.",
+      "answer_key": "‘Esoteric’ describes ideas or knowledge intended for or likely to be understood by only a small number of people with specialized knowledge, more advanced than ‘complicated’ or ‘convoluted’."
+    },
+    {
+      "id": 13,
+      "hint": "A noun meaning surprise and dismay, often at something unexpected.",
+      "type": "fill_in_blank",
+      "errors": ["astonishment", "amazement", "dismay"],
+      "answers": ["consternation"],
+      "question": "Her remarks were met with _____________, as no one expected her to criticize the management so openly.",
+      "answer_key": "‘Consternation’ refers to feelings of anxiety or dismay, typically at something unexpected, making it stronger and more appropriate than ‘amazement’ or ‘dismay’."
+    },
+    {
+      "id": 14,
+      "hint": "Means to impede or slow down progress.",
+      "type": "fill_in_blank",
+      "errors": ["delayed", "stopped", "prevented"],
+      "answers": ["hampered"],
+      "question": "Although the new regulations were designed to improve safety, they inadvertently _____________ progress.",
+      "answer_key": "‘Hampered’ means to hinder or impede, a more formal and advanced synonym for ‘delayed’ or ‘stopped’."
+    },
+    {
+      "id": 15,
+      "hint": "Describes someone who remains calm and untroubled.",
+      "type": "fill_in_blank",
+      "errors": ["calm", "serene", "peaceful"],
+      "answers": ["imperturbable"],
+      "question": "His ability to remain _____________ under pressure made him an excellent negotiator.",
+      "answer_key": "‘Imperturbable’ means incapable of being upset or agitated; calm, which is more advanced than ‘serene’ or ‘peaceful’."
+    },
+    {
+      "id": 16,
+      "hint": "Means strictly factual and unbiased.",
+      "type": "fill_in_blank",
+      "errors": ["objective", "fair", "truthful"],
+      "answers": ["dispassionate"],
+      "question": "The documentary offered a _____________ account of the events, avoiding sensationalism and conjecture.",
+      "answer_key": "‘Dispassionate’ means not influenced by strong emotion, and so able to be rational and impartial, which is more nuanced than ‘objective’."
+    },
+    {
+      "id": 17,
+      "hint": "Means persuasive speech that is empty or insincere.",
+      "type": "fill_in_blank",
+      "errors": ["rhetoric", "opinion", "speech"],
+      "answers": ["sophistry"],
+      "question": "Her arguments were dismissed as mere _____________, lacking any substantial evidence.",
+      "answer_key": "‘Sophistry’ refers to the use of fallacious arguments, especially with the intention of deceiving, which is more advanced than simply ‘rhetoric’."
+    },
+    {
+      "id": 18,
+      "hint": "Means made up of parts from various sources.",
+      "type": "fill_in_blank",
+      "errors": ["diverse", "eclectic", "varied"],
+      "answers": ["syncretic"],
+      "question": "The composer’s new symphony was described as _____________, blending various musical traditions into a harmonious whole.",
+      "answer_key": "‘Syncretic’ specifically refers to the combination of different forms of belief or practice, which is more precise and advanced than ‘eclectic’ or ‘varied’."
+    },
+    {
+      "id": 19,
+      "hint": "Refers to extreme attention or care.",
+      "type": "fill_in_blank",
+      "errors": ["meticulousness", "carefulness", "precision"],
+      "answers": ["fastidiousness"],
+      "question": "His _____________ for detail was evident in every aspect of his research.",
+      "answer_key": "‘Fastidiousness’ denotes an excessive attention to detail or accuracy, more advanced than ‘meticulousness’."
+    },
+    {
+      "id": 20,
+      "hint": "Means based on random choice or personal whim.",
+      "type": "fill_in_blank",
+      "errors": ["subjective", "biased", "unfair"],
+      "answers": ["arbitrary"],
+      "question": "The judge’s decision was criticized for being _____________, influenced by personal feelings rather than facts.",
+      "answer_key": "‘Arbitrary’ means based on random choice or personal whim, rather than any reason or system, which is more precise in this context than ‘subjective’ or ‘biased’."
+    },
+    {
+      "id": 21,
+      "hint": "Use the correct modal perfect form.",
+      "type": "fill_in_blank",
+      "errors": ["would have leave", "would had left", "would leave"],
+      "answers": ["would have left"],
+      "question": "Had I known about the traffic jam, I _____ left earlier.",
+      "answer_key": "'Would have left' is the correct modal perfect structure to express a hypothetical past action."
+    },
+    {
+      "id": 22,
+      "hint": "Remember inversion after 'no sooner'.",
+      "type": "fill_in_blank",
+      "errors": ["she had", "did she", "has she"],
+      "answers": ["had she"],
+      "question": "No sooner _____ she finished the report than the manager asked for another revision.",
+      "answer_key": "After 'no sooner', we use inversion: 'No sooner had she finished...'"
+    },
+    {
+      "id": 23,
+      "hint": "Use the correct gerund or participle.",
+      "type": "fill_in_blank",
+      "errors": ["of being", "been", "be"],
+      "answers": ["being"],
+      "question": "Despite _____ extremely tired, he continued working late into the night.",
+      "answer_key": "'Despite' is followed by a gerund; 'Despite being extremely tired...'"
+    },
+    {
+      "id": 24,
+      "hint": "Preposition after 'objected'.",
+      "type": "fill_in_blank",
+      "errors": ["to", "on", "against"],
+      "answers": ["to"],
+      "question": "The committee objected _____ the proposal on ethical grounds.",
+      "answer_key": "'Objected to' is the correct collocation: 'objected to the proposal.'"
+    },
+    {
+      "id": 25,
+      "hint": "Use the correct past tense for unreal situations.",
+      "type": "fill_in_blank",
+      "errors": ["take", "have taken", "took"],
+      "answers": ["took"],
+      "question": "It is high time you _____ your responsibilities more seriously.",
+      "answer_key": "'It is high time' is followed by a past simple verb to express criticism or urgency about a present situation."
+    },
+    {
+      "id": 26,
+      "hint": "Use subject-verb inversion after negative adverbials.",
+      "type": "fill_in_blank",
+      "errors": ["I have seen", "have I seen", "I saw"],
+      "answers": ["have I seen"],
+      "question": "Rarely _____ such an impressive performance.",
+      "answer_key": "After negative adverbs like 'rarely', inversion is used: 'Rarely have I seen...'"
+    },
+    {
+      "id": 27,
+      "hint": "Use the correct verb form to indicate a result.",
+      "type": "fill_in_blank",
+      "errors": ["was", "have", "proved"],
+      "answers": ["proved"],
+      "question": "The results of the study _____ to be inconclusive, contrary to expectations.",
+      "answer_key": "'Proved' is the correct verb for 'turned out' or 'were shown': 'proved to be inconclusive.'"
+    },
+    {
+      "id": 28,
+      "hint": "Use the correct conjunction for parallel events.",
+      "type": "fill_in_blank",
+      "errors": ["as", "when", "than"],
+      "answers": ["when"],
+      "question": "Scarcely had the guests arrived _____ the power went out.",
+      "answer_key": "After 'scarcely' with inversion, 'when' is used to connect the two events."
+    },
+    {
+      "id": 29,
+      "hint": "Use the correct relative pronoun.",
+      "type": "fill_in_blank",
+      "errors": ["which", "them", "those"],
+      "answers": ["which"],
+      "question": "He speaks several languages, none of _____ is English.",
+      "answer_key": "'None of which' is the correct non-defining relative clause structure."
+    },
+    {
+      "id": 30,
+      "hint": "Use inversion after negative expressions.",
+      "type": "fill_in_blank",
+      "errors": ["you are allowed", "are you allowed", "you allowed"],
+      "answers": ["are you allowed"],
+      "question": "Under no circumstances _____ to disclose confidential information.",
+      "answer_key": "Negative expressions at the beginning require inversion: 'Under no circumstances are you allowed...'"
+    },
+    {
+      "id": 31,
+      "hint": "Unmoved, emotionally detached.",
+      "type": "fill_in_blank",
+      "errors": ["sympathetic", "responsive", "indifferent"],
+      "answers": ["impervious"],
+      "question": "Despite the evidence presented, the jury remained __________ to the defendant's plea.",
+      "answer_key": "‘Impervious’ means not affected or influenced by something, which fits the context of the jury being untouched by the plea."
+    },
+    {
+      "id": 32,
+      "hint": "Extremely difficult to understand.",
+      "type": "fill_in_blank",
+      "errors": ["lucid", "concise", "straightforward"],
+      "answers": ["esoteric"],
+      "question": "The professor's explanation was so __________ that even the brightest students struggled to understand.",
+      "answer_key": "‘Esoteric’ refers to something intended for or understood by only a small group with specialized knowledge, implying the explanation was hard to grasp."
+    },
+    {
+      "id": 33,
+      "hint": "Calm and collected.",
+      "type": "fill_in_blank",
+      "errors": ["volatile", "impulsive", "apathetic"],
+      "answers": ["measured"],
+      "question": "Her __________ response to criticism showed emotional maturity and self-control.",
+      "answer_key": "A ‘measured’ response is one that is carefully considered, calm, and not emotional or rash."
+    },
+    {
+      "id": 34,
+      "hint": "Self-sacrificing, unselfish.",
+      "type": "fill_in_blank",
+      "errors": ["egotistical", "pragmatic", "apathetic"],
+      "answers": ["selfless", "altruistic"],
+      "question": "The novel’s protagonist is a __________ figure, often acting against his own self-interest for the greater good.",
+      "answer_key": "Both ‘selfless’ and ‘altruistic’ describe someone who puts others before themselves, fitting the context."
+    },
+    {
+      "id": 35,
+      "hint": "Deliberately vague or ambiguous language.",
+      "type": "fill_in_blank",
+      "errors": ["clarity", "brevity", "honesty"],
+      "answers": ["equivocation"],
+      "question": "The CEO's speech was filled with __________, making it difficult to discern her actual plans for the company.",
+      "answer_key": "‘Equivocation’ means the use of ambiguous language to conceal the truth or avoid committing to a position."
+    },
+    {
+      "id": 36,
+      "hint": "To make less severe or serious.",
+      "type": "fill_in_blank",
+      "errors": ["exacerbate", "ignore", "justify"],
+      "answers": ["mitigate"],
+      "question": "To __________ the negative impact of the policy, the government implemented several compensatory measures.",
+      "answer_key": "‘Mitigate’ means to make something less severe, serious, or painful."
+    },
+    {
+      "id": 37,
+      "hint": "Showing deep insight or knowledge.",
+      "type": "fill_in_blank",
+      "errors": ["superficial", "rudimentary", "basic"],
+      "answers": ["profound"],
+      "question": "Her __________ understanding of the topic enabled her to answer even the most challenging questions.",
+      "answer_key": "‘Profound’ means having deep insight or understanding, which is required to answer difficult questions."
+    },
+    {
+      "id": 38,
+      "hint": "Doubt, skepticism.",
+      "type": "fill_in_blank",
+      "errors": ["enthusiasm", "acceptance", "apathy"],
+      "answers": ["incredulity"],
+      "question": "The scientist’s findings were met with __________, as they challenged the prevailing theories.",
+      "answer_key": "‘Incredulity’ means the state of being unwilling or unable to believe something, especially when new ideas challenge established ones."
+    },
+    {
+      "id": 39,
+      "hint": "Based on reasoning that is logically invalid, but may seem superficially plausible.",
+      "type": "fill_in_blank",
+      "errors": ["sound", "cogent", "empirical"],
+      "answers": ["specious"],
+      "question": "His argument was dismissed as a __________ fallacy, lacking any real evidence.",
+      "answer_key": "‘Specious’ describes something that appears to be true or valid but is actually false or misleading."
+    },
+    {
+      "id": 40,
+      "hint": "To go beyond or exceed.",
+      "type": "fill_in_blank",
+      "errors": ["conforms to", "diminishes", "restricts"],
+      "answers": ["transcends"],
+      "question": "The artist’s latest work __________ traditional boundaries, blending genres and media in innovative ways.",
+      "answer_key": "‘Transcends’ means to rise above or go beyond the limits of something, such as traditional boundaries in art."
+    },
+    {
+      "id": 41,
+      "hint": "Not easily persuaded or changed",
+      "type": "fill_in_blank",
+      "errors": ["stubborn", "persistent", "adamantine"],
+      "answers": ["adamant"],
+      "question": "Despite being ________________, the scientist refused to compromise her principles.",
+      "answer_key": "‘Adamant’ refers to someone who is unyielding in their opinions or stance, which fits the context of not compromising principles."
+    },
+    {
+      "id": 42,
+      "hint": "Fierce and severe",
+      "type": "fill_in_blank",
+      "errors": ["strong", "huge", "major"],
+      "answers": ["scathing"],
+      "question": "The manager's decision was met with ________________ criticism from the entire team.",
+      "answer_key": "‘Scathing’ means harshly critical, which describes the intensity of the criticism."
+    },
+    {
+      "id": 43,
+      "hint": "Hide or conceal",
+      "type": "fill_in_blank",
+      "errors": ["deny", "ignore", "avoid"],
+      "answers": ["mask"],
+      "question": "She tried to ____________ her disappointment, but her trembling voice betrayed her feelings.",
+      "answer_key": "‘Mask’ means to conceal or hide, which fits the context of hiding disappointment."
+    },
+    {
+      "id": 44,
+      "hint": "Not based on reality; fanciful",
+      "type": "fill_in_blank",
+      "errors": ["creative", "ambitious", "absurd"],
+      "answers": ["quixotic"],
+      "question": "Their plan was dismissed as ________________ because it lacked any practical foundation.",
+      "answer_key": "‘Quixotic’ describes ideas that are exceedingly idealistic and impractical."
+    },
+    {
+      "id": 45,
+      "hint": "Emotionally moving or touching",
+      "type": "fill_in_blank",
+      "errors": ["interesting", "dramatic", "passionate"],
+      "answers": ["poignant"],
+      "question": "His speech was so ________________ that even the most skeptical attendees were moved.",
+      "answer_key": "‘Poignant’ means evoking a keen sense of sadness or emotion, suitable for a moving speech."
+    },
+    {
+      "id": 46,
+      "hint": "Extremely accurate and insightful",
+      "type": "fill_in_blank",
+      "errors": ["detailed", "realistic", "exact"],
+      "answers": ["incisive"],
+      "question": "The author’s novel was praised for its ________________ portrayal of human nature.",
+      "answer_key": "‘Incisive’ means clear-thinking and analytical, especially when describing insightful writing."
+    },
+    {
+      "id": 47,
+      "hint": "Unclear or ambiguous",
+      "type": "fill_in_blank",
+      "errors": ["complicated", "complex", "confusing"],
+      "answers": ["ambiguous"],
+      "question": "The contract contained several ________________ clauses that confused even the lawyers.",
+      "answer_key": "‘Ambiguous’ refers to statements or clauses open to more than one interpretation."
+    },
+    {
+      "id": 48,
+      "hint": "A serious error or inconsistency",
+      "type": "fill_in_blank",
+      "errors": ["mistake", "problem", "flaw"],
+      "answers": ["fallacy"],
+      "question": "His argument was undermined by a glaring ________________ in his reasoning.",
+      "answer_key": "‘Fallacy’ refers to a mistaken belief or flawed reasoning, especially in logic."
+    },
+    {
+      "id": 49,
+      "hint": "General agreement",
+      "type": "fill_in_blank",
+      "errors": ["majority", "agreement", "compromise"],
+      "answers": ["consensus"],
+      "question": "The committee's decision was reached by ________________, rather than by a vote.",
+      "answer_key": "‘Consensus’ means general agreement, especially without a formal vote."
+    },
+    {
+      "id": 50,
+      "hint": "Strengthen or support",
+      "type": "fill_in_blank",
+      "errors": ["give", "help", "protect"],
+      "answers": ["bolster"],
+      "question": "The new law was designed to ________________ the rights of minority groups.",
+      "answer_key": "‘Bolster’ means to support or strengthen something, particularly rights or arguments."
+    }
+  ],
+  "multiple_choice": [
+    {
+      "id": 1,
+      "hint": "Look for hypothetical or recommendation structures.",
+      "type": "multiple_choice",
+      "errors": [
+        "Confusing indicative with subjunctive mood.",
+        "Using 'was' instead of 'were' in hypothetical statements."
+      ],
+      "answers": ["If I were you, I would take the opportunity."],
+      "options": [
+        "If I were you, I would take the opportunity.",
+        "If I was you, I would take the opportunity.",
+        "If I am you, I would take the opportunity.",
+        "If I will be you, I would take the opportunity."
+      ],
+      "question": "Which sentence uses the subjunctive mood correctly?",
+      "answer_key": "'If I were you, I would take the opportunity.' uses the subjunctive mood correctly for unreal or hypothetical situations."
+    },
+    {
+      "id": 2,
+      "hint": "Check the form of each item in the list.",
+      "type": "multiple_choice",
+      "errors": [
+        "Mixing gerunds and infinitives.",
+        "Inconsistent verb forms in a series."
+      ],
+      "answers": ["She enjoys reading, writing, and traveling."],
+      "options": [
+        "She enjoys reading, writing, and traveling.",
+        "She enjoys to read, writing, and to travel.",
+        "She enjoys reading, to write, and travel.",
+        "She enjoys to read, writing, and travel."
+      ],
+      "question": "Select the sentence with correct parallel structure.",
+      "answer_key": "All items in 'She enjoys reading, writing, and traveling.' use the gerund form, maintaining parallel structure."
+    },
+    {
+      "id": 3,
+      "hint": "Pay attention to the placement of commas and semicolons.",
+      "type": "multiple_choice",
+      "errors": [
+        "Misplacing commas with independent clauses.",
+        "Incorrect use of semicolons."
+      ],
+      "answers": [
+        "Although it was raining, we went hiking; we didn’t want to miss the adventure."
+      ],
+      "options": [
+        "Although it was raining we went hiking; we didn’t want to miss the adventure.",
+        "Although it was raining, we went hiking we didn’t want to miss the adventure.",
+        "Although it was raining, we went hiking; we didn’t want to miss the adventure.",
+        "Although, it was raining we went hiking, we didn’t want to miss the adventure."
+      ],
+      "question": "Choose the correctly punctuated sentence.",
+      "answer_key": "The correct sentence separates the dependent clause with a comma and uses a semicolon to join two independent clauses."
+    },
+    {
+      "id": 4,
+      "hint": "Look for a word that suggests a strong impact.",
+      "type": "multiple_choice",
+      "errors": [
+        "Confusing 'affective' with 'effective'.",
+        "Choosing a word with a weaker meaning."
+      ],
+      "answers": ["groundbreaking"],
+      "options": ["groundbreaking", "affective", "satisfactory", "tentative"],
+      "question": "Which word best completes the sentence? 'The research findings were so ____ that they changed the course of the entire field.'",
+      "answer_key": "'Groundbreaking' means innovative or revolutionary, which fits the context of changing an entire field."
+    },
+    {
+      "id": 5,
+      "hint": "Look for sentences starting with 'Rarely' and correct word order.",
+      "type": "multiple_choice",
+      "errors": [
+        "Forgetting to invert subject and auxiliary verb.",
+        "Placing subject before auxiliary after negative adverbials."
+      ],
+      "answers": ["Rarely have I seen such dedication from a team."],
+      "options": [
+        "Rarely I have seen such dedication from a team.",
+        "Rarely have I seen such dedication from a team.",
+        "Rarely seen I have such dedication from a team.",
+        "Rarely I seen have such dedication from a team."
+      ],
+      "question": "Identify the sentence with correct use of inversion for emphasis.",
+      "answer_key": "After negative adverbials like 'rarely', the auxiliary verb comes before the subject: 'Rarely have I seen...'"
+    },
+    {
+      "id": 6,
+      "hint": "Look for 'It is/was... that/who...' patterns.",
+      "type": "multiple_choice",
+      "errors": [
+        "Confusing cleft sentences with relative clauses.",
+        "Omitting the 'that/who' after 'it is/was'."
+      ],
+      "answers": ["It was John who solved the problem first."],
+      "options": [
+        "John was the first to solve the problem.",
+        "The problem was solved by John first.",
+        "It was John who solved the problem first.",
+        "Solving the problem first was John."
+      ],
+      "question": "Which sentence uses a cleft structure for emphasis?",
+      "answer_key": "A cleft sentence uses 'It was... who/that...' to emphasize the subject or object."
+    },
+    {
+      "id": 7,
+      "hint": "'Accustomed' is usually followed by a specific preposition.",
+      "type": "multiple_choice",
+      "errors": [
+        "Using 'to' instead of the correct preposition.",
+        "Using 'with', 'of', or 'at' incorrectly."
+      ],
+      "answers": ["She is accustomed to working late hours."],
+      "options": [
+        "She is accustomed with working late hours.",
+        "She is accustomed of working late hours.",
+        "She is accustomed at working late hours.",
+        "She is accustomed to working late hours."
+      ],
+      "question": "Select the sentence that uses the correct preposition after 'accustomed'.",
+      "answer_key": "'Accustomed' is always followed by 'to' plus a gerund when referring to habits."
+    },
+    {
+      "id": 8,
+      "hint": "Remember subject-auxiliary inversion after 'No sooner'.",
+      "type": "multiple_choice",
+      "errors": [
+        "Forgetting inversion after 'no sooner'.",
+        "Using simple past instead of past perfect."
+      ],
+      "answers": ["had he made"],
+      "options": ["he had made", "did he make", "had he made", "made he had"],
+      "question": "Which option best completes the sentence? 'No sooner ____ the announcement than the crowd erupted in applause.'",
+      "answer_key": "After 'No sooner', the auxiliary verb precedes the subject and uses past perfect: 'No sooner had he made...'"
+    },
+    {
+      "id": 9,
+      "hint": "'Notwithstanding' means 'in spite of' or 'despite'.",
+      "type": "multiple_choice",
+      "errors": [
+        "Using 'notwithstanding' as a verb.",
+        "Incorrect placement in the sentence."
+      ],
+      "answers": [
+        "Notwithstanding his lack of experience, he managed to secure the job."
+      ],
+      "options": [
+        "He managed to secure the job, notwithstanding his lack of experience.",
+        "Notwithstanding his lack of experience, he managed to secure the job.",
+        "He managed, notwithstanding, to secure the job his lack of experience.",
+        "Notwithstanding, he managed to secure the job his lack of experience."
+      ],
+      "question": "Choose the sentence that uses the word 'notwithstanding' correctly.",
+      "answer_key": "'Notwithstanding' can begin a sentence as a preposition, meaning 'in spite of'."
+    },
+    {
+      "id": 10,
+      "hint": "Look for omission of relative pronoun and auxiliary where possible.",
+      "type": "multiple_choice",
+      "errors": [
+        "Including 'who is' or 'that are' unnecessarily.",
+        "Failing to reduce the clause correctly."
+      ],
+      "answers": ["Students living in the dormitory have access to the gym."],
+      "options": [
+        "Students who live in the dormitory have access to the gym.",
+        "Students living in the dormitory have access to the gym.",
+        "Students that are living in the dormitory have access to the gym.",
+        "Students who are living in the dormitory have access to the gym."
+      ],
+      "question": "Select the sentence with correct use of a reduced relative clause.",
+      "answer_key": "'Students living in the dormitory' is a reduced relative clause, omitting 'who are'."
+    },
+    {
+      "id": 11,
+      "hint": "Consider hypothetical or contrary-to-fact situations.",
+      "type": "multiple_choice",
+      "errors": [
+        "Using 'was' instead of 'were' in hypothetical statements",
+        "Confusing indicative and subjunctive moods"
+      ],
+      "answers": ["If I were you, I would reconsider the proposal."],
+      "options": [
+        "If I was you, I would reconsider the proposal.",
+        "If I were you, I would reconsider the proposal.",
+        "If I am you, I would reconsider the proposal.",
+        "If I would be you, I would reconsider the proposal."
+      ],
+      "question": "Which sentence best demonstrates correct use of the subjunctive mood?",
+      "answer_key": "The subjunctive mood is correctly used with 'If I were you' for hypothetical situations."
+    },
+    {
+      "id": 12,
+      "hint": "Look for omission of 'who/which/that' and correct verb form.",
+      "type": "multiple_choice",
+      "errors": [
+        "Using full relative clauses where reduction is possible",
+        "Incorrect participle use"
+      ],
+      "answers": ["The man standing near the door is my uncle."],
+      "options": [
+        "The man who is standing near the door is my uncle.",
+        "The man standing near the door is my uncle.",
+        "The man stood near the door is my uncle.",
+        "The man who stood near the door is my uncle."
+      ],
+      "question": "Choose the sentence that uses a reduced relative clause correctly.",
+      "answer_key": "'Standing' reduces 'who is standing'; the participle phrase is correct."
+    },
+    {
+      "id": 13,
+      "hint": "Look for a word meaning deeply affecting emotionally.",
+      "type": "multiple_choice",
+      "errors": [
+        "Confusing 'affective' with 'effective'",
+        "Choosing words with similar spelling but different meanings"
+      ],
+      "answers": ["poignant"],
+      "options": ["poignant", "redundant", "elusive", "meticulous"],
+      "question": "Select the word that best completes the sentence: 'Her speech was so ____ that everyone in the audience was moved to tears.'",
+      "answer_key": "'Poignant' means deeply moving or touching, which fits the context."
+    },
+    {
+      "id": 14,
+      "hint": "Check for consistency in grammatical forms.",
+      "type": "multiple_choice",
+      "errors": [
+        "Mixing gerunds and infinitives",
+        "Inconsistent verb forms in lists"
+      ],
+      "answers": ["She enjoys reading, cooking, and traveling."],
+      "options": [
+        "She enjoys to read, cooking, and to travel.",
+        "She enjoys reading, to cook, and traveling.",
+        "She enjoys reading, cooking, and traveling.",
+        "She enjoys to read, to cook, and to travel."
+      ],
+      "question": "Identify the sentence with correct parallel structure.",
+      "answer_key": "All items are gerunds, maintaining parallel structure."
+    },
+    {
+      "id": 15,
+      "hint": "Think of a synonym for 'to make unclear.'",
+      "type": "multiple_choice",
+      "errors": [
+        "Choosing antonyms",
+        "Selecting words with only superficial similarity"
+      ],
+      "answers": ["confuse"],
+      "options": ["clarify", "confuse", "illuminate", "reveal"],
+      "question": "Which word is closest in meaning to 'obfuscate'?",
+      "answer_key": "'Obfuscate' means to confuse or make unclear."
+    },
+    {
+      "id": 16,
+      "hint": "Some verbs require specific prepositions.",
+      "type": "multiple_choice",
+      "errors": [
+        "Using 'on' with 'insist' when a clause follows",
+        "Confusing 'on', 'in', and 'at'"
+      ],
+      "answers": ["on"],
+      "options": ["in", "on", "at", "about"],
+      "question": "Choose the correct preposition: 'The professor insisted ___ the importance of original research.'",
+      "answer_key": "'Insist on' is the correct collocation when followed by a noun or gerund."
+    },
+    {
+      "id": 17,
+      "hint": "'Notwithstanding' means 'in spite of.'",
+      "type": "multiple_choice",
+      "errors": [
+        "Confusing 'notwithstanding' with 'nevertheless'",
+        "Incorrect placement in the sentence"
+      ],
+      "answers": ["Notwithstanding the heavy rain, the match continued."],
+      "options": [
+        "The match continued, the heavy rain notwithstanding.",
+        "Notwithstanding the heavy rain, the match continued.",
+        "The match continued, notwithstanding the heavy rain.",
+        "The match, notwithstanding, continued the heavy rain."
+      ],
+      "question": "Which sentence uses the word 'notwithstanding' correctly?",
+      "answer_key": "Option 2 uses 'notwithstanding' at the beginning, followed by a noun phrase."
+    },
+    {
+      "id": 18,
+      "hint": "'Cleft sentences' emphasize a particular part of the sentence.",
+      "type": "multiple_choice",
+      "errors": [
+        "Confusing simple sentences with cleft sentences",
+        "Misidentifying structures that begin with 'it is/was'"
+      ],
+      "answers": ["It was John who broke the vase."],
+      "options": [
+        "John broke the vase.",
+        "It was John who broke the vase.",
+        "The vase was broken by John.",
+        "Who broke the vase was John."
+      ],
+      "question": "Select the sentence that contains a cleft structure.",
+      "answer_key": "Cleft sentences begin with 'It is/was' to emphasize a specific element."
+    },
+    {
+      "id": 19,
+      "hint": "Look for a phrase with contradictory terms.",
+      "type": "multiple_choice",
+      "errors": [
+        "Selecting metaphors or idioms instead",
+        "Confusing oxymoron with paradox"
+      ],
+      "answers": ["deafening silence"],
+      "options": [
+        "deafening silence",
+        "bitter truth",
+        "old friend",
+        "cold wind"
+      ],
+      "question": "Which word is an example of an oxymoron?",
+      "answer_key": "'Deafening silence' combines contradictory terms, making it an oxymoron."
+    },
+    {
+      "id": 20,
+      "hint": "Inversion involves changing word order, often after negative adverbials.",
+      "type": "multiple_choice",
+      "errors": [
+        "Using normal word order after negative expressions",
+        "Incorrect subject-verb inversion"
+      ],
+      "answers": ["Seldom have I seen such dedication."],
+      "options": [
+        "I have seldom seen such dedication.",
+        "Seldom I have seen such dedication.",
+        "Seldom have I seen such dedication.",
+        "I seldom have seen such dedication."
+      ],
+      "question": "Which sentence demonstrates correct use of inversion for emphasis?",
+      "answer_key": "Inversion is used after negative adverbials like 'seldom': 'Seldom have I seen...'"
+    },
+    {
+      "id": 21,
+      "hint": "Focus on a word meaning 'clarity'.",
+      "type": "multiple_choice",
+      "errors": ["ambiguity", "opacity", "obscurity"],
+      "answers": ["lucidity"],
+      "options": ["lucidity", "opacity", "ambiguity", "obscurity"],
+      "question": "Despite the complexity of the subject, the lecturer managed to elucidate the concept with remarkable ______.",
+      "answer_key": "'Lucidity' means clarity of expression, which fits the context of the lecturer explaining something clearly."
+    },
+    {
+      "id": 22,
+      "hint": "Think about the correct conditional perfect form.",
+      "type": "multiple_choice",
+      "errors": ["would hear", "would have hearded", "had heard"],
+      "answers": ["would have heard"],
+      "options": [
+        "would have heard",
+        "would hear",
+        "had heard",
+        "would have hearded"
+      ],
+      "question": "If you had arrived earlier, you ______ the opening remarks.",
+      "answer_key": "'Would have heard' is the correct third conditional form for an unreal past situation."
+    },
+    {
+      "id": 23,
+      "hint": "Look for a word meaning 'persuasive'.",
+      "type": "multiple_choice",
+      "errors": ["coercive", "cogent", "cognitive"],
+      "answers": ["compelling"],
+      "options": ["compelling", "coercive", "cogent", "cognitive"],
+      "question": "The CEO's speech was so ______ that even the most skeptical investors were convinced.",
+      "answer_key": "'Compelling' means evoking interest or attention in a powerfully irresistible way, suiting the context."
+    },
+    {
+      "id": 24,
+      "hint": "Recall the structure of the English subjunctive.",
+      "type": "multiple_choice",
+      "errors": ["If I was you, I would reconsider.", "I wish I was taller."],
+      "answers": ["If I were you, I would reconsider."],
+      "options": [
+        "If I was you, I would reconsider.",
+        "If I were you, I would reconsider.",
+        "I wish I was taller.",
+        "If I would be you, I would reconsider."
+      ],
+      "question": "Which sentence uses the subjunctive correctly?",
+      "answer_key": "The correct subjunctive form is 'If I were you', not 'If I was you'."
+    },
+    {
+      "id": 25,
+      "hint": "Choose a word that means 'weakened'.",
+      "type": "multiple_choice",
+      "errors": ["fortified", "exacerbated", "supported"],
+      "answers": ["undermined"],
+      "options": ["undermined", "fortified", "exacerbated", "supported"],
+      "question": "His argument was ______ by a thorough lack of evidence.",
+      "answer_key": "'Undermined' means to weaken, which fits the context of an argument lacking evidence."
+    },
+    {
+      "id": 26,
+      "hint": "'Notwithstanding' often means 'despite'.",
+      "type": "multiple_choice",
+      "errors": [
+        "Notwithstanding of the rain, the match was played.",
+        "The match was played, notwithstanding of the rain."
+      ],
+      "answers": ["Notwithstanding the rain, the match was played."],
+      "options": [
+        "Notwithstanding of the rain, the match was played.",
+        "The match was played, notwithstanding of the rain.",
+        "Notwithstanding the rain, the match was played.",
+        "Notwithstanding that it rained, the match played."
+      ],
+      "question": "Select the sentence with the correct use of the word 'notwithstanding'.",
+      "answer_key": "'Notwithstanding' should be used without 'of' and means 'despite'."
+    },
+    {
+      "id": 27,
+      "hint": "Think of a word meaning 'easy'.",
+      "type": "multiple_choice",
+      "errors": ["arduous", "onerous", "cumbersome"],
+      "answers": ["straightforward"],
+      "options": ["straightforward", "arduous", "onerous", "cumbersome"],
+      "question": "The solution was not only innovative but also ______ to implement.",
+      "answer_key": "'Straightforward' means simple or easy, which matches the context."
+    },
+    {
+      "id": 28,
+      "hint": "Look for a sentence where the participle phrase does not refer to the subject.",
+      "type": "multiple_choice",
+      "errors": [
+        "While reading the book, the plot was revealed.",
+        "Walking down the street, the trees were blooming."
+      ],
+      "answers": ["Walking down the street, the trees were blooming."],
+      "options": [
+        "Walking down the street, the trees were blooming.",
+        "After finishing dinner, she went for a walk.",
+        "Having been warned, he proceeded carefully.",
+        "While reading the book, I took notes."
+      ],
+      "question": "Which sentence contains an example of a dangling participle?",
+      "answer_key": "'Walking down the street, the trees were blooming.' incorrectly suggests the trees were walking."
+    },
+    {
+      "id": 29,
+      "hint": "Choose a word meaning 'difficult to understand'.",
+      "type": "multiple_choice",
+      "errors": ["transparent", "lucid", "straightforward"],
+      "answers": ["esoteric"],
+      "options": ["esoteric", "transparent", "lucid", "straightforward"],
+      "question": "Select the word that best completes the sentence: The scientist's explanation was so ______ that even experts struggled to follow.",
+      "answer_key": "'Esoteric' refers to something understood by a small group, often difficult for most people to comprehend."
+    },
+    {
+      "id": 30,
+      "hint": "Look for a word meaning 'agreement'.",
+      "type": "multiple_choice",
+      "errors": ["discord", "dissonance", "ambiguity"],
+      "answers": ["consensus"],
+      "options": ["consensus", "discord", "dissonance", "ambiguity"],
+      "question": "The committee finally reached a ______ after hours of deliberation.",
+      "answer_key": "'Consensus' means general agreement, which fits the context of the committee."
+    },
+    {
+      "id": 31,
+      "hint": "The word means blatantly obvious or shameless.",
+      "type": "multiple_choice",
+      "errors": ["flagrant", "fragile", "fragrant", "flagging"],
+      "answers": ["flagrant"],
+      "options": ["fragrant", "flagrant", "fragile", "flagging"],
+      "question": "Despite being warned several times, the students showed a ______ disregard for the rules.",
+      "answer_key": "'Flagrant' means conspicuously offensive or blatant, which fits the context of disregard for the rules."
+    },
+    {
+      "id": 32,
+      "hint": "Think of a word that means unchangeable.",
+      "type": "multiple_choice",
+      "errors": ["immutable", "imminent", "impartial", "impeccable"],
+      "answers": ["immutable"],
+      "options": ["imminent", "impartial", "immutable", "impeccable"],
+      "question": "The committee's decision was ______; it could not be changed under any circumstances.",
+      "answer_key": "'Immutable' means unchanging over time or unable to be changed, which matches the description of the decision."
+    },
+    {
+      "id": 33,
+      "hint": "The word refers to intelligence and keen perception.",
+      "type": "multiple_choice",
+      "errors": ["incisive", "inclusive", "invasive", "insipid"],
+      "answers": ["incisive"],
+      "options": ["invasive", "incisive", "inclusive", "insipid"],
+      "question": "She was known for her ______ wit, always making sharp and clever remarks.",
+      "answer_key": "'Incisive' means intelligently analytical and clear-thinking, often used to describe wit or commentary."
+    },
+    {
+      "id": 34,
+      "hint": "Choose a word meaning deliberately obscure or unclear.",
+      "type": "multiple_choice",
+      "errors": ["opaque", "obtuse", "oblique", "obstinate"],
+      "answers": ["opaque"],
+      "options": ["oblique", "opaque", "obstinate", "obtuse"],
+      "question": "The CEO's explanation was so ______ that even industry experts were left confused.",
+      "answer_key": "'Opaque' here means not transparent or hard to understand, which fits the context of a confusing explanation."
+    },
+    {
+      "id": 35,
+      "hint": "Look for a word meaning stubborn or uncooperative.",
+      "type": "multiple_choice",
+      "errors": ["obstreperous", "obsequious", "ostentatious", "oblivious"],
+      "answers": ["obstreperous"],
+      "options": ["obstreperous", "obsequious", "ostentatious", "oblivious"],
+      "question": "His ______ attitude made it difficult for his colleagues to work with him.",
+      "answer_key": "'Obstreperous' describes someone noisy, difficult to control, or stubbornly resistant."
+    },
+    {
+      "id": 36,
+      "hint": "Choose a word that means difficult to understand or known only to a few.",
+      "type": "multiple_choice",
+      "errors": ["esoteric", "eccentric", "eclectic", "erratic"],
+      "answers": ["esoteric"],
+      "options": ["esoteric", "eccentric", "eclectic", "erratic"],
+      "question": "The scientist's theory was so ______ that only a handful of experts could grasp its complexity.",
+      "answer_key": "'Esoteric' means intended for or likely to be understood by only a small number of people with specialized knowledge."
+    },
+    {
+      "id": 37,
+      "hint": "The word implies unemotional objectivity.",
+      "type": "multiple_choice",
+      "errors": ["detachment", "devotion", "dejection", "deference"],
+      "answers": ["detachment"],
+      "options": ["devotion", "dejection", "detachment", "deference"],
+      "question": "He approached the negotiation with ______, refusing to let emotions influence his judgment.",
+      "answer_key": "'Detachment' refers to an objective or impartial attitude, not influenced by personal feelings."
+    },
+    {
+      "id": 38,
+      "hint": "Look for a word that means refined or delicately complex.",
+      "type": "multiple_choice",
+      "errors": ["nuanced", "mundane", "noxious", "naive"],
+      "answers": ["nuanced"],
+      "options": ["nuanced", "mundane", "noxious", "naive"],
+      "question": "The author's ______ prose was praised for its elegance and subtlety.",
+      "answer_key": "'Nuanced' means characterized by subtle shades of meaning or expression, which fits the context of elegant prose."
+    },
+    {
+      "id": 39,
+      "hint": "The word means ingeniously simple and effective.",
+      "type": "multiple_choice",
+      "errors": ["elegant", "elaborate", "elusive", "elemental"],
+      "answers": ["elegant"],
+      "options": ["elaborate", "elegant", "elusive", "elemental"],
+      "question": "The engineer's solution was both ______ and cost-effective, solving the problem elegantly.",
+      "answer_key": "'Elegant' means pleasingly ingenious and simple, which is commonly used to describe clever, effective solutions."
+    },
+    {
+      "id": 40,
+      "hint": "The word means hindered or obstructed.",
+      "type": "multiple_choice",
+      "errors": ["hampered", "heralded", "hastened", "harbored"],
+      "answers": ["hampered"],
+      "options": ["hampered", "heralded", "hastened", "harbored"],
+      "question": "The project was ______ by unforeseen technical difficulties, delaying its completion.",
+      "answer_key": "'Hampered' means impeded or held back, which is appropriate for describing delays due to difficulties."
+    },
+    {
+      "id": 41,
+      "hint": "Pay attention to hypothetical or contrary-to-fact statements.",
+      "type": "multiple_choice",
+      "errors": [
+        "Using 'was' instead of 'were' after 'if' for unreal conditionals.",
+        "Using indicative mood instead of subjunctive for wishes."
+      ],
+      "answers": ["If I were you, I would reconsider your decision."],
+      "options": [
+        "If I were you, I would reconsider your decision.",
+        "If I was you, I would reconsider your decision.",
+        "If I am you, I would reconsider your decision.",
+        "If I would be you, I reconsider your decision."
+      ],
+      "question": "Which sentence uses the subjunctive mood correctly?",
+      "answer_key": "'If I were you' uses the subjunctive mood to express a hypothetical situation, which is correct in advanced English."
+    },
+    {
+      "id": 42,
+      "hint": "Cleft sentences often start with 'It is' or 'What'.",
+      "type": "multiple_choice",
+      "errors": [
+        "Confusing cleft sentences with regular word order.",
+        "Misplacing 'it' or 'what' in the sentence."
+      ],
+      "answers": ["It was Julia who solved the problem first."],
+      "options": [
+        "Julia solved the problem first.",
+        "It was Julia who solved the problem first.",
+        "Who solved the problem first was Julia.",
+        "Julia who solved the problem first it was."
+      ],
+      "question": "Choose the sentence that correctly employs a cleft structure for emphasis.",
+      "answer_key": "'It was Julia who solved the problem first.' is a cleft sentence, emphasizing Julia as the person who solved the problem."
+    },
+    {
+      "id": 43,
+      "hint": "Inversion changes the usual subject-verb order after negative expressions.",
+      "type": "multiple_choice",
+      "errors": [
+        "Forgetting to invert subject and auxiliary verb.",
+        "Using inversion with non-negative expressions."
+      ],
+      "answers": ["Rarely have I seen such an impressive display of skill."],
+      "options": [
+        "Rarely I have seen such an impressive display of skill.",
+        "Rarely have I seen such an impressive display of skill.",
+        "I rarely have seen such an impressive display of skill.",
+        "Rarely seen I have such an impressive display of skill."
+      ],
+      "question": "Which of the following sentences demonstrates correct use of inversion after a negative adverbial?",
+      "answer_key": "With negative adverbials like 'rarely', the correct form is inversion: 'Rarely have I seen...'."
+    },
+    {
+      "id": 44,
+      "hint": "'Plethora' means an abundance or large amount.",
+      "type": "multiple_choice",
+      "errors": [
+        "Confusing 'plethora' with 'deficiency'.",
+        "Using 'scarcity' in place of a word meaning 'abundance'."
+      ],
+      "answers": ["plethora"],
+      "options": ["scarcity", "plethora", "deficiency", "absence"],
+      "question": "Which word best completes the sentence? 'Despite the ____ of evidence, the jury remained unconvinced.'",
+      "answer_key": "'Plethora' fits the context, as it means an overabundance, which contrasts with the jury being unconvinced."
+    },
+    {
+      "id": 45,
+      "hint": "Reduced relative clauses often omit 'who/which/that' and auxiliary verbs.",
+      "type": "multiple_choice",
+      "errors": [
+        "Including 'who' or 'which' unnecessarily.",
+        "Using full relative clauses instead of reduced."
+      ],
+      "answers": ["The book lying on the table belongs to Sarah."],
+      "options": [
+        "The book which is lying on the table belongs to Sarah.",
+        "The book lying on the table belongs to Sarah.",
+        "The book that it is lying on the table belongs to Sarah.",
+        "The book, which lying on the table, belongs to Sarah."
+      ],
+      "question": "Select the sentence that uses a reduced relative clause correctly.",
+      "answer_key": "'Lying on the table' is a reduced relative clause modifying 'the book', making the sentence concise and advanced."
+    },
+    {
+      "id": 46,
+      "hint": "Consider common English idioms with the word 'bark'.",
+      "type": "multiple_choice",
+      "errors": [
+        "Translating idioms literally from another language.",
+        "Confusing similar-sounding idioms."
+      ],
+      "answers": ["Her bark is worse than her bite."],
+      "options": [
+        "She bites more than she barks.",
+        "Her bark is worse than her bite.",
+        "She barks up the wrong tree and bites.",
+        "Her bite is worse than her bark."
+      ],
+      "question": "Which sentence uses a correct idiomatic expression?",
+      "answer_key": "'Her bark is worse than her bite' is the correct idiom, meaning she sounds more aggressive than she actually is."
+    },
+    {
+      "id": 47,
+      "hint": "'Imminent' means about to happen very soon.",
+      "type": "multiple_choice",
+      "errors": [
+        "Confusing 'imminent' with 'eminent' (famous).",
+        "Using 'imminent' to describe a person."
+      ],
+      "answers": ["The company is preparing for an imminent merger."],
+      "options": [
+        "The company is preparing for an imminent merger.",
+        "The scientist is an imminent in his field.",
+        "The imminent artist will perform tonight.",
+        "The company faces an eminent risk."
+      ],
+      "question": "Which sentence contains a correct usage of the word 'imminent'?",
+      "answer_key": "'Imminent' is correctly used to describe something about to occur; 'merger' is an event, fitting the adjective."
+    },
+    {
+      "id": 48,
+      "hint": "Parallel structure requires matching grammatical forms.",
+      "type": "multiple_choice",
+      "errors": [
+        "Mixing gerunds with infinitives.",
+        "Using different verb forms for similar elements."
+      ],
+      "answers": ["She enjoys reading, writing, and traveling."],
+      "options": [
+        "She enjoys to read, write, and traveling.",
+        "She enjoys reading, to write, and travel.",
+        "She enjoys reading, writing, and traveling.",
+        "She enjoys reading, to write, and to travel."
+      ],
+      "question": "Choose the sentence that correctly uses parallel structure.",
+      "answer_key": "All elements are gerunds: 'reading, writing, and traveling', ensuring proper parallel structure."
+    },
+    {
+      "id": 49,
+      "hint": "This is a third conditional with inversion.",
+      "type": "multiple_choice",
+      "errors": [
+        "Using present or simple past tense for hypothetical past.",
+        "Forgetting the modal 'would have'."
+      ],
+      "answers": ["would have left"],
+      "options": ["left", "would leave", "had left", "would have left"],
+      "question": "Which option best completes the sentence? 'Had he known about the traffic, he ____ earlier.'",
+      "answer_key": "The correct form for third conditionals is 'would have' + past participle: 'would have left'."
+    },
+    {
+      "id": 50,
+      "hint": "'Un-', 'in-', and 'dis-' are common negative prefixes.",
+      "type": "multiple_choice",
+      "errors": [
+        "Adding an incorrect prefix to a word.",
+        "Using double negatives."
+      ],
+      "answers": ["His explanation was incoherent."],
+      "options": [
+        "His explanation was uncoherent.",
+        "His explanation was incoherent.",
+        "His explanation was discoherent.",
+        "His explanation was noncoherent."
+      ],
+      "question": "Which sentence demonstrates correct use of a negative prefix?",
+      "answer_key": "'Incoherent' is the correct form; 'in-' is the appropriate negative prefix for 'coherent.'"
+    }
+  ],
+  "error_correction": [
+    {
+      "id": 1,
+      "hint": "Check the conditional structure.",
+      "type": "error_correction",
+      "errors": ["If I would have known"],
+      "answers": ["If I had known"],
+      "question": "If I would have known about the meeting, I would have attended.",
+      "answer_key": "In third conditional sentences, use 'If I had known', not 'If I would have known'."
+    },
+    {
+      "id": 2,
+      "hint": "Look at the preposition after 'despite'.",
+      "type": "error_correction",
+      "errors": ["Despite of"],
+      "answers": ["Despite"],
+      "question": "Despite of being tired, she finished the marathon.",
+      "answer_key": "'Despite' is not followed by 'of'. Use 'Despite being tired...'."
+    },
+    {
+      "id": 3,
+      "hint": "Check subject-verb agreement with 'neither...nor'.",
+      "type": "error_correction",
+      "errors": ["was"],
+      "answers": ["were"],
+      "question": "Neither the manager nor his assistants was aware of the changes.",
+      "answer_key": "With 'neither...nor', the verb agrees with the closest subject ('assistants'), so use 'were'."
+    },
+    {
+      "id": 4,
+      "hint": "Check the use of 'less' vs. 'fewer'.",
+      "type": "error_correction",
+      "errors": ["less"],
+      "answers": ["fewer"],
+      "question": "The company has less employees than last year.",
+      "answer_key": "'Fewer' is used for countable nouns like 'employees'; 'less' is used for uncountable nouns."
+    },
+    {
+      "id": 5,
+      "hint": "Check verb agreement after 'one of those'.",
+      "type": "error_correction",
+      "errors": ["has"],
+      "answers": ["have"],
+      "question": "He is one of those authors who has won many awards.",
+      "answer_key": "The verb 'have' should be plural, as it refers to 'those authors'."
+    },
+    {
+      "id": 6,
+      "hint": "Check the verb form after 'was'.",
+      "type": "error_correction",
+      "errors": ["was already started"],
+      "answers": ["had already started"],
+      "question": "Hardly had I arrived when the meeting was already started.",
+      "answer_key": "The correct past perfect form is 'had already started', not 'was already started'."
+    },
+    {
+      "id": 7,
+      "hint": "Look at the tense after 'by the time'.",
+      "type": "error_correction",
+      "errors": ["she will come"],
+      "answers": ["she comes"],
+      "question": "By the time she will come, we will have finished the work.",
+      "answer_key": "After 'by the time', use the present simple ('she comes'), not future ('she will come')."
+    },
+    {
+      "id": 8,
+      "hint": "Check subject-verb agreement.",
+      "type": "error_correction",
+      "errors": ["was"],
+      "answers": ["were"],
+      "question": "The results of the study was surprising to many scientists.",
+      "answer_key": "'Results' is plural, so use 'were' instead of 'was'."
+    },
+    {
+      "id": 9,
+      "hint": "Pay attention to verb patterns after 'suggest'.",
+      "type": "error_correction",
+      "errors": ["suggested me to take"],
+      "answers": ["suggested that I take"],
+      "question": "She suggested me to take the advanced course.",
+      "answer_key": "'Suggest' is followed by 'that + subject + base verb' or 'suggest + -ing'."
+    },
+    {
+      "id": 10,
+      "hint": "Check the preposition used after 'discuss'.",
+      "type": "error_correction",
+      "errors": ["discussed about"],
+      "answers": ["discussed"],
+      "question": "They discussed about the new policy during the meeting.",
+      "answer_key": "'Discuss' is not followed by 'about'. The correct form is simply 'discussed the new policy'."
+    },
+    {
+      "id": 11,
+      "hint": "Check the preposition after 'despite'.",
+      "type": "error_correction",
+      "errors": ["Despite of being tired"],
+      "answers": ["Despite being tired"],
+      "question": "Despite of being tired, she finished the marathon.",
+      "answer_key": "The correct form is 'despite' followed directly by a noun or gerund, not 'despite of'."
+    },
+    {
+      "id": 12,
+      "hint": "Pay attention to verb tense consistency after 'hardly'.",
+      "type": "error_correction",
+      "errors": ["was knocking"],
+      "answers": ["knocked"],
+      "question": "Hardly had he left the room when someone was knocking at the door.",
+      "answer_key": "'Hardly...when' requires the simple past tense to show a completed action immediately following another."
+    },
+    {
+      "id": 13,
+      "hint": "Review conditional sentence structure.",
+      "type": "error_correction",
+      "errors": ["If I would have known"],
+      "answers": ["If I had known"],
+      "question": "If I would have known about the traffic, I would have left earlier.",
+      "answer_key": "The third conditional uses 'if' + past perfect, not 'would have'."
+    },
+    {
+      "id": 14,
+      "hint": "Look at the verb pattern after 'suggest'.",
+      "type": "error_correction",
+      "errors": ["suggested me to apply"],
+      "answers": ["suggested that I apply", "suggested applying"],
+      "question": "He suggested me to apply for the scholarship.",
+      "answer_key": "'Suggest' is not followed by 'to' + infinitive or a direct object. Use a 'that' clause with subjunctive or a gerund."
+    },
+    {
+      "id": 15,
+      "hint": "Check the relative clause structure.",
+      "type": "error_correction",
+      "errors": ["which title"],
+      "answers": ["whose title"],
+      "question": "The book, which title is very misleading, became a bestseller.",
+      "answer_key": "'Whose' is the correct possessive relative pronoun for things."
+    },
+    {
+      "id": 16,
+      "hint": "Think about word order after 'no sooner'.",
+      "type": "error_correction",
+      "errors": ["No sooner I had"],
+      "answers": ["No sooner had I"],
+      "question": "No sooner I had sat down than the phone rang.",
+      "answer_key": "After 'no sooner', use inversion: 'No sooner had I...'"
+    },
+    {
+      "id": 17,
+      "hint": "Check the verb form after 'look forward to'.",
+      "type": "error_correction",
+      "errors": ["to meet"],
+      "answers": ["to meeting"],
+      "question": "I look forward to meet you at the conference next month.",
+      "answer_key": "'Look forward to' is followed by a gerund, not an infinitive."
+    },
+    {
+      "id": 18,
+      "hint": "Pay attention to the verb pattern after 'deny'.",
+      "type": "error_correction",
+      "errors": ["denied to have stolen"],
+      "answers": ["denied having stolen"],
+      "question": "He denied to have stolen the documents.",
+      "answer_key": "'Deny' is followed by a gerund, not an infinitive."
+    },
+    {
+      "id": 19,
+      "hint": "Focus on the correct quantifier.",
+      "type": "error_correction",
+      "errors": ["Hardly anyone of"],
+      "answers": ["Hardly any of"],
+      "question": "Hardly anyone of the employees knew about the policy change.",
+      "answer_key": "'Hardly any of' is used with plural countable nouns or uncountable nouns, not 'hardly anyone of'."
+    },
+    {
+      "id": 20,
+      "hint": "Consider the meaning of 'unique'.",
+      "type": "error_correction",
+      "errors": ["most unique"],
+      "answers": ["unique"],
+      "question": "She is the most unique artist in the gallery.",
+      "answer_key": "'Unique' is an absolute adjective and cannot be graded with 'most' or 'very'."
+    },
+    {
+      "id": 21,
+      "hint": "Check the preposition after 'despite'.",
+      "type": "error_correction",
+      "errors": ["Despite of the heavy rain"],
+      "answers": ["Despite the heavy rain"],
+      "question": "Despite of the heavy rain, the event was held as planned.",
+      "answer_key": "'Despite' is not followed by 'of'. The correct form is 'despite the heavy rain'."
+    },
+    {
+      "id": 22,
+      "hint": "Consider the sequence of tenses after 'hardly...when'.",
+      "type": "error_correction",
+      "errors": ["when it had started to rain"],
+      "answers": ["when it started to rain"],
+      "question": "Hardly had I left the house when it had started to rain.",
+      "answer_key": "After 'hardly...when', use the simple past tense, not past perfect. The correct form is 'when it started to rain'."
+    },
+    {
+      "id": 23,
+      "hint": "Check the word order after 'no sooner'.",
+      "type": "error_correction",
+      "errors": ["No sooner the meeting began"],
+      "answers": ["No sooner had the meeting begun"],
+      "question": "No sooner the meeting began than the fire alarm went off.",
+      "answer_key": "After 'No sooner', use inversion: 'No sooner had + subject + past participle...'"
+    },
+    {
+      "id": 24,
+      "hint": "Notice the missing conjunction after 'arrived'.",
+      "type": "error_correction",
+      "errors": ["Scarcely had they arrived they started"],
+      "answers": ["Scarcely had they arrived when they started"],
+      "question": "Scarcely had they arrived they started complaining about the food.",
+      "answer_key": "'Scarcely...when' is the correct correlative conjunction pair, not just 'scarcely...'."
+    },
+    {
+      "id": 25,
+      "hint": "Check the subject of the participial phrase.",
+      "type": "error_correction",
+      "errors": [
+        "Having finished the project, the report was submitted by John."
+      ],
+      "answers": ["Having finished the project, John submitted the report."],
+      "question": "Having finished the project, the report was submitted by John.",
+      "answer_key": "The participial phrase should refer to the subject that follows. Here, 'John' finished the project, not 'the report'."
+    },
+    {
+      "id": 26,
+      "hint": "Check the verb form after 'Had I...'.",
+      "type": "error_correction",
+      "errors": ["Had I knew"],
+      "answers": ["Had I known"],
+      "question": "Had I knew about the traffic, I would have left earlier.",
+      "answer_key": "'Had I' is followed by the past participle, not the past tense. The correct form is 'Had I known...'"
+    },
+    {
+      "id": 27,
+      "hint": "Check subject-verb agreement after 'neither of'.",
+      "type": "error_correction",
+      "errors": ["are correct"],
+      "answers": ["is correct"],
+      "question": "Neither of the answers are correct according to the textbook.",
+      "answer_key": "'Neither' is singular, so use 'is correct' instead of 'are correct'."
+    },
+    {
+      "id": 28,
+      "hint": "Check the verb tense after 'It is high time'.",
+      "type": "error_correction",
+      "errors": ["you go to bed"],
+      "answers": ["you went to bed"],
+      "question": "It is high time you go to bed.",
+      "answer_key": "After 'It is high time', use the past simple tense, not the present."
+    },
+    {
+      "id": 29,
+      "hint": "Check the verb pattern after 'suggest'.",
+      "type": "error_correction",
+      "errors": ["suggested me to take"],
+      "answers": ["suggested that I take"],
+      "question": "She suggested me to take the advanced course.",
+      "answer_key": "'Suggest' is not followed by an object + infinitive. The correct form is 'suggested that I take...'"
+    },
+    {
+      "id": 30,
+      "hint": "'Each' is singular or plural?",
+      "type": "error_correction",
+      "errors": ["have completed", "their assignments"],
+      "answers": ["has completed", "his or her assignment"],
+      "question": "Each of the students have completed their assignments.",
+      "answer_key": "'Each' is singular, so use 'has completed his or her assignment'."
+    },
+    {
+      "id": 31,
+      "hint": "Check the verb tense after 'when'.",
+      "type": "error_correction",
+      "errors": ["ringed"],
+      "answers": ["rang"],
+      "question": "Hardly had I finished my meal when the door bell ringed.",
+      "answer_key": "The correct past tense of 'ring' is 'rang'. 'Ringed' is incorrect in this context."
+    },
+    {
+      "id": 32,
+      "hint": "'No sooner' requires a specific structure.",
+      "type": "error_correction",
+      "errors": ["No sooner had he arrived, he realized"],
+      "answers": ["No sooner had he arrived than he realized"],
+      "question": "No sooner had he arrived, he realized he forgot his documents.",
+      "answer_key": "'No sooner' is followed by 'than', not a comma. The correct phrase is 'No sooner had he arrived than he realized...'."
+    },
+    {
+      "id": 33,
+      "hint": "'Deny' is followed by a gerund.",
+      "type": "error_correction",
+      "errors": ["to have stolen"],
+      "answers": ["having stolen"],
+      "question": "He denied to have stolen the money.",
+      "answer_key": "After 'deny', use the gerund form: 'denied having stolen'."
+    },
+    {
+      "id": 34,
+      "hint": "Collective nouns can be singular or plural. Consider American English usage.",
+      "type": "error_correction",
+      "errors": ["have"],
+      "answers": ["has"],
+      "question": "The committee have decided to postpone the meeting.",
+      "answer_key": "In American English, collective nouns like 'committee' are treated as singular, so 'has' is correct."
+    },
+    {
+      "id": 35,
+      "hint": "Check the conditional structure.",
+      "type": "error_correction",
+      "errors": ["If I would have known"],
+      "answers": ["If I had known"],
+      "question": "If I would have known about the traffic, I would have left earlier.",
+      "answer_key": "In third conditional sentences, use 'had' in the if-clause: 'If I had known...'."
+    },
+    {
+      "id": 36,
+      "hint": "'Despite' and 'of' together?",
+      "type": "error_correction",
+      "errors": ["Despite of"],
+      "answers": ["Despite"],
+      "question": "Despite of the rain, the concert continued as planned.",
+      "answer_key": "'Despite' is not followed by 'of'. Use 'despite' or 'in spite of'."
+    },
+    {
+      "id": 37,
+      "hint": "'Not only' triggers inversion.",
+      "type": "error_correction",
+      "errors": ["Not only he is intelligent"],
+      "answers": ["Not only is he intelligent"],
+      "question": "Not only he is intelligent, but also hardworking.",
+      "answer_key": "After 'Not only' at the beginning of a sentence, invert subject and verb: 'Not only is he intelligent...'."
+    },
+    {
+      "id": 38,
+      "hint": "'Suggest' is not followed by an indirect object + infinitive.",
+      "type": "error_correction",
+      "errors": ["suggested me to apply"],
+      "answers": ["suggested that I apply"],
+      "question": "She suggested me to apply for the scholarship.",
+      "answer_key": "The correct structure is 'suggested that I apply' or 'suggested applying'. 'Suggest' is not followed by an object + infinitive."
+    },
+    {
+      "id": 39,
+      "hint": "Sequence of past events with 'scarcely'.",
+      "type": "error_correction",
+      "errors": ["had started"],
+      "answers": ["started"],
+      "question": "Scarcely had they left the house when it had started to rain.",
+      "answer_key": "The main event after 'when' should be in the simple past: 'when it started to rain'."
+    },
+    {
+      "id": 40,
+      "hint": "'Each' affects verb agreement.",
+      "type": "error_correction",
+      "errors": ["have"],
+      "answers": ["has"],
+      "question": "Each of the students have submitted their assignments.",
+      "answer_key": "'Each' is singular, so the verb should be 'has'."
+    },
+    {
+      "id": 41,
+      "hint": "Check the use of 'informations.'",
+      "type": "error_correction",
+      "errors": ["informations"],
+      "answers": ["information"],
+      "question": "Neither of the informations given was relevant to the case.",
+      "answer_key": "'Information' is an uncountable noun and should not be used in the plural form. The correct phrase is 'Neither of the information given was relevant to the case.'"
+    },
+    {
+      "id": 42,
+      "hint": "Pay attention to the verb pattern after 'suggest.'",
+      "type": "error_correction",
+      "errors": ["suggested me to apply"],
+      "answers": ["suggested that I apply", "suggested applying"],
+      "question": "She suggested me to apply for the scholarship.",
+      "answer_key": "The verb 'suggest' is not followed by an object + infinitive. Use 'suggested that I apply' or 'suggested applying for the scholarship.'"
+    },
+    {
+      "id": 43,
+      "hint": "Check the verb tense in the second clause.",
+      "type": "error_correction",
+      "errors": ["was ringing"],
+      "answers": ["rang"],
+      "question": "Hardly had I finished my dinner when the phone was ringing.",
+      "answer_key": "After 'Hardly...when,' use the simple past tense. The correct sentence is: 'Hardly had I finished my dinner when the phone rang.'"
+    },
+    {
+      "id": 44,
+      "hint": "Check the preposition used after 'accused.'",
+      "type": "error_correction",
+      "errors": ["accused for"],
+      "answers": ["accused of"],
+      "question": "He was accused for stealing confidential documents.",
+      "answer_key": "The correct preposition after 'accused' is 'of,' not 'for.'"
+    },
+    {
+      "id": 45,
+      "hint": "Focus on the adverb used for intensity.",
+      "type": "error_correction",
+      "errors": ["hardly"],
+      "answers": ["hard"],
+      "question": "Having studied hardly, she passed the exam with flying colors.",
+      "answer_key": "'Hardly' means 'barely.' The correct word is 'hard,' which means 'with a lot of effort.'"
+    },
+    {
+      "id": 46,
+      "hint": "Check the correct preposition after 'despite.'",
+      "type": "error_correction",
+      "errors": ["Despite of"],
+      "answers": ["Despite"],
+      "question": "Despite of his efforts, he failed to meet the deadline.",
+      "answer_key": "'Despite' is not followed by 'of.' Use 'Despite his efforts.'"
+    },
+    {
+      "id": 47,
+      "hint": "Look at the word order after 'No sooner.'",
+      "type": "error_correction",
+      "errors": ["No sooner they had arrived"],
+      "answers": ["No sooner had they arrived"],
+      "question": "No sooner they had arrived than it started to rain.",
+      "answer_key": "After 'No sooner,' use inversion: 'No sooner had they arrived than it started to rain.'"
+    },
+    {
+      "id": 48,
+      "hint": "Check the verb forms in the conditional.",
+      "type": "error_correction",
+      "errors": ["If I would have known"],
+      "answers": ["If I had known"],
+      "question": "If I would have known about the traffic, I would have left earlier.",
+      "answer_key": "In third conditional, use 'If + past perfect,' not 'would have.' Correct: 'If I had known about the traffic, I would have left earlier.'"
+    },
+    {
+      "id": 49,
+      "hint": "Check subject-verb agreement with 'as well as.'",
+      "type": "error_correction",
+      "errors": ["are planning"],
+      "answers": ["is planning"],
+      "question": "The company, as well as its partners, are planning to expand abroad.",
+      "answer_key": "When 'as well as' is used, the verb agrees with the first subject. 'The company is planning to expand abroad.'"
+    },
+    {
+      "id": 50,
+      "hint": "Check verb patterns after 'deny.'",
+      "type": "error_correction",
+      "errors": ["denied to have stolen"],
+      "answers": ["denied having stolen"],
+      "question": "He denied to have stolen the money.",
+      "answer_key": "After 'deny,' use the gerund form. Correct: 'He denied having stolen the money.'"
+    }
+  ],
+  "sentence_builder": [
+    {
+      "id": 1,
+      "hint": "Pay attention to conditional and perfect tenses.",
+      "type": "sentence_builder",
+      "words": [
+        "sooner",
+        "would",
+        "you",
+        "I",
+        "have",
+        "had",
+        "if",
+        "called",
+        "arrived"
+      ],
+      "errors": [
+        "Incorrect word order in conditional sentences.",
+        "Misuse of past perfect tense."
+      ],
+      "answers": ["I would have arrived sooner if you had called."],
+      "question": "Arrange the following words to form a grammatically correct sentence: 'sooner / would / you / I / have / had / if / called / arrived.'",
+      "answer_key": "In third conditional sentences, use 'would have' plus past participle in the main clause and 'had' plus past participle in the if-clause."
+    },
+    {
+      "id": 2,
+      "hint": "Consider inversion after 'no sooner'.",
+      "type": "sentence_builder",
+      "words": [
+        "no sooner",
+        "had",
+        "left",
+        "than",
+        "it",
+        "started",
+        "to",
+        "rain"
+      ],
+      "errors": [
+        "Forgetting to use inversion after 'no sooner'.",
+        "Incorrect placement of 'than'."
+      ],
+      "answers": ["No sooner had I left than it started to rain."],
+      "question": "Construct a sentence using all of the following words: 'no sooner', 'had', 'left', 'than', 'it', 'started', 'to', 'rain'.",
+      "answer_key": "'No sooner' requires inversion (auxiliary verb before subject), and 'than' introduces the second event."
+    },
+    {
+      "id": 3,
+      "hint": "Use 'not only... but also' structure with inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "her",
+        "promotion",
+        "not",
+        "only",
+        "did",
+        "surprise",
+        "but",
+        "also",
+        "delighted",
+        "colleagues",
+        "her"
+      ],
+      "errors": [
+        "Missing inversion after 'not only'.",
+        "Incorrect placement of 'but also'."
+      ],
+      "answers": [
+        "Not only did her promotion surprise her colleagues, but it also delighted them."
+      ],
+      "question": "Rearrange the words to make a correct sentence: 'her / promotion / not / only / did / surprise / but / also / delighted / colleagues / her.'",
+      "answer_key": "After 'not only' at the beginning, use auxiliary verb before the subject (inversion)."
+    },
+    {
+      "id": 4,
+      "hint": "Use inversion with 'hardly... when'.",
+      "type": "sentence_builder",
+      "words": [
+        "hardly",
+        "finished",
+        "he",
+        "had",
+        "when",
+        "the",
+        "phone",
+        "rang"
+      ],
+      "errors": [
+        "Omitting inversion after 'hardly'.",
+        "Using 'than' instead of 'when'."
+      ],
+      "answers": ["Hardly had he finished when the phone rang."],
+      "question": "Arrange the words into a correct sentence: 'hardly / finished / he / had / when / the / phone / rang.'",
+      "answer_key": "With 'hardly,' use inversion (auxiliary before subject) and 'when' to connect the two actions."
+    },
+    {
+      "id": 5,
+      "hint": "Use inversion after negative adverbials.",
+      "type": "sentence_builder",
+      "words": [
+        "rarely",
+        "she",
+        "seen",
+        "such",
+        "a",
+        "spectacular",
+        "performance",
+        "has"
+      ],
+      "errors": [
+        "Missing inversion after 'rarely'.",
+        "Incorrect verb placement."
+      ],
+      "answers": ["Rarely has she seen such a spectacular performance."],
+      "question": "Build a sentence using all these words: 'rarely', 'she', 'seen', 'such', 'a', 'spectacular', 'performance', 'has'.",
+      "answer_key": "'Rarely' at the beginning requires auxiliary verb before the subject (inversion)."
+    },
+    {
+      "id": 6,
+      "hint": "'Despite' should be followed by a gerund or noun.",
+      "type": "sentence_builder",
+      "words": [
+        "Despite",
+        "having",
+        "prepared",
+        "thoroughly",
+        "she",
+        "failed",
+        "the",
+        "exam"
+      ],
+      "errors": [
+        "Using 'despite' with a clause instead of a gerund.",
+        "Incorrect use of 'although' or 'even though'."
+      ],
+      "answers": ["Despite having prepared thoroughly, she failed the exam."],
+      "question": "Form a sentence with: 'Despite', 'having', 'prepared', 'thoroughly', 'she', 'failed', 'the', 'exam.'",
+      "answer_key": "'Despite' is followed by a gerund phrase, not a full clause."
+    },
+    {
+      "id": 7,
+      "hint": "Use inversion for conditional sentences without 'if'.",
+      "type": "sentence_builder",
+      "words": [
+        "Had",
+        "known",
+        "I",
+        "about",
+        "the",
+        "traffic",
+        "jam,",
+        "have",
+        "left",
+        "I",
+        "would",
+        "earlier"
+      ],
+      "errors": ["Using 'if' instead of inversion.", "Incorrect verb order."],
+      "answers": [
+        "Had I known about the traffic jam, I would have left earlier."
+      ],
+      "question": "Arrange the following into a correct sentence: 'Had / known / I / about / the / traffic / jam, / have / left / I / would / earlier.'",
+      "answer_key": "For conditional sentences without 'if', start with 'Had', then the subject, then past participle."
+    },
+    {
+      "id": 8,
+      "hint": "Use inversion with 'scarcely... when'.",
+      "type": "sentence_builder",
+      "words": [
+        "scarcely",
+        "she",
+        "had",
+        "entered",
+        "room",
+        "the",
+        "when",
+        "began",
+        "the",
+        "to",
+        "applause"
+      ],
+      "errors": [
+        "Forgetting inversion after 'scarcely'.",
+        "Confusing 'when' with 'than'."
+      ],
+      "answers": ["Scarcely had she entered the room when the applause began."],
+      "question": "Put the words in order: 'scarcely / she / had / entered / room / the / when / began / the / to / applause.'",
+      "answer_key": "'Scarcely' at the beginning requires inversion and is followed by 'when'."
+    },
+    {
+      "id": 9,
+      "hint": "Use inversion after negative adverbials.",
+      "type": "sentence_builder",
+      "words": [
+        "Under",
+        "no",
+        "circumstances",
+        "should",
+        "you",
+        "reveal",
+        "confidential",
+        "information"
+      ],
+      "errors": [
+        "Omitting inversion after 'under no circumstances'.",
+        "Incorrect verb placement."
+      ],
+      "answers": [
+        "Under no circumstances should you reveal confidential information."
+      ],
+      "question": "Arrange the words: 'Under / no / circumstances / should / you / reveal / confidential / information.'",
+      "answer_key": "'Under no circumstances' at the beginning requires auxiliary verb before the subject."
+    },
+    {
+      "id": 10,
+      "hint": "After 'only after', use inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "Only",
+        "after",
+        "the",
+        "meeting",
+        "did",
+        "realize",
+        "he",
+        "significance",
+        "the",
+        "of",
+        "the",
+        "proposal"
+      ],
+      "errors": [
+        "Not using inversion after 'only after'.",
+        "Incorrect subject-verb order."
+      ],
+      "answers": [
+        "Only after the meeting did he realize the significance of the proposal."
+      ],
+      "question": "Rearrange to create a correct sentence: 'Only / after / the / meeting / did / realize / he / significance / the / of / the / proposal.'",
+      "answer_key": "'Only after' at the beginning triggers inversion (auxiliary before subject)."
+    },
+    {
+      "id": 11,
+      "hint": "Start with 'Regardless...'",
+      "type": "sentence_builder",
+      "words": [
+        "regardless",
+        "of",
+        "his",
+        "efforts",
+        "the",
+        "project",
+        "failed"
+      ],
+      "errors": [
+        "Regardless his efforts, the project failed.",
+        "The project failed regardless his efforts."
+      ],
+      "answers": ["Regardless of his efforts, the project failed."],
+      "question": "Rearrange the words to form a correct sentence: 'regardless / his / of / efforts / failed / the / project'",
+      "answer_key": "The correct structure is 'Regardless of [noun phrase], [main clause]'. 'Regardless' always takes 'of' when followed by a noun."
+    },
+    {
+      "id": 12,
+      "hint": "Start with a participial phrase.",
+      "type": "sentence_builder",
+      "errors": [
+        "She finished her assignment, she went to bed.",
+        "She finished her assignment and going to bed."
+      ],
+      "answers": ["Having finished her assignment, she went to bed."],
+      "options": [
+        "Finishing her assignment, she went to bed.",
+        "Having finished her assignment, she went to bed.",
+        "She finished her assignment, going to bed."
+      ],
+      "question": "Combine the two clauses into one sentence using a participial phrase: 'She finished her assignment. She went to bed.'",
+      "answer_key": "\"Having finished her assignment\" is a perfect participial phrase showing the action was completed before the main clause."
+    },
+    {
+      "id": 13,
+      "hint": "Think about possessive relative pronouns.",
+      "type": "sentence_builder",
+      "errors": [
+        "The artist which work was displayed...",
+        "The artist who's work was displayed..."
+      ],
+      "answers": [
+        "The artist whose work was displayed at the gallery attended the event."
+      ],
+      "options": ["who", "whose", "which", "that"],
+      "question": "Insert the correct relative pronoun: 'The artist ___ work was displayed at the gallery attended the event.'",
+      "answer_key": "\"Whose\" is the possessive form used for both people and things in relative clauses."
+    },
+    {
+      "id": 14,
+      "hint": "Negative adverbials trigger inversion.",
+      "type": "sentence_builder",
+      "errors": [
+        "Rarely I have seen such a magnificent performance.",
+        "Rarely I saw such a magnificent performance."
+      ],
+      "answers": ["Rarely have I seen such a magnificent performance."],
+      "options": ["I have seen", "have I seen", "I saw", "did I see"],
+      "question": "Choose the correct inversion for emphasis: 'Rarely ___ such a magnificent performance.'",
+      "answer_key": "After negative adverbials like 'rarely', use subject-auxiliary inversion: 'Rarely have I...'"
+    },
+    {
+      "id": 15,
+      "hint": "Think about idioms meaning 'new problems'.",
+      "type": "sentence_builder",
+      "errors": ["Open a can of warm.", "Open a box of worms."],
+      "answers": ["The new policy may open a can of worms."],
+      "options": ["can", "box", "bag", "jar"],
+      "question": "Complete the sentence with an appropriate idiomatic expression: 'The new policy may open a ___ of worms.'",
+      "answer_key": "\"A can of worms\" is the correct idiom for a situation that causes many new problems."
+    },
+    {
+      "id": 16,
+      "hint": "Start with 'Although...'",
+      "type": "sentence_builder",
+      "errors": [
+        "Although he is very talented but he has not achieved much recognition.",
+        "Although very talented, but he has not achieved much recognition."
+      ],
+      "answers": [
+        "Although he is very talented, he has not achieved much recognition."
+      ],
+      "options": [
+        "Although he is very talented, he has not achieved much recognition.",
+        "Although he is very talented but he has not achieved much recognition.",
+        "Because he is very talented, he has not achieved much recognition."
+      ],
+      "question": "Combine these sentences using a concessive clause: 'He is very talented. He has not achieved much recognition.'",
+      "answer_key": "\"Although\" introduces a concessive clause and is not followed by 'but' in the main clause."
+    },
+    {
+      "id": 17,
+      "hint": "A phrasal verb meaning 'cancelled'.",
+      "type": "sentence_builder",
+      "errors": ["Called up", "Called away"],
+      "answers": [
+        "The conference was called off due to unforeseen circumstances."
+      ],
+      "options": ["off", "up", "out", "away"],
+      "question": "Fill in the correct phrasal verb: 'The conference was called ___ due to unforeseen circumstances.'",
+      "answer_key": "\"Call off\" means to cancel an event."
+    },
+    {
+      "id": 18,
+      "hint": "Check the conditional clause structure.",
+      "type": "sentence_builder",
+      "errors": [
+        "If I would have known about the meeting, I would have attended."
+      ],
+      "answers": ["If I had known about the meeting, I would have attended."],
+      "question": "Identify and correct the error: 'If I would have known about the meeting, I would have attended.'",
+      "answer_key": "The correct third conditional is 'If + past perfect, would have + past participle.' Never use 'would have' in the 'if' clause."
+    },
+    {
+      "id": 19,
+      "hint": "Begin with a conditional inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "should",
+        "the",
+        "need",
+        "arise",
+        "for",
+        "assistance",
+        "please",
+        "contact",
+        "us"
+      ],
+      "errors": [
+        "Should you need for assistance, please contact us.",
+        "If should the need arise for assistance, please contact us."
+      ],
+      "answers": ["Should the need arise for assistance, please contact us."],
+      "question": "Rearrange the following words to create a correct formal sentence: 'should / the / arise / need / assistance / for / please / contact / us'",
+      "answer_key": "Formal conditionals can use 'Should + subject + verb' for polite offers or instructions."
+    },
+    {
+      "id": 20,
+      "hint": "Think about which preposition follows 'proficient'.",
+      "type": "sentence_builder",
+      "errors": [
+        "Proficient in three languages",
+        "Proficient with three languages"
+      ],
+      "answers": [
+        "He is proficient in three languages and has worked abroad extensively."
+      ],
+      "options": ["in", "at", "with", "of"],
+      "question": "Insert the correct preposition: 'He is proficient ___ three languages and has worked abroad extensively.'",
+      "answer_key": "'Proficient' is followed by 'in' when referring to skills or areas of expertise."
+    },
+    {
+      "id": 21,
+      "hint": "Start with the contrast connector.",
+      "type": "sentence_builder",
+      "words": [
+        "despite",
+        "his",
+        "illness",
+        "he",
+        "managed",
+        "to",
+        "perform",
+        "admirably"
+      ],
+      "errors": [
+        "Incorrect word order",
+        "Omitting prepositions",
+        "Misplacing the adverb"
+      ],
+      "answers": ["Despite his illness, he managed to perform admirably."],
+      "question": "Arrange the following words to form a grammatically correct and meaningful sentence: 'despite / his / managed / illness / he / perform / to / admirably'",
+      "answer_key": "The sentence begins with 'Despite his illness' to show contrast, followed by the subject and verb: 'he managed to perform admirably.'"
+    },
+    {
+      "id": 22,
+      "hint": "Start with the negative conditional structure.",
+      "type": "sentence_builder",
+      "words": [
+        "had",
+        "it",
+        "not",
+        "been",
+        "for",
+        "the",
+        "government's",
+        "intervention",
+        "the",
+        "situation",
+        "would",
+        "have",
+        "deteriorated",
+        "further"
+      ],
+      "errors": [
+        "Incorrect use of past perfect in conditionals",
+        "Placing 'not' incorrectly",
+        "Forgetting 'have' in the result clause"
+      ],
+      "answers": [
+        "Had it not been for the government's intervention, the situation would have deteriorated further."
+      ],
+      "question": "Use the following words to build a sentence: 'had / the / not / intervention / government / for / situation / deteriorated / further / would / the / have'",
+      "answer_key": "This is an inverted third conditional; 'Had it not been for...' is followed by the result in the past perfect modal."
+    },
+    {
+      "id": 23,
+      "hint": "Use the negative adverb at the beginning for inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "scarcely",
+        "had",
+        "the",
+        "guests",
+        "left",
+        "when",
+        "it",
+        "began",
+        "to",
+        "rain"
+      ],
+      "errors": [
+        "Not using inversion after 'scarcely'",
+        "Incorrect tense usage",
+        "Misplacing 'when'"
+      ],
+      "answers": ["Scarcely had the guests left when it began to rain."],
+      "question": "Rearrange these words to form a correct sentence: 'scarcely / had / the / left / when / it / began / rain / to / guests'",
+      "answer_key": "'Scarcely' at the beginning requires inversion: 'Scarcely had the guests left when...'"
+    },
+    {
+      "id": 24,
+      "hint": "This is a formal conditional phrase.",
+      "type": "sentence_builder",
+      "words": [
+        "should",
+        "you",
+        "have",
+        "any",
+        "questions",
+        "do",
+        "not",
+        "hesitate",
+        "to",
+        "contact",
+        "me"
+      ],
+      "errors": [
+        "Not using inversion with 'should'",
+        "Omitting 'to contact'",
+        "Incorrect placement of 'not'"
+      ],
+      "answers": [
+        "Should you have any questions, do not hesitate to contact me."
+      ],
+      "question": "Form a sentence from: 'should / any / you / questions / have / hesitate / not / do / to / me / contact'",
+      "answer_key": "Formal inversion with 'should' at the beginning; 'do not hesitate to contact me' is the main clause."
+    },
+    {
+      "id": 25,
+      "hint": "'So...that' structure is used for emphasis.",
+      "type": "sentence_builder",
+      "words": [
+        "so",
+        "astounded",
+        "was",
+        "the",
+        "audience",
+        "by",
+        "her",
+        "performance",
+        "that",
+        "they",
+        "sat",
+        "in",
+        "silence"
+      ],
+      "errors": [
+        "Incorrect word order in 'so...that'",
+        "Confusing subject and object",
+        "Misplacing the result clause"
+      ],
+      "answers": [
+        "So astounded was the audience by her performance that they sat in silence."
+      ],
+      "question": "Construct a sentence: 'so / was / performance / her / that / the / audience / astounded / the / sat / in / silence'",
+      "answer_key": "'So astounded was the audience by her performance that...' is an inverted structure for emphasis."
+    },
+    {
+      "id": 26,
+      "hint": "Use negative adverb inversion at the beginning.",
+      "type": "sentence_builder",
+      "words": [
+        "little",
+        "did",
+        "she",
+        "know",
+        "what",
+        "grave",
+        "consequences",
+        "her",
+        "actions",
+        "would",
+        "have"
+      ],
+      "errors": [
+        "Omitting inversion after 'little'",
+        "Incorrect tense usage",
+        "Misplacing 'would have'"
+      ],
+      "answers": [
+        "Little did she know what grave consequences her actions would have."
+      ],
+      "question": "Build a sentence: 'little / know / did / she / what / consequences / grave / her / actions / would / have'",
+      "answer_key": "Starting with 'Little did she know' requires inversion; the clause follows naturally."
+    },
+    {
+      "id": 27,
+      "hint": "'Would sooner' expresses preference.",
+      "type": "sentence_builder",
+      "words": [
+        "I",
+        "would",
+        "sooner",
+        "have",
+        "left",
+        "than",
+        "endure",
+        "such",
+        "humiliation"
+      ],
+      "errors": [
+        "Misplacing 'sooner' in the sentence",
+        "Incorrect infinitive form",
+        "Omitting 'than'"
+      ],
+      "answers": ["I would sooner have left than endure such humiliation."],
+      "question": "Arrange the words: 'I / would / sooner / have / left / than / endure / such / humiliation'",
+      "answer_key": "'Would sooner have left than endure...' expresses preference using the correct infinitive structure."
+    },
+    {
+      "id": 28,
+      "hint": "'Only after' triggers inversion in the main clause.",
+      "type": "sentence_builder",
+      "words": [
+        "only",
+        "after",
+        "the",
+        "announcement",
+        "did",
+        "we",
+        "realize",
+        "the",
+        "significance",
+        "of",
+        "its"
+      ],
+      "errors": [
+        "Not using inversion after 'only after'",
+        "Incorrect word order with 'of its significance'",
+        "Misplacing subject and verb"
+      ],
+      "answers": [
+        "Only after the announcement did we realize the significance of its significance."
+      ],
+      "question": "Form a sentence: 'Only / after / the / announcement / did / we / realize / the / significance / its / of'",
+      "answer_key": "With 'Only after' at the start, inversion is required: 'did we realize...'."
+    },
+    {
+      "id": 29,
+      "hint": "'No under any circumstances' demands inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "under",
+        "no",
+        "circumstances",
+        "should",
+        "you",
+        "open",
+        "the",
+        "door"
+      ],
+      "errors": [
+        "Omitting inversion after negative adverbial",
+        "Incorrect placement of 'should'",
+        "Missing definite article"
+      ],
+      "answers": ["Under no circumstances should you open the door."],
+      "question": "Build a sentence: 'no / under / circumstances / should / you / open / the / door'",
+      "answer_key": "Negative adverbials like 'under no circumstances' require inversion: 'should you open the door.'"
+    },
+    {
+      "id": 30,
+      "hint": "Begin with the negative frequency adverb.",
+      "type": "sentence_builder",
+      "words": [
+        "rarely",
+        "have",
+        "I",
+        "encountered",
+        "such",
+        "dedication",
+        "and",
+        "professionalism"
+      ],
+      "errors": [
+        "Not inverting subject and auxiliary after 'rarely'",
+        "Combining 'dedication and professionalism' incorrectly",
+        "Using wrong tense"
+      ],
+      "answers": [
+        "Rarely have I encountered such dedication and professionalism."
+      ],
+      "question": "Arrange: 'rarely / such / have / I / encountered / dedication / professionalism / and'",
+      "answer_key": "'Rarely' at the start triggers inversion: 'have I encountered...'"
+    },
+    {
+      "id": 31,
+      "hint": "Start with 'Despite'.",
+      "type": "sentence_builder",
+      "words": [
+        "despite",
+        "fluently",
+        "difficulties",
+        "she",
+        "speaks",
+        "English",
+        "considerable",
+        "her"
+      ],
+      "errors": [
+        "Placing 'despite' after the subject.",
+        "Omitting 'her' before 'considerable difficulties'.",
+        "Misplacing adverbs like 'fluently'."
+      ],
+      "answers": [
+        "Despite her considerable difficulties, she speaks English fluently.",
+        "She speaks English fluently despite her considerable difficulties."
+      ],
+      "question": "Arrange the following words to form a correct sentence: 'despite / fluently / difficulties / she / speaks / English / considerable / her'.",
+      "answer_key": "'Despite' introduces a concessive clause; 'her considerable difficulties' is the object of 'despite'. The main clause is 'she speaks English fluently.'"
+    },
+    {
+      "id": 32,
+      "hint": "'Rarely' often triggers inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "rarely",
+        "the",
+        "understood",
+        "he",
+        "was",
+        "in",
+        "what",
+        "meetings",
+        "said"
+      ],
+      "errors": [
+        "Not using subject-verb inversion after 'rarely'.",
+        "Incorrect word order after inversion.",
+        "Omitting 'what' as the object."
+      ],
+      "answers": [
+        "Rarely was he understood in meetings by what he said.",
+        "Rarely was what he said understood in meetings."
+      ],
+      "question": "Use these words to build a grammatically correct sentence: 'rarely / the / understood / he / was / in / what / meetings / said'.",
+      "answer_key": "Negative adverbs like 'rarely' require inversion: 'Rarely was he...'. The subordinate clause 'what he said' functions as the subject/object."
+    },
+    {
+      "id": 33,
+      "hint": "Parallel structure is required.",
+      "type": "sentence_builder",
+      "words": [
+        "not only",
+        "but also",
+        "global",
+        "the",
+        "economy",
+        "environmental",
+        "impacts",
+        "suffered"
+      ],
+      "errors": [
+        "Misplacing 'not only' and 'but also'.",
+        "Failing to maintain parallelism.",
+        "Incorrect verb placement."
+      ],
+      "answers": [
+        "Not only the global economy but also the environment suffered impacts.",
+        "Not only did the global economy suffer impacts, but the environment did as well."
+      ],
+      "question": "Build a sentence using: 'not only / but also / global / the / economy / environmental / impacts / suffered'.",
+      "answer_key": "'Not only... but also...' requires parallel structure; both parts must be grammatically similar."
+    },
+    {
+      "id": 34,
+      "hint": "This is a third conditional.",
+      "type": "sentence_builder",
+      "words": [
+        "would",
+        "have",
+        "the",
+        "if",
+        "known",
+        "consequences",
+        "he",
+        "acted",
+        "differently"
+      ],
+      "errors": [
+        "Using present tense instead of past perfect.",
+        "Omitting 'have' in 'would have acted'.",
+        "Incorrect placement of 'if'."
+      ],
+      "answers": [
+        "If he had known the consequences, he would have acted differently.",
+        "He would have acted differently if he had known the consequences."
+      ],
+      "question": "Arrange the words into a sentence: 'would / have / the / if / known / consequences / he / acted / differently'.",
+      "answer_key": "The third conditional uses 'if + had + past participle', and 'would have + past participle' for the result."
+    },
+    {
+      "id": 35,
+      "hint": "Focus on gerund as subject.",
+      "type": "sentence_builder",
+      "words": [
+        "being",
+        "essential",
+        "for",
+        "is",
+        "communication",
+        "success",
+        "business"
+      ],
+      "errors": [
+        "Using infinitive instead of gerund.",
+        "Misplacing 'essential for success'.",
+        "Omitting 'in business'."
+      ],
+      "answers": [
+        "Communication is essential for success in business.",
+        "Being essential for success in business is communication."
+      ],
+      "question": "Use these words: 'being / essential / for / is / communication / success / business'.",
+      "answer_key": "'Communication' as the subject, 'is essential' as the predicate, 'for success in business' as the complement."
+    },
+    {
+      "id": 36,
+      "hint": "'Hardly' often triggers inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "hardly",
+        "left",
+        "when",
+        "had",
+        "he",
+        "the",
+        "started",
+        "rain",
+        "house"
+      ],
+      "errors": [
+        "Failing to invert the subject and verb after 'hardly'.",
+        "Incorrect tense sequence."
+      ],
+      "answers": ["Hardly had he left the house when it started to rain."],
+      "question": "Arrange the words: 'hardly / left / when / had / he / the / started / rain / house'.",
+      "answer_key": "'Hardly' at the beginning of the sentence requires inversion: 'Hardly had he left...'. Then 'when it started to rain.'"
+    },
+    {
+      "id": 37,
+      "hint": "The phrase 'no sooner...than' needs inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "sooner",
+        "the",
+        "realized",
+        "he",
+        "mistake",
+        "his",
+        "no",
+        "had",
+        "than"
+      ],
+      "errors": [
+        "Not inverting 'had' and 'he'.",
+        "Using 'when' instead of 'than'."
+      ],
+      "answers": [
+        "No sooner had he realized his mistake than the damage was done."
+      ],
+      "question": "Use these words to make a sentence: 'sooner / the / realized / he / mistake / his / no / had / than'.",
+      "answer_key": "Use 'No sooner had [subject] [past participle] than [event]'."
+    },
+    {
+      "id": 38,
+      "hint": "This is a second conditional with inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "were",
+        "to",
+        "more",
+        "adopt",
+        "we",
+        "sustainable",
+        "practices",
+        "could",
+        "reduce",
+        "significantly",
+        "emissions",
+        "our",
+        "if",
+        "we"
+      ],
+      "errors": [
+        "Not using inversion after 'were'.",
+        "Using 'if we were' instead of 'were we'.",
+        "Incorrect placement of 'could'."
+      ],
+      "answers": [
+        "Were we to adopt more sustainable practices, we could significantly reduce our emissions."
+      ],
+      "question": "Build a sentence using: 'were / to / more / adopt / we / sustainable / practices / could / reduce / significantly / emissions / our / if / we'.",
+      "answer_key": "In formal English, 'Were we to [verb], we could...' is a conditional structure using inversion."
+    },
+    {
+      "id": 39,
+      "hint": "'So...that' construction is used for emphasis.",
+      "type": "sentence_builder",
+      "words": [
+        "so",
+        "was",
+        "speech",
+        "his",
+        "compelling",
+        "that",
+        "audience",
+        "the",
+        "remained",
+        "silent"
+      ],
+      "errors": [
+        "Placing 'that' in the wrong position.",
+        "Omitting 'so' before the adjective."
+      ],
+      "answers": [
+        "So compelling was his speech that the audience remained silent."
+      ],
+      "question": "Arrange the words: 'so / was / speech / his / compelling / that / audience / the / remained / silent'.",
+      "answer_key": "'So [adjective] was [subject] that [result]' is used for emphasis and often triggers inversion."
+    },
+    {
+      "id": 40,
+      "hint": "Focus on past perfect passive.",
+      "type": "sentence_builder",
+      "words": [
+        "by",
+        "time",
+        "the",
+        "finished",
+        "had",
+        "they",
+        "report",
+        "the",
+        "been",
+        "already",
+        "submitted"
+      ],
+      "errors": [
+        "Incorrect tense sequence.",
+        "Forgetting passive construction.",
+        "Misplacing 'already'."
+      ],
+      "answers": [
+        "By the time they had finished, the report had already been submitted."
+      ],
+      "question": "Use the following: 'by / time / the / finished / had / they / report / the / been / already / submitted'.",
+      "answer_key": "'By the time [event], [past perfect passive]' shows an action completed before another in the past."
+    },
+    {
+      "id": 41,
+      "hint": "Begin with 'Had he not...'",
+      "type": "sentence_builder",
+      "words": [
+        "had",
+        "he",
+        "not",
+        "intervened",
+        "a",
+        "disaster",
+        "would",
+        "have",
+        "occurred"
+      ],
+      "errors": [
+        "Incorrect word order",
+        "Missing auxiliary verb",
+        "Using 'would had' instead of 'would have'"
+      ],
+      "answers": ["Had he not intervened, a disaster would have occurred."],
+      "question": "Arrange the words to form a correct sentence: \"had / he / not / intervened / disaster / a / would / have / occurred\".",
+      "answer_key": "This is a third conditional sentence in inversion, commonly used in formal English."
+    },
+    {
+      "id": 42,
+      "hint": "Start with 'If I had...'",
+      "type": "sentence_builder",
+      "words": [
+        "if",
+        "I",
+        "had",
+        "studied",
+        "longer",
+        "I",
+        "would",
+        "have",
+        "passed",
+        "the",
+        "exam"
+      ],
+      "errors": [
+        "Incorrect conditional structure",
+        "Wrong sequence of tenses",
+        "Placing 'would' before 'had'"
+      ],
+      "answers": ["If I had studied longer, I would have passed the exam."],
+      "question": "Rearrange the words to make a grammatically correct sentence: \"were / study / I / longer / if / had / I / passed / the / exam / the / would\".",
+      "answer_key": "This is a third conditional sentence (If + past perfect, would have + past participle)."
+    },
+    {
+      "id": 43,
+      "hint": "Use 'No sooner...than...' construction.",
+      "type": "sentence_builder",
+      "words": [
+        "no sooner",
+        "had",
+        "the",
+        "guests",
+        "left",
+        "than",
+        "it",
+        "started",
+        "to",
+        "rain"
+      ],
+      "errors": [
+        "Forgetting inversion after 'no sooner'",
+        "Using 'when' instead of 'than'",
+        "Incorrect verb tenses"
+      ],
+      "answers": ["No sooner had the guests left than it started to rain."],
+      "question": "Place the following words in order to form a correct sentence: \"no sooner / had / the / left / guests / than / started / it / to / rain\".",
+      "answer_key": "'No sooner' requires inversion: 'No sooner had... than...'"
+    },
+    {
+      "id": 44,
+      "hint": "Use 'Scarcely...when...' and inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "scarcely",
+        "had",
+        "she",
+        "finished",
+        "her",
+        "speech",
+        "when",
+        "the",
+        "audience",
+        "began",
+        "to",
+        "applaud"
+      ],
+      "errors": [
+        "Omitting inversion",
+        "Using 'than' instead of 'when'",
+        "Incorrect verb form"
+      ],
+      "answers": [
+        "Scarcely had she finished her speech when the audience began to applaud."
+      ],
+      "question": "Build the sentence: \"scarcely / had / she / finished / her / speech / when / the / audience / began / to / applaud\".",
+      "answer_key": "'Scarcely' is followed by inversion and 'when'."
+    },
+    {
+      "id": 45,
+      "hint": "Begin with 'Little did he realize...'",
+      "type": "sentence_builder",
+      "words": [
+        "little",
+        "did",
+        "he",
+        "realize",
+        "what",
+        "was",
+        "about",
+        "to",
+        "happen"
+      ],
+      "errors": [
+        "Missing inversion",
+        "Placing 'did' after the subject",
+        "Incorrect tense"
+      ],
+      "answers": ["Little did he realize what was about to happen."],
+      "question": "Arrange to form a correct sentence: \"little / did / he / realize / what / was / about / to / happen\".",
+      "answer_key": "After negative adverbials like 'Little', use inversion (auxiliary before subject)."
+    },
+    {
+      "id": 46,
+      "hint": "'Hardly...when...' with inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "hardly",
+        "had",
+        "the",
+        "train",
+        "left",
+        "the",
+        "station",
+        "when",
+        "it",
+        "started",
+        "to",
+        "rain"
+      ],
+      "errors": [
+        "Forgetting inversion after 'hardly'",
+        "Using 'than' instead of 'when'",
+        "Incorrect auxiliary verb order"
+      ],
+      "answers": [
+        "Hardly had the train left the station when it started to rain."
+      ],
+      "question": "Put the words in order: \"hardly / had / the / train / left / the / station / when / it / started / to / rain\".",
+      "answer_key": "'Hardly' at the beginning requires inversion: 'Hardly had... when...'"
+    },
+    {
+      "id": 47,
+      "hint": "Start with 'So' and use inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "so",
+        "impressive",
+        "was",
+        "the",
+        "performance",
+        "that",
+        "the",
+        "audience",
+        "stood",
+        "up",
+        "to",
+        "applaud"
+      ],
+      "errors": [
+        "Omitting inversion after 'so'",
+        "Placing 'was' after the subject",
+        "Incorrect word order"
+      ],
+      "answers": [
+        "So impressive was the performance that the audience stood up to applaud."
+      ],
+      "question": "Form a correct sentence: \"so / was / the / performance / impressive / that / the / audience / stood / up / to / applaud\".",
+      "answer_key": "After 'so + adjective', use inversion for emphasis: 'So impressive was the performance that...'"
+    },
+    {
+      "id": 48,
+      "hint": "'Rarely' at the beginning requires inversion.",
+      "type": "sentence_builder",
+      "words": [
+        "rarely",
+        "have",
+        "I",
+        "seen",
+        "such",
+        "breathtaking",
+        "scenery"
+      ],
+      "errors": [
+        "Missing inversion",
+        "Using 'has' instead of 'have' with 'I'",
+        "Incorrect placement of 'such'"
+      ],
+      "answers": ["Rarely have I seen such breathtaking scenery."],
+      "question": "Arrange the following words to make a sentence: \"rarely / have / I / seen / such / breathtaking / scenery\".",
+      "answer_key": "'Rarely' is a negative adverbial; it triggers inversion at the start of a sentence."
+    },
+    {
+      "id": 49,
+      "hint": "Begin with 'Should you need...'",
+      "type": "sentence_builder",
+      "words": [
+        "should",
+        "you",
+        "need",
+        "any",
+        "assistance",
+        "please",
+        "do",
+        "not",
+        "hesitate",
+        "to",
+        "contact",
+        "us"
+      ],
+      "errors": [
+        "Using 'If' instead of inversion",
+        "Placing 'should' after the subject",
+        "Omitting 'do not hesitate'"
+      ],
+      "answers": [
+        "Should you need any assistance, please do not hesitate to contact us."
+      ],
+      "question": "Rearrange these words: \"should / you / need / any / assistance / please / do / not / hesitate / to / contact / us\".",
+      "answer_key": "This is a formal conditional sentence using inversion instead of 'if'."
+    },
+    {
+      "id": 50,
+      "hint": "Begin with 'Under no circumstances...'",
+      "type": "sentence_builder",
+      "words": [
+        "under",
+        "no",
+        "circumstances",
+        "are",
+        "employees",
+        "to",
+        "disclose",
+        "confidential",
+        "information"
+      ],
+      "errors": [
+        "Missing inversion after negative phrase",
+        "Using 'is' instead of 'are' for 'employees'",
+        "Incorrect placement of 'to disclose'"
+      ],
+      "answers": [
+        "Under no circumstances are employees to disclose confidential information."
+      ],
+      "question": "Arrange the words into a sentence: \"under / no / circumstances / are / employees / to / disclose / confidential / information\".",
+      "answer_key": "Negative adverbials at the start require inversion; 'are employees to disclose...'"
+    }
+  ]
+}
