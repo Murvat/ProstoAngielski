@@ -3,7 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { MessageCircle, X } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
 const OPEN_WIDTH = "22rem";
 const CLOSED_WIDTH = "4rem";
@@ -40,9 +40,7 @@ export default function ChatbotSidebar({ course, topic, onCollapse }: ChatbotSid
 
   const handleSend = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!input.trim() || isThinking) {
-      return;
-    }
+    if (!input.trim() || isThinking) return;
 
     setIsThinking(true);
     try {
@@ -78,6 +76,7 @@ export default function ChatbotSidebar({ course, topic, onCollapse }: ChatbotSid
 
   return (
     <div className="flex h-full w-full flex-col rounded-l-3xl border-l border-emerald-100 bg-white shadow-lg shadow-emerald-100/50">
+      {/* Header */}
       <header className="flex items-center justify-between border-b border-emerald-50 px-3 py-3">
         <button
           onClick={handleCollapse}
@@ -100,7 +99,8 @@ export default function ChatbotSidebar({ course, topic, onCollapse }: ChatbotSid
         </button>
       </header>
 
-      <div className="flex-1 space-y-4 overflow-y-auto bg-emerald-50/40 px-4 py-4">
+      {/* Messages */}
+      <div className="flex-1 space-y-4 overflow-y-auto bg-emerald-50/40 px-4 py-4 scroll-smooth">
         {messages.map((message, messageIndex) => (
           <div
             key={`${message.id}-${messageIndex}`}
@@ -131,7 +131,11 @@ export default function ChatbotSidebar({ course, topic, onCollapse }: ChatbotSid
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSend} className="border-t border-emerald-50 bg-white px-3 py-3">
+      {/* Input Section */}
+      <form
+        onSubmit={handleSend}
+        className="border-t border-emerald-50 bg-white px-3 py-3 sm:pb-3 pb-[calc(env(safe-area-inset-bottom,1rem)+4rem)]"
+      >
         <div className="flex items-center gap-2">
           <input
             type="text"
