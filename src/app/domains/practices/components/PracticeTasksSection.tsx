@@ -35,6 +35,12 @@ type Props = {
   onSummaryChange: (summary: TaskSummary) => void;
 };
 
+// Helper type to accommodate the hybrid task
+type HybridPracticeTask = PracticeTask & {
+  options?: string[];
+  words?: string[];
+};
+
 const STORAGE_PREFIX = "practice-tasks";
 const TASK_DISPLAY_ORDER: PracticeTask["type"][] = [
   "fill_in_blank",
@@ -128,9 +134,12 @@ export default function PracticeTasksSection({
   const sentenceBuilderWords = useMemo(() => {
     const map: Record<string, string[]> = {};
     orderedTasks.forEach((task) => {
-      if (task.type === "sentence_builder") {
+      const hybridTask = task as HybridPracticeTask;
+      if (hybridTask.type === "sentence_builder") {
+        // Use `words` if available, otherwise fall back to `options`
+        const wordsToShuffle = hybridTask.words ?? hybridTask.options ?? [];
         map[createTaskKey(task)] = seededShuffle(
-          (task as SentenceBuilderPracticeTask).words ?? [],
+          wordsToShuffle,
           `${levelId}-${createTaskKey(task)}-words`
         );
       }
@@ -147,7 +156,7 @@ export default function PracticeTasksSection({
     filteredTasks.length > 0
       ? Math.min(state.currentIndex, filteredTasks.length - 1)
       : 0;
-  const currentTask = filteredTasks[safeIndex] ?? null;
+  const currentTask = (filteredTasks[safeIndex] ?? null) as HybridPracticeTask | null;
   const currentKey = currentTask ? createTaskKey(currentTask) : null;
   const totalTasks = orderedTasks.length;
 
@@ -272,15 +281,25 @@ export default function PracticeTasksSection({
         } else if (stored.kind === "builder" && Array.isArray(stored.value)) {
           setSelectedWords(stored.value);
         }
-        setStatus(stored.isCorrect ? "correct" : "idle");
+        
+        if (stored.isCorrect) {
+          setStatus("correct");
+          setHintVisible(false);
+          setAnswerVisible(false);
+        } else {
+          setStatus("wrong");
+          if (task.hint) setHintVisible(true);
+          setAnswerVisible(true); 
+        }
+        
       } else {
         setInputValue("");
         setSelectedOption("");
         setSelectedWords([]);
         setStatus("idle");
+        setHintVisible(false);
+        setAnswerVisible(false);
       }
-      setHintVisible(false);
-      setAnswerVisible(false);
     },
     [state.answers]
   );
@@ -297,11 +316,12 @@ export default function PracticeTasksSection({
   const currentSentenceWords =
     currentKey && currentTask?.type === "sentence_builder"
       ? sentenceBuilderWords[currentKey] ??
-        (currentTask as SentenceBuilderPracticeTask).words
+        currentTask.words ??
+        currentTask.options
       : undefined;
 
   const acceptableAnswers = useMemo(() => {
-    if (!currentTask) return [];
+    if (!currentTask) return [] as string[];
     return currentTask.answers.map((answer) => normalizeText(String(answer)));
   }, [currentTask, normalizeText]);
 
@@ -336,15 +356,14 @@ export default function PracticeTasksSection({
     setAnswerVisible(false);
     localStorage.removeItem(storageKey);
   };
+  
+  const handleSentenceWordSelect = (word: string) => {
+    setSelectedWords((prev) => [...prev, word]);
+    if (status !== "idle") setStatus("idle");
+  };
 
-  const handleSentenceWordToggle = (word: string) => {
-    setSelectedWords((prev) => {
-      if (!prev.includes(word)) return [...prev, word];
-      const next = [...prev];
-      const lastIndex = next.lastIndexOf(word);
-      if (lastIndex >= 0) next.splice(lastIndex, 1);
-      return next;
-    });
+  const handleRemoveSentenceWordAt = (removeIndex: number) => {
+    setSelectedWords((prev) => prev.filter((_, index) => index !== removeIndex));
     if (status !== "idle") setStatus("idle");
   };
 
@@ -387,13 +406,35 @@ export default function PracticeTasksSection({
     if (!currentTask) return;
     if (!currentInputSnapshot.trim()) return;
 
-    const normalized = normalizeText(currentInputSnapshot);
-    const isCorrect = acceptableAnswers.includes(normalized);
+    // --- DÜZƏLİŞ BURADADIR (1) ---
+    // Bu, "hibrid" tapşırıq tipini müəyyən edir (type: sentence_builder, amma 'options' var, 'words' yoxdur)
+    const isHybridSentenceBuilder =
+      currentTask.type === "sentence_builder" &&
+      currentTask.options &&
+      !currentTask.words;
+
+    const normalizedInput = normalizeText(currentInputSnapshot); // Məsələn: "off"
+    
+    let isCorrect;
+
+    if (isHybridSentenceBuilder && normalizedInput.length > 0) {
+      // Hibrid tip üçün: Seçilmiş sözün (normalizedInput) tam cavabın (acceptableAnswers)
+      // tərkibində olub-olmadığını yoxla.
+      isCorrect = acceptableAnswers.some(answer => answer.includes(normalizedInput));
+    } else {
+      // Normal yoxlama: Tam bərabərliyi yoxla
+      isCorrect = acceptableAnswers.includes(normalizedInput);
+    }
+    // -----------------------------
+
     setStatus(isCorrect ? "correct" : "wrong");
+
     if (isCorrect) {
       setHintVisible(false);
-    } else if (currentTask.hint) {
-      setHintVisible(true);
+      setAnswerVisible(false); 
+    } else {
+      if (currentTask.hint) setHintVisible(true);
+      setAnswerVisible(true); 
     }
 
     const kind: StoredAnswer["kind"] =
@@ -446,6 +487,14 @@ export default function PracticeTasksSection({
       </section>
     );
   }
+
+  const prettyCorrectAnswer = useMemo(() => {
+    if (!currentTask) return null;
+    const first = currentTask.answers?.[0];
+    if (!first) return null;
+    if (Array.isArray(first)) return first.join(" ");
+    return String(first);
+  }, [currentTask]);
 
   return (
     <section className="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">
@@ -508,8 +557,9 @@ export default function PracticeTasksSection({
             selectedOption,
             setSelectedOption: handleOptionSelect,
             selectedWords,
-            onToggleWord: handleSentenceWordToggle,
+            onSelectWord: handleSentenceWordSelect,
             onUndoLastWord: handleUndoLastWord,
+            onRemoveSelectedWord: handleRemoveSentenceWordAt,
             status,
             optionsOverride: currentOptions,
             sentenceWords: currentSentenceWords,
@@ -533,15 +583,15 @@ export default function PracticeTasksSection({
 
           {status === "wrong" && (
             <div className="rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-700">
-              Niepoprawnie, sprobuj ponownie.
+              Niepoprawnie, spróbuj ponownie.
               {currentTask.errors?.length ? (
                 <span className="ml-1 font-medium">
-                  Najczestsze bledy: {currentTask.errors.join(", ")}.
+                  Najczęstsze błędy: {currentTask.errors.join(", ")}.
                 </span>
               ) : null}
               {currentTask.hint ? (
                 <span className="mt-2 block text-orange-600/80">
-                  Podpowiedz zostala wyswietlona powyzej - wykorzystaj ja, aby poprawic odpowiedz.
+                  Podpowiedź została wyświetlona powyżej – wykorzystaj ją, aby poprawić odpowiedź.
                 </span>
               ) : null}
             </div>
@@ -585,14 +635,19 @@ export default function PracticeTasksSection({
             </div>
           </div>
 
-          {answerVisible && (
+          {(answerVisible || status === "wrong") && (
             <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">
               <p className="font-semibold">Prawidłowe odpowiedzi:</p>
               <ul className="mt-2 list-disc pl-5">
                 {currentTask.answers.map((answer, idx) => (
-                  <li key={idx}>{answer}</li>
+                  <li key={idx}>{Array.isArray(answer) ? answer.join(" ") : String(answer)}</li>
                 ))}
               </ul>
+              {prettyCorrectAnswer && (
+                <p className="mt-3 text-emerald-700">
+                  Przykład poprawnej odpowiedzi: <span className="font-medium">{prettyCorrectAnswer}</span>
+                </p>
+              )}
               {currentTask.answer_key && (
                 <p className="mt-3 text-xs text-emerald-700">{currentTask.answer_key}</p>
               )}
@@ -616,7 +671,8 @@ type RenderInputParams = {
   selectedOption: string;
   setSelectedOption: (value: string) => void;
   selectedWords: string[];
-  onToggleWord: (word: string) => void;
+  onSelectWord: (word: string) => void;
+  onRemoveSelectedWord?: (index: number) => void;
   onUndoLastWord: () => void;
   status: "idle" | "correct" | "wrong";
   optionsOverride?: string[];
@@ -692,41 +748,100 @@ function renderMultipleChoice(
 }
 
 function renderSentenceBuilder(
-  task: SentenceBuilderPracticeTask,
-  { selectedWords, onToggleWord, onUndoLastWord, sentenceWords }: RenderInputParams
+  task: SentenceBuilderPracticeTask | HybridPracticeTask,
+  {
+    selectedWords,
+    onSelectWord,
+    onRemoveSelectedWord,
+    onUndoLastWord,
+    sentenceWords,
+  }: RenderInputParams
 ) {
-  const words = sentenceWords ?? task.words ?? [];
+  // --- DÜZƏLİŞ BURADADIR (2) ---
+  // Əgər 'sentenceWords' (useMemo-dan gələn) və 'task.words' yoxdursa,
+  // 'task.options'-dan gələn sözləri istifadə et.
+  const words =
+    sentenceWords && sentenceWords.length > 0
+      ? sentenceWords
+      : (task as SentenceBuilderPracticeTask).words ??
+        (task as HybridPracticeTask).options ??
+        [];
+  // -----------------------------
+
+  const selectedCount = selectedWords.reduce<Record<string, number>>((acc, word) => {
+    acc[word] = (acc[word] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  const occurrenceMap: Record<string, number> = {};
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap gap-2">
-        {words.map((word, index) => {
-          const active = selectedWords.includes(word);
-          const variant = active
-            ? "border-emerald-400 bg-emerald-50 text-emerald-700"
-            : "border-gray-200 bg-white text-gray-700 hover:border-emerald-300 hover:bg-emerald-50";
-          return (
+    <div className="space-y-5">
+      <div className="rounded-3xl border border-emerald-100 bg-white px-4 py-4 shadow-sm">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-500">Twoje zdanie</p>
+
+        {selectedWords.length ? (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {selectedWords.map((word, index) => (
+              <button
+                key={`${word}-${index}`}
+                type="button"
+                onClick={() => onRemoveSelectedWord?.(index)}
+                className="group inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700 transition hover:border-emerald-300 hover:bg-emerald-100"
+              >
+                <span>{word}</span>
+                <span className="rounded-full bg-white/70 px-1.5 text-xs font-semibold text-emerald-500 transition group-hover:bg-emerald-200 group-hover:text-emerald-600">
+                  ×
+                </span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-3 rounded-2xl border border-dashed border-emerald-200 bg-emerald-50/60 px-3 py-2 text-sm text-emerald-600">
+            Klikaj w słowa poniżej, aby ułożyć zdanie.
+          </p>
+        )}
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.24em] text-emerald-500">
+          <span>Dostępne słowa</span>
+          {selectedWords.length > 0 && (
             <button
-              key={`${word}-${index}`}
-              onClick={() => onToggleWord(word)}
-              className={`rounded-full border px-4 py-2 text-sm font-medium transition ${variant}`}
+              type="button"
+              onClick={onUndoLastWord}
+              className="rounded-full border border-emerald-200 px-3 py-1 text-[11px] font-semibold text-emerald-600 transition hover:border-emerald-300 hover:bg-emerald-50"
             >
-              {word}
+              Cofnij ostatnie
             </button>
-          );
-        })}
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {words.map((word, index) => {
+            occurrenceMap[word] = (occurrenceMap[word] ?? 0) + 1;
+            const occurrence = occurrenceMap[word];
+            const usedCount = selectedCount[word] ?? 0;
+            const consumed = occurrence <= usedCount;
+
+            const variant = consumed
+              ? "cursor-not-allowed border-emerald-100 bg-emerald-50 text-emerald-400"
+              : "border-emerald-200 bg-white text-emerald-700 transition hover:border-emerald-300 hover:bg-emerald-50";
+
+            return (
+              <button
+                key={`${word}-${index}`}
+                type="button"
+                onClick={() => !consumed && onSelectWord(word)}
+                className={`rounded-full px-4 py-2 text-sm font-medium ${variant}`}
+                disabled={consumed}
+              >
+                {word}
+              </button>
+            );
+          })}
+        </div>
       </div>
-      <div className="rounded-2xl border border-dashed border-emerald-200 bg-emerald-50/60 px-4 py-3 text-sm text-emerald-700">
-        {selectedWords.length > 0 ? selectedWords.join(" ") : "Klikaj w słowa, aby zbudować zdanie."}
-      </div>
-      {selectedWords.length > 0 && (
-        <button
-          onClick={onUndoLastWord}
-          className="rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold text-gray-600 transition hover:border-gray-300 hover:bg-gray-50"
-        >
-          Cofnij ostatnie słowo
-        </button>
-      )}
     </div>
   );
 }

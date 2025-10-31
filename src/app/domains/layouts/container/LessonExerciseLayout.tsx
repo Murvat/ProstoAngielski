@@ -43,6 +43,9 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
 
+
+  const floatingButtonOffset = "calc(env(safe-area-inset-bottom, 0px) + 6.75rem)";
+  const overlayBottomPadding = "calc(env(safe-area-inset-bottom, 0px) + 2.5rem)";
   const [profile, setProfile] = useState<ProfileState>({
     user: null,
     purchases: [],
@@ -55,7 +58,7 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
   const { prev, next } = getPrevNext(course ? buildNavItems(course) : [], lessonId, isExercise);
   const { buyCourse, loading: buyLoading } = useBuyCourse();
 
-  
+
   useEffect(() => {
     (async () => {
       try {
@@ -76,7 +79,7 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
     })();
   }, []);
 
-  
+
   const paidCourseIds = useMemo(() => {
     const ids = new Set<string>();
     for (const p of profile.purchases) {
@@ -92,7 +95,7 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
   const hasFullAccess = paidCourseIds.has(courseId);
   const freeLessonLimit = hasFullAccess ? Infinity : TRIAL_LIMIT;
 
-  
+
   useEffect(() => {
     if (!courseId || !lessonId) return;
     const idx = Number(lessonId);
@@ -108,7 +111,7 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
     })();
   }, [courseId, lessonId]);
 
-  
+
   useEffect(() => {
     if (!loading && !hasFullAccess && lessonOrderNumber > freeLessonLimit) {
       setShowLockModal(true);
@@ -156,7 +159,8 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
             type="button"
             disabled={!course}
             onClick={() => setMobileSidebarOpen(true)}
-            className="fixed bottom-5 left-5 z-40 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white shadow-lg shadow-emerald-200/60 transition hover:from-emerald-400 hover:to-teal-400 focus:outline-none focus:ring-2 focus:ring-emerald-200 disabled:cursor-not-allowed disabled:opacity-60 md:hidden"
+            className="fixed left-5 z-40 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white shadow-lg shadow-emerald-200/60 transition hover:from-emerald-400 hover:to-teal-400 focus:outline-none focus:ring-2 focus:ring-emerald-200 disabled:cursor-not-allowed disabled:opacity-60 md:hidden"
+            style={{ bottom: floatingButtonOffset }}
             aria-label="Otwórz nawigację kursu"
           >
             <Menu className="h-5 w-5" />
@@ -167,7 +171,8 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
           <button
             type="button"
             onClick={() => setMobileChatOpen(true)}
-            className="fixed bottom-5 right-5 z-40 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white shadow-lg shadow-emerald-200/60 transition hover:from-emerald-400 hover:to-teal-400 focus:outline-none focus:ring-2 focus:ring-emerald-200 md:hidden"
+            className="fixed right-5 z-40 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white shadow-lg shadow-emerald-200/60 transition hover:from-emerald-400 hover:to-teal-400 focus:outline-none focus:ring-2 focus:ring-emerald-200 md:hidden"
+            style={{ bottom: floatingButtonOffset }}
             aria-label="Otwórz czat z MurAi"
           >
             <MessageCircle className="h-5 w-5" />
@@ -195,6 +200,7 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
                 exit={{ x: "-100%" }}
                 transition={{ type: "spring", stiffness: 260, damping: 30 }}
                 className="relative z-10 h-full w-5/6 max-w-sm"
+                style={{ paddingBottom: overlayBottomPadding }}
                 onClick={(event) => event.stopPropagation()}
               >
                 <SidebarContainer
@@ -210,7 +216,6 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
             </motion.div>
           )}
         </AnimatePresence>
-
         <AnimatePresence>
           {mobileChatOpen && (
             <motion.div
@@ -220,21 +225,30 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
               className="fixed inset-0 z-50 flex md:hidden"
               onClick={() => setMobileChatOpen(false)}
             >
+              {/* Background overlay */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="absolute inset-0 bg-black/40 backdrop-blur-sm"
               />
+
+              {/* Floating chat container */}
               <motion.div
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
                 exit={{ y: "100%" }}
                 transition={{ type: "spring", stiffness: 260, damping: 30 }}
-                className="relative z-10 flex h-full w-full items-end px-4 pb-4"
+                className="relative z-10 flex w-full items-end justify-center px-4"
+                style={{ paddingBottom: overlayBottomPadding }}
                 onClick={(event) => event.stopPropagation()}
               >
-                <div className="h-[88vh] w-full overflow-hidden rounded-3xl border border-emerald-100 bg-white shadow-xl">
+                <div
+                  className="relative w-full max-w-md h-[80vh] rounded-3xl border border-emerald-100 bg-white shadow-2xl overflow-hidden"
+                  style={{
+                    marginBottom: "calc(env(safe-area-inset-bottom, 0px) + 6rem)",
+                  }}
+                >
                   <ChatbotSidebar
                     course={courseId}
                     topic={lessonHeading}
@@ -245,6 +259,7 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
             </motion.div>
           )}
         </AnimatePresence>
+
 
         <div className="flex w-full">
           <aside
@@ -263,7 +278,7 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
 
           <section
             id="lessonContent"
-            className="lesson-content-offset relative flex min-w-0 flex-1 flex-col bg-white px-4 pb-16 md:px-6"
+            className="lesson-content-offset relative flex min-w-0 flex-1 flex-col bg-white px-4 pb-24 md:px-6 md:pb-16"
           >
             {children}
           </section>
