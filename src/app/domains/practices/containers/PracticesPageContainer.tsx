@@ -66,14 +66,50 @@ export default function PracticesPageContainer() {
     setSummaries((prev) => ({ ...prev, vocabulary: summary }));
   }, []);
 
+  // Render loading state
+  if (loading) {
+    return (
+      <>
+        <NavbarContainer initialUser={null} />
+        <PromoBanner />
+        <main className="flex flex-col gap-12 bg-slate-50 pb-20">
+          <PracticeHero />
+          <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6">
+            <header className="flex flex-col gap-4">
+              <h2 className="text-2xl font-semibold text-gray-900">
+                Wybierz poziom kursu mobilnego
+              </h2>
+              <p className="text-sm text-gray-500">
+                Każdy poziom zawiera pełny pakiet zadań, fiszek i słownictwa. Wyniki zapisują się w pamięci Twojej przeglądarki – możesz wrócić w dowolnym momencie.
+              </p>
+              <PracticeLevelSelector
+                levels={levels}
+                loading={loading}
+                selectedLevel={null}
+                onSelect={(level) => setSelectedLevel(level)}
+              />
+            </header>
+            <div className="grid gap-6">
+              {Array.from({ length: 3 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="h-48 animate-pulse rounded-3xl border border-slate-200 bg-white"
+                />
+              ))}
+            </div>
+          </section>
+        </main>
+      </>
+    );
+  }
+
+  // Render main content
   return (
     <>
       <NavbarContainer initialUser={null} />
       <PromoBanner />
-
       <main className="flex flex-col gap-12 bg-slate-50 pb-20">
         <PracticeHero />
-
         <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6">
           <header className="flex flex-col gap-4">
             <h2 className="text-2xl font-semibold text-gray-900">
@@ -95,18 +131,7 @@ export default function PracticesPageContainer() {
             )}
           </header>
 
-          {loading && (
-            <div className="grid gap-6">
-              {Array.from({ length: 3 }).map((_, idx) => (
-                <div
-                  key={idx}
-                  className="h-48 animate-pulse rounded-3xl border border-slate-200 bg-white"
-                />
-              ))}
-            </div>
-          )}
-
-          {!loading && selectedLevel && (
+          {selectedLevel && (
             <div className="flex flex-col gap-10">
               <PracticeTasksSection
                 levelId={selectedLevel.id}
