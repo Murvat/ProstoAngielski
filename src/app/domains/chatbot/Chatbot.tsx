@@ -1,28 +1,45 @@
-'use client';
+"use client";
 
-import { useChat } from '@ai-sdk/react';
-import { useState, useRef, useEffect } from 'react';
-import ReactMarkdown from 'react-markdown';
+import { useChat } from "@ai-sdk/react";
+import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import { MessageCircle } from "lucide-react";
 
-export default function ChatbotSidebar({ course, topic }: { course: string; topic: string }) {
-  const [input, setInput] = useState('');
+const OPEN_WIDTH = "22rem";
+const CLOSED_WIDTH = "4rem";
+
+type ChatbotSidebarProps = {
+  course: string;
+  topic: string;
+  onCollapse?: () => void;
+};
+
+export default function ChatbotSidebar({ course, topic, onCollapse }: ChatbotSidebarProps) {
+  const [input, setInput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { messages, sendMessage, setMessages } = useChat();
 
-  // Reset when switching lesson/topic
   useEffect(() => {
     setMessages([]);
-  }, [course, topic]);
+  }, [course, topic, setMessages]);
 
-  // Auto scroll
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Send message
-  async function handleSend(e: React.FormEvent) {
-    e.preventDefault();
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const root = document.documentElement;
+    root.style.setProperty("--lesson-chatbot-width", isOpen ? OPEN_WIDTH : CLOSED_WIDTH);
+    return () => {
+      root.style.setProperty("--lesson-chatbot-width", OPEN_WIDTH);
+    };
+  }, [isOpen]);
+
+  const handleSend = async (event: React.FormEvent) => {
+    event.preventDefault();
     if (!input.trim() || isThinking) return;
 
     setIsThinking(true);
@@ -30,61 +47,82 @@ export default function ChatbotSidebar({ course, topic }: { course: string; topi
       await sendMessage({ text: input }, { body: { course, topic } });
     } finally {
       setIsThinking(false);
-      setInput('');
+      setInput("");
     }
-  }
+  };
 
-  // Manual reset
-  function handleNewChat() {
+  const handleNewChat = () => {
     setMessages([]);
+  };
+
+  const handleCollapse = () => {
+    setIsOpen(false);
+    onCollapse?.();
+  };
+
+  if (!isOpen) {
+    return (
+      <div className="flex h-full w-full items-center justify-center rounded-l-3xl border-l border-emerald-100 bg-white shadow-lg shadow-emerald-100/50">
+        <button
+          onClick={() => setIsOpen(true)}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-md transition hover:from-emerald-400 hover:to-teal-400"
+          title="Otwórz panel czatu"
+        >
+          <MessageCircle className="h-6 w-6" />
+        </button>
+      </div>
+    );
   }
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-b from-white to-gray-50 dark:from-zinc-800 dark:to-zinc-900 rounded-3xl shadow-xl overflow-hidden">
+    <div className="flex h-full w-full flex-col rounded-l-3xl border-l border-emerald-100 bg-white shadow-lg shadow-emerald-100/50">
       {/* Header */}
-      <div className="p-4 flex items-center justify-between border-b border-gray-200 dark:border-zinc-700/50 bg-white/70 dark:bg-zinc-800/70 backdrop-blur-md rounded-t-3xl">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-50">MurAi</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-300">
-            Twój asystent do nauki angielskiego
-          </p>
+      <header className="flex items-center justify-between border-b border-emerald-50 px-3 py-3">
+        <button
+          onClick={handleCollapse}
+          className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-md transition hover:from-emerald-400 hover:to-teal-400"
+          title="Zwiń panel czatu"
+        >
+          <MessageCircle className="h-5 w-5" />
+        </button>
+
+        <div className="ml-3 flex flex-1 flex-col">
+          <span className="text-sm font-semibold text-emerald-700">MurAi</span>
+          <span className="text-xs text-emerald-500/80">Twój asystent do nauki angielskiego</span>
         </div>
 
         <button
           onClick={handleNewChat}
-          className="text-xs px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition cursor-pointer"
+          className="rounded-full border border-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-600 transition hover:border-emerald-200 hover:bg-emerald-50"
         >
           Nowy czat
         </button>
-      </div>
+      </header>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth rounded-b-3xl">
+      <div className="flex-1 space-y-4 overflow-y-auto bg-emerald-50/40 px-4 py-4 scroll-smooth">
         {messages.map((message, messageIndex) => (
           <div
             key={`${message.id}-${messageIndex}`}
-            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`px-4 py-2 rounded-3xl text-sm max-w-[85%] shadow-sm transition-all duration-300 cursor-pointer ${
-                message.role === 'user'
-                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white rounded-br-none hover:opacity-90'
-                  : 'bg-white/80 dark:bg-zinc-700/60 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-zinc-600/30 backdrop-blur-md rounded-bl-none hover:bg-gray-100 dark:hover:bg-zinc-600/80'
+              className={`max-w-[85%] rounded-3xl px-4 py-2 text-sm shadow-sm transition ${
+                message.role === "user"
+                  ? "rounded-br-none bg-gradient-to-r from-emerald-500 to-teal-500 text-white"
+                  : "rounded-bl-none border border-emerald-100 bg-white text-gray-800"
               }`}
             >
               {message.parts
-                .filter((p) => p.type === 'text')
-                .map((p, i) => {
-                  const text = p.text.trim();
+                .filter((part) => part.type === "text")
+                .map((part, index) => {
+                  const text = part.text.trim();
                   const looksLikeMarkdown =
-                    text.includes('**') ||
-                    text.includes('#') ||
-                    text.includes('- ') ||
-                    text.includes('* ');
+                    text.includes("**") || text.includes("#") || text.includes("- ") || text.includes("* ");
                   return looksLikeMarkdown ? (
-                    <ReactMarkdown key={`${message.id}-${i}`}>{text}</ReactMarkdown>
+                    <ReactMarkdown key={`${message.id}-${index}`}>{text}</ReactMarkdown>
                   ) : (
-                    <span key={`${message.id}-${i}`}>{text}</span>
+                    <span key={`${message.id}-${index}`}>{text}</span>
                   );
                 })}
             </div>
@@ -93,30 +131,26 @@ export default function ChatbotSidebar({ course, topic }: { course: string; topi
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
+      {/* Input Section */}
       <form
         onSubmit={handleSend}
-        className="p-3 bg-white/70 dark:bg-zinc-800/70 backdrop-blur-md border-t border-gray-200 dark:border-zinc-700/50 rounded-b-3xl"
+        className="border-t border-emerald-50 bg-white px-3 py-3 sm:pb-3 pb-[calc(env(safe-area-inset-bottom,1rem)+4rem)]"
       >
         <div className="flex items-center gap-2">
           <input
             type="text"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={isThinking ? 'MurAi odpowiada...' : 'Napisz wiadomość...'}
+            onChange={(event) => setInput(event.target.value)}
+            placeholder={isThinking ? "MurAi pisze odpowiedź..." : "Napisz wiadomość..."}
             disabled={isThinking}
-            className="flex-1 px-4 py-3 rounded-full bg-gray-100/80 dark:bg-zinc-700/50 border border-gray-200 dark:border-zinc-600/50 focus:ring-2 focus:ring-green-500 text-sm transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-zinc-600/80 cursor-pointer dark:text-gray-100 dark:placeholder-gray-400"
+            className="flex-1 rounded-full border border-emerald-100 bg-emerald-50/60 px-4 py-3 text-sm text-gray-700 transition placeholder:text-emerald-400 focus:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-200 disabled:cursor-not-allowed disabled:opacity-60"
           />
           <button
             type="submit"
             disabled={isThinking}
-            className={`px-5 py-2 rounded-full text-white shadow-md transition-all cursor-pointer ${
-              isThinking
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 active:scale-95'
-            }`}
+            className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-2 text-sm font-semibold text-white shadow-md transition hover:from-emerald-400 hover:to-teal-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isThinking ? '...' : 'Wyślij'}
+            {isThinking ? "..." : "Wyślij"}
           </button>
         </div>
       </form>

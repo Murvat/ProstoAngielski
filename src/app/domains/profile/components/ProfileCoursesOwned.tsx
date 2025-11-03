@@ -2,19 +2,21 @@
 
 import { motion } from "framer-motion";
 import { useLessonRedirect } from "../features/useLessonRedirect";
-import { Course } from "../features/types";
+import type { Course } from "@/types";
 import { PlayCircle } from "lucide-react";
 
 interface ProfileCoursesOwnedProps {
   ownedCourses: Course[];
   loading: string | null;
   getButtonState: (course: Course) => { label: string; lessonId: string | null };
+  ownershipLabels?: Record<string, "subscription" | "purchase">;
 }
 
 export const ProfileCoursesOwned = ({
   ownedCourses,
   loading,
   getButtonState,
+  ownershipLabels,
 }: ProfileCoursesOwnedProps) => {
   const { goToLesson } = useLessonRedirect();
 
@@ -38,9 +40,20 @@ export const ProfileCoursesOwned = ({
       }}
       className="space-y-5"
     >
-      {ownedCourses.map((course, index) => {
+      {ownedCourses.map((course) => {
         const { label, lessonId } = getButtonState(course);
         const isLoading = loading === `start-${course.id}`;
+        const ownershipType = ownershipLabels?.[course.id];
+        const ownershipBadge =
+          ownershipType === "purchase"
+            ? "Zakupiony"
+            : ownershipType === "subscription"
+            ? "W subskrypcji"
+            : null;
+        const badgeClasses =
+          ownershipType === "purchase"
+            ? "bg-green-600 text-white"
+            : "bg-green-100 text-green-700";
 
         return (
           <motion.li
@@ -54,11 +67,20 @@ export const ProfileCoursesOwned = ({
             className="relative p-6 rounded-2xl bg-gradient-to-br from-green-50 to-white border border-green-100 shadow-md 
                        hover:shadow-xl hover:border-green-200 transition-all duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
           >
+            {ownershipBadge && (
+              <span
+                className={`absolute top-4 right-4 inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold shadow-sm ${badgeClasses}`}
+              >
+                {ownershipBadge}
+              </span>
+            )}
+
             {/* Left side: Course Info */}
             <div className="flex flex-col gap-1">
               <h3 className="font-bold text-lg text-green-800">{course.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
-                {course.title || "Rozpocznij swoją naukę już teraz!"}
+                {/* {course.description as string || "Rozpocznij swoją naukę już teraz!"} */}
+                 Rozpocznij swoją naukę już teraz!
               </p>
               <span className="inline-block bg-green-200 text-green-800 text-xs font-medium px-3 py-1 rounded-full mt-2 self-start">
                 {course.level}
@@ -94,3 +116,4 @@ export const ProfileCoursesOwned = ({
     </motion.ul>
   );
 };
+

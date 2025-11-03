@@ -4,7 +4,7 @@
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
-import { useAuth } from "../features/useAuth"; 
+import { useAuth } from "../features/useAuth";
 import { useDropdown } from "../features/useDropdown";
 
 export default function NavbarContainer({ initialUser }: { initialUser: User | null }) {
@@ -18,9 +18,11 @@ export default function NavbarContainer({ initialUser }: { initialUser: User | n
   // navigation handlers
   const goProfile = () => router.push("/profile");
   const goPayments = () => router.push("/profile");
-  const goLogin = () => router.push("/login"); 
+  const goLogin = () => router.push("/login");
   const goContact = () => router.push("/contact");
-  
+  const goBlog = () => router.push("/blog");
+  const goPractices = () => router.push("/practices");
+
 
   return (
     <Navbar
@@ -32,6 +34,8 @@ export default function NavbarContainer({ initialUser }: { initialUser: User | n
       onGoProfile={goProfile}
       onGoContact={goContact}
       onGoPayments={goPayments}
+      onGoBlog={goBlog}
+      onGoPractices={goPractices}
       onLogout={logout}
       onLogin={goLogin}
     />

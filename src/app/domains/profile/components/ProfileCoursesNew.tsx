@@ -1,29 +1,57 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useMemo } from "react";
+import { PlayCircle, ShoppingCart } from "lucide-react";
+import type { Course, Purchase } from "@/types";
 import { useBuyCourse } from "../features/useBuyCourse";
-import { Course, Purchase } from "../features/types";
-import { ShoppingCart, ArrowRight } from "lucide-react";
+import { useLessonRedirect } from "../features/useLessonRedirect";
+
+type ButtonState = { label: string; lessonId: string | null };
 
 interface ProfileCoursesNewProps {
   newCourses: Course[];
   purchases: Purchase[];
-  loading: string | null;
+  paidCourseIds: Set<string>;
+  hasActiveSubscription: boolean;
+  getButtonState: (course: Course) => ButtonState;
 }
+
+const resolvePurchaseCourseId = (purchase: Purchase): string | null => {
+  if (typeof purchase.course === "string") {
+    return purchase.course;
+  }
+  return purchase.course?.id ?? null;
+};
 
 export const ProfileCoursesNew = ({
   newCourses,
   purchases,
-  loading,
+  paidCourseIds,
+  hasActiveSubscription,
+  getButtonState,
 }: ProfileCoursesNewProps) => {
-  const { buyCourse } = useBuyCourse();
+  const { buyCourse, loading } = useBuyCourse();
+  const { goToLesson } = useLessonRedirect();
 
-  if (newCourses.length === 0)
+  const purchasesByCourse = useMemo(() => {
+    const map = new Map<string, Purchase>();
+    for (const purchase of purchases) {
+      const id = resolvePurchaseCourseId(purchase);
+      if (id) {
+        map.set(id, purchase);
+      }
+    }
+    return map;
+  }, [purchases]);
+
+  if (newCourses.length === 0) {
     return (
       <p className="text-gray-500 text-center bg-gray-50 py-6 rounded-lg border border-gray-100">
-        Brak dostępnych kursów.
+        Obecnie nie ma dostepnych kursow.
       </p>
     );
+  }
 
   return (
     <motion.ul
@@ -39,11 +67,14 @@ export const ProfileCoursesNew = ({
       className="space-y-6"
     >
       {newCourses.map((course) => {
-        const purchase = purchases.find((p) => p.course === course.id);
+        const purchase = purchasesByCourse.get(course.id);
+        const isPurchased =
+          hasActiveSubscription ||
+          paidCourseIds.has(course.id) ||
+          purchase?.payment_status === "paid";
+        const isPending = purchase?.payment_status === "unpaid";
+        const accessState = getButtonState(course);
         const isBuying = loading === `buy-${course.id}`;
-
-        let buttonLabel = `Kup za ${course.price / 100} zł`;
-        if (purchase?.payment_status === "failed") buttonLabel = "Spróbuj ponownie";
 
         return (
           <motion.li
@@ -54,58 +85,71 @@ export const ProfileCoursesNew = ({
             }}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.3 }}
-            className="relative p-6 rounded-2xl bg-gradient-to-br from-green-50 to-white border border-green-100 
-                       shadow-md hover:shadow-xl hover:border-green-200 transition-all duration-300 flex flex-col sm:flex-row 
-                       justify-between gap-5"
+            className="relative flex flex-col gap-5 rounded-2xl border border-green-100 bg-gradient-to-br from-green-50 to-white p-6 shadow-md transition-all duration-300 hover:border-green-200 hover:shadow-xl"
           >
-            {/* Left side — Course info */}
-            <div className="flex flex-col gap-1 max-w-lg">
-              <h3 className="font-bold text-lg text-green-800">{course.title}</h3>
+            {isPurchased && (
+              <span className="absolute right-4 top-4 inline-flex items-center rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white shadow-md shadow-emerald-200">
+                Oplacono
+              </span>
+            )}
+
+            {!isPurchased && isPending && (
+              <span className="absolute right-4 top-4 inline-flex items-center rounded-full bg-amber-500 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white shadow-md shadow-amber-200">
+                W trakcie
+              </span>
+            )}
+
+            <div className="flex flex-col gap-2">
+              <h3 className="text-lg font-bold text-green-800">{course.title}</h3>
 
               {course.short_description && (
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm leading-relaxed text-gray-600">
                   {course.short_description}
                 </p>
               )}
 
-              <span className="inline-block bg-green-200 text-green-800 text-xs font-medium px-3 py-1 rounded-full mt-2 self-start">
-                {course.level}
-              </span>
-
-              <p className="text-[11px] text-gray-400 mt-3 leading-tight max-w-sm">
-                Kupując kurs, wyrażasz zgodę na natychmiastowe rozpoczęcie świadczenia usługi i
-                przyjmujesz do wiadomości, że po uruchomieniu kursu tracisz prawo do odstąpienia od
-                umowy (brak zwrotu).
-              </p>
+              {course.level && (
+                <span className="mt-1 inline-block self-start rounded-full bg-green-200 px-3 py-1 text-xs font-medium text-green-800">
+                  {course.level}
+                </span>
+              )}
             </div>
 
-            {/* Right side — Buy button */}
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => buyCourse(course.id)}
-              disabled={isBuying}
-              className={`flex items-center justify-center gap-1
-    px-2 py-[3px] text-[11px] font-medium rounded-md
-    transition-all duration-200
-    self-start   // 🧩 BU VACİBDİR
-    ${isBuying
-                  ? "bg-green-300 text-white cursor-not-allowed opacity-70"
-                  : "bg-green-500 text-white hover:bg-green-600 active:bg-green-700"
-                }`}
+              whileTap={{ scale: 0.96 }}
+              whileHover={{ scale: 1.03 }}
+              onClick={() => {
+                if (accessState.lessonId) {
+                  goToLesson(course.id, accessState.lessonId);
+                }
+              }}
+              disabled={!isPurchased && !accessState.lessonId}
+              className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 px-5 py-2 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:from-green-600 hover:to-green-700 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {isBuying ? (
-                "..."
-              ) : (
-                <>
-                  <ShoppingCart className="w-[12px] h-[12px]" />
-                  {buttonLabel}
-                </>
-              )}
+              <PlayCircle className="h-4 w-4" />
+              {isPurchased ? "Rozpocznij kurs" : accessState.label}
             </motion.button>
 
-
-
+            {!isPurchased && (
+              <motion.button
+                whileTap={{ scale: 0.96 }}
+                whileHover={{ scale: 1.05 }}
+                onClick={() => buyCourse(course.id)}
+                disabled={isBuying || isPending}
+                className={`mt-2 flex items-center justify-center gap-2 rounded-lg px-5 py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 ${
+                  isBuying || isPending
+                    ? "cursor-not-allowed bg-gray-300 text-gray-100"
+                    : "bg-amber-500 text-white hover:bg-amber-600 active:bg-amber-700 shadow-sm hover:shadow-md"
+                }`}
+              >
+                <ShoppingCart className="h-4 w-4" />
+                {isPending
+                  ? "Platnosc w toku"
+                  : isBuying
+                  ? "Przetwarzanie..."
+                  : "Kup kurs"}
+              </motion.button>
+            )}
           </motion.li>
         );
       })}

@@ -1,20 +1,22 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import type { ChooseDefinitionItem } from "../features/types";
+import type { ChooseDefinitionItem } from "@/types";
 import ExerciseHeader from "../components/ExerciseHeader";
 import ExerciseFooter from "../components/ExerciseFooter";
 import FeedbackMessage from "../components/FeedbackMessage";
+
+type ChooseDefinitionExerciseContainerProps = {
+  items: ChooseDefinitionItem[];
+  onComplete: () => void;
+  lessonId: string;
+};
 
 export default function ChooseDefinitionExerciseContainer({
   items,
   onComplete,
   lessonId,
-}: {
-  items: ChooseDefinitionItem[];
-  onComplete: () => void;
-  lessonId: string;
-}) {
+}: ChooseDefinitionExerciseContainerProps) {
   const storageKey = `exercise-progress-${lessonId}-choose`;
 
   const [index, setIndex] = useState(0);
@@ -24,130 +26,151 @@ export default function ChooseDefinitionExerciseContainer({
   const [restored, setRestored] = useState(false);
 
   const total = items.length;
-  const q = items[index];
-  const progress = useMemo(
-    () => Math.round(((index + 1) / total) * 100),
-    [index, total]
-  );
+  const question = items[index];
+  const progress = useMemo(() => Math.round(((index + 1) / total) * 100), [index, total]);
 
-  // 🔹 Load saved progress
   useEffect(() => {
-    const saved = localStorage.getItem(storageKey);
+    if (typeof window === "undefined") return;
+    const saved = window.localStorage.getItem(storageKey);
     if (saved) {
       try {
-        const parsed = JSON.parse(saved);
-        if (parsed.index < total) {
-          setIndex(parsed.index ?? 0);
+        const parsed = JSON.parse(saved) as {
+          index?: number;
+          selectedIndex?: number | null;
+          status?: "idle" | "wrong" | "correct";
+          revealed?: "none" | "hint" | "answer";
+        };
+
+        if (typeof parsed.index === "number" && parsed.index < total) {
+          setIndex(parsed.index);
           setSelectedIndex(parsed.selectedIndex ?? null);
           setStatus(parsed.status ?? "idle");
           setRevealed(parsed.revealed ?? "none");
         }
-      } catch {
-        console.error("❌ Nie udało się wczytać postępu");
+      } catch (err) {
+        console.error("Nie udało się wczytać zapisanego postępu ćwiczenia multiple choice.", err);
       }
     }
     setRestored(true);
   }, [storageKey, total]);
 
-  // 🔹 Save progress
   useEffect(() => {
-    if (!restored) return;
+    if (!restored || typeof window === "undefined") return;
     const state = { index, selectedIndex, status, revealed };
-    localStorage.setItem(storageKey, JSON.stringify(state));
+    window.localStorage.setItem(storageKey, JSON.stringify(state));
   }, [index, selectedIndex, status, revealed, storageKey, restored]);
 
-  function handleChoice(i: number) {
-    if (status === "correct") return;
-    setSelectedIndex(i);
-    if (i === q.correctIndex) {
+  const handleChoice = (choiceIndex: number) => {
+    if (!question || status === "correct") return;
+    setSelectedIndex(choiceIndex);
+    if (choiceIndex === question.correctIndex) {
       setStatus("correct");
       setRevealed("none");
     } else {
       setStatus("wrong");
       setRevealed("none");
     }
-  }
+  };
 
-  function handleNext() {
+  const handleNext = () => {
     if (index + 1 < total) {
-      setIndex(index + 1);
+      setIndex((prev) => prev + 1);
       setSelectedIndex(null);
       setStatus("idle");
       setRevealed("none");
     } else {
-      localStorage.removeItem(storageKey);
+      if (typeof window !== "undefined") {
+        window.localStorage.removeItem(storageKey);
+      }
       onComplete();
     }
-  }
+  };
 
-  const handleHintOrAnswer = () => {
+  const handleReveal = () => {
     if (revealed === "none") setRevealed("hint");
     else if (revealed === "hint") setRevealed("answer");
   };
 
-  if (!q) return <p>Brak pytań.</p>;
+  if (!question) {
+    return <p className="text-sm text-gray-500">Brak pytań dla modułu „Multiple choice”.</p>;
+  }
+
+  const correctAnswer = question.options[question.correctIndex];
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <ExerciseHeader
-        title="Wybierz definicję"
-        subtitle="Zaznacz poprawne znaczenie słowa"
+        title="Wybierz poprawną odpowiedź"
+        subtitle="Zaznacz definicję, która najlepiej pasuje do podanego słowa."
         progress={progress}
         current={index + 1}
         total={total}
       />
 
-      <h3 className="text-lg font-bold text-center text-green-800">
-        {q.word}
-      </h3>
+      <div className="rounded-2xl border border-emerald-100 bg-white px-4 py-5 text-center text-lg font-semibold text-emerald-700 shadow-sm md:text-xl">
+        {question.word}
+      </div>
 
-      <div className="flex flex-col gap-2">
-        {q.options.map((opt, i) => {
-          const picked = selectedIndex === i;
+      <div className="grid gap-3">
+        {question.options.map((option, optionIndex) => {
+          const isSelected = selectedIndex === optionIndex;
+          const isCorrectPick = isSelected && status === "correct";
+          const isWrongPick = isSelected && status === "wrong";
+          const isRevealedCorrect = revealed === "answer" && optionIndex === question.correctIndex;
 
-          let border = "border-green-300 bg-white hover:bg-green-50 cursor-pointer";
-          if (picked && status === "correct")
-            border = "border-green-600 bg-green-50";
-          if (picked && status === "wrong")
-            border = "border-red-500 bg-red-50";
+          const baseClasses =
+            "group flex w-full items-center gap-4 rounded-2xl border px-4 py-3 text-left text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-emerald-200 md:text-base";
+
+          const stateClasses = (() => {
+            if (isCorrectPick || isRevealedCorrect) {
+              return "border-emerald-300 bg-emerald-50 text-emerald-800 shadow-inner";
+            }
+            if (isWrongPick) {
+              return "border-red-200 bg-red-50 text-red-600";
+            }
+            if (isSelected) {
+              return "border-emerald-300 bg-white text-emerald-700 shadow";
+            }
+            return "border-emerald-100 bg-white text-gray-700 hover:border-emerald-200 hover:bg-emerald-50/60";
+          })();
 
           return (
             <button
-              key={i}
+              key={optionIndex}
               type="button"
-              onClick={() => handleChoice(i)}
-              className={`p-3 border rounded-lg transition-colors duration-200 ${border}`}
+              onClick={() => handleChoice(optionIndex)}
+              className={`${baseClasses} ${stateClasses}`}
+              disabled={status === "correct"}
             >
-              {opt}
+              <span
+                className={`inline-flex h-9 w-9 items-center justify-center rounded-full border text-sm font-semibold transition ${
+                  isCorrectPick || isRevealedCorrect
+                    ? "border-emerald-300 bg-emerald-100 text-emerald-700"
+                    : isWrongPick
+                    ? "border-red-200 bg-red-100 text-red-600"
+                    : "border-emerald-100 bg-emerald-50 text-emerald-600 group-hover:border-emerald-200 group-hover:bg-emerald-100"
+                }`}
+              >
+                {String.fromCharCode(65 + optionIndex)}
+              </span>
+              {option}
             </button>
           );
         })}
       </div>
 
-      {/* ✅ Poprawna odpowiedź */}
-      {status === "correct" && (
-        <FeedbackMessage type="correct" message="✅ Dobrze!" />
-      )}
+      {status === "correct" && <FeedbackMessage type="correct" message="Brawo! Wybrałeś właściwą odpowiedź." />}
 
-      {/* ❌ Zła odpowiedź */}
       {status === "wrong" && revealed === "none" && (
-        <FeedbackMessage
-          type="wrong"
-          message="❌ Nie do końca. Spróbuj ponownie!"
-        />
+        <FeedbackMessage type="wrong" message="To nie ta odpowiedź. Przeanalizuj zdanie i spróbuj ponownie." />
       )}
 
-      {/* 💡 Podpowiedź */}
-      {revealed === "hint" && q.hint && (
-        <FeedbackMessage type="hint" message={`💡 Podpowiedź: ${q.hint}`} />
+      {revealed === "hint" && question.hint && (
+        <FeedbackMessage type="hint" message={`Podpowiedź: ${question.hint}`} />
       )}
 
-      {/* ✅ Poprawna odpowiedź ujawniona */}
       {revealed === "answer" && (
-        <FeedbackMessage
-          type="wrong"
-          message={`✅ Poprawna odpowiedź: ${q.options[q.correctIndex]}`}
-        />
+        <FeedbackMessage type="hint" message={`Poprawna odpowiedź: ${correctAnswer}`} />
       )}
 
       <ExerciseFooter
@@ -156,13 +179,13 @@ export default function ChooseDefinitionExerciseContainer({
             ? "Pokaż podpowiedź"
             : revealed === "hint"
             ? "Pokaż odpowiedź"
-            : "Odpowiedź pokazana"
+            : "Odpowiedź została pokazana"
         }
-        onLeftClick={handleHintOrAnswer}
+        onLeftClick={handleReveal}
         leftDisabled={revealed === "answer"}
-        rightLabel={status === "correct" ? "Dalej" : "Sprawdź"}
-        onRightClick={status === "correct" ? handleNext : () => {}}
-        rightDisabled={selectedIndex == null && status !== "correct"}
+        rightLabel={status === "correct" || revealed === "answer" ? "Przejdź dalej" : "Potwierdź wybór"}
+        onRightClick={status === "correct" || revealed === "answer" ? handleNext : () => undefined}
+        rightDisabled={selectedIndex == null && revealed !== "answer" && status !== "correct"}
       />
     </div>
   );

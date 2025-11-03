@@ -78,14 +78,15 @@ export default function PricesPreview() {
                   ? "0 20px 40px rgba(16,185,129,0.3)"
                   : "0 15px 30px rgba(0,0,0,0.1)",
             }}
-            className={`relative w-full max-w-sm flex flex-col justify-between rounded-3xl p-8 backdrop-blur-lg transition-all duration-500 border
+            className={`relative w-full max-w-sm flex flex-col justify-between rounded-3xl p-8 
+              backdrop-blur-lg transition-all duration-500 border cursor-pointer
               ${
                 c.id === "intermediate"
                   ? "bg-gradient-to-br from-green-50 to-emerald-100 border-green-300"
                   : "bg-white border-gray-200"
               }`}
           >
-            {/* 🌟 Halo effect for featured plan */}
+            {/* 🌟 Glow background fix */}
             {c.id === "intermediate" && (
               <motion.div
                 animate={{
@@ -93,11 +94,11 @@ export default function PricesPreview() {
                   scale: [1, 1.05, 1],
                 }}
                 transition={{ duration: 4, repeat: Infinity }}
-                className="absolute -inset-[2px] rounded-3xl bg-gradient-to-r from-green-400/40 via-emerald-300/30 to-transparent blur-2xl"
+                className="absolute -inset-[2px] rounded-3xl bg-gradient-to-r from-green-400/40 via-emerald-300/30 to-transparent blur-2xl pointer-events-none"
               ></motion.div>
             )}
 
-            {/* 🧾 Plan Details */}
+            {/* 🧾 Card Content */}
             <div className="relative z-10 flex flex-col items-start gap-5">
               {c.id === "intermediate" && (
                 <span className="text-xs uppercase font-bold text-green-700 tracking-wider">
@@ -120,7 +121,7 @@ export default function PricesPreview() {
               </p>
 
               <ul className="text-sm md:text-base text-gray-700 leading-relaxed flex flex-col gap-3">
-                {c.features.map((item) => (
+                {(c.features ?? []).map((item) => (
                   <li key={item} className="flex items-center gap-3">
                     {c.id === "intermediate" ? (
                       <BadgeCheck className="w-6 h-6 text-green-600 shrink-0 drop-shadow-[0_0_6px_rgba(16,185,129,0.4)]" />
@@ -137,15 +138,16 @@ export default function PricesPreview() {
             <motion.button
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 0 25px rgba(249,115,22,0.4)",
+                boxShadow: "0 0 20px rgba(249,115,22,0.3)",
               }}
               whileTap={{ scale: 0.95 }}
               onClick={() => router.push("/signup")}
-              className={`mt-8 w-full py-3 rounded-full font-semibold transition-all text-white ${
-                c.id === "intermediate"
-                  ? "bg-gradient-to-r from-green-500 to-emerald-400 hover:from-green-400 hover:to-emerald-300"
-                  : "bg-orange-500 hover:bg-orange-600"
-              }`}
+              className={`mt-6 w-full py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 text-white
+                ${
+                  c.id === "intermediate"
+                    ? "bg-gradient-to-r from-green-500 to-emerald-400 hover:from-green-400 hover:to-emerald-300"
+                    : "bg-orange-500 hover:bg-orange-600"
+                }`}
             >
               Załóż konto
             </motion.button>

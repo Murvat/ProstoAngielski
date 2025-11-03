@@ -1,20 +1,22 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import type { FillGapsItem } from "../features/types";
+import type { FillGapsItem } from "@/types";
 import ExerciseHeader from "../components/ExerciseHeader";
 import ExerciseFooter from "../components/ExerciseFooter";
 import FeedbackMessage from "../components/FeedbackMessage";
+
+type FillGapsExerciseContainerProps = {
+  items: FillGapsItem[];
+  onComplete: () => void;
+  lessonId: string;
+};
 
 export default function FillGapsExerciseContainer({
   items,
   onComplete,
   lessonId,
-}: {
-  items: FillGapsItem[];
-  onComplete: () => void;
-  lessonId: string;
-}) {
+}: FillGapsExerciseContainerProps) {
   const storageKey = `exercise-progress-${lessonId}-fillgaps`;
 
   const [index, setIndex] = useState(0);
@@ -24,128 +26,141 @@ export default function FillGapsExerciseContainer({
   const [restored, setRestored] = useState(false);
 
   const total = items.length;
-  const q = items[index];
+  const question = items[index];
   const progress = Math.round(((index + 1) / total) * 100);
 
-  // 🔹 Przywróć zapisany postęp
   useEffect(() => {
-    const saved = localStorage.getItem(storageKey);
+    if (typeof window === "undefined") return;
+    const saved = window.localStorage.getItem(storageKey);
     if (saved) {
       try {
-        const parsed = JSON.parse(saved);
-        if (parsed.index < total) {
-          setIndex(parsed.index ?? 0);
+        const parsed = JSON.parse(saved) as {
+          index?: number;
+          value?: string;
+          status?: "idle" | "wrong" | "correct";
+          revealed?: "none" | "hint" | "answer";
+        };
+
+        if (typeof parsed.index === "number" && parsed.index < total) {
+          setIndex(parsed.index);
           setValue(parsed.value ?? "");
           setStatus(parsed.status ?? "idle");
           setRevealed(parsed.revealed ?? "none");
         }
-      } catch {
-        console.error("❌ Nie udało się odczytać zapisanych danych");
+      } catch (err) {
+        console.error("Nie udało się odczytać zapisanego postępu ćwiczenia fill gaps.", err);
       }
     }
     setRestored(true);
   }, [storageKey, total]);
 
-  // 🔹 Zapisz postęp po przywróceniu
   useEffect(() => {
-    if (!restored) return;
+    if (!restored || typeof window === "undefined") return;
     const state = { index, value, status, revealed };
-    localStorage.setItem(storageKey, JSON.stringify(state));
+    window.localStorage.setItem(storageKey, JSON.stringify(state));
   }, [index, value, status, revealed, storageKey, restored]);
 
-  const normalize = (s: string) =>
-    s.toLowerCase().trim().replace(/\s+/g, " ");
-  const matches = (user: string, correct: string | string[]) => {
-    const arr = Array.isArray(correct) ? correct : [correct];
-    return arr.some((a) => normalize(a) === normalize(user));
+  const normalize = (text: string) => text.trim().toLowerCase().replace(/\s+/g, " ");
+
+  const matches = (userInput: string, correctAnswer: string | string[]) => {
+    const answers = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
+    return answers.some((answer) => normalize(answer) === normalize(userInput));
   };
 
   const handleCheck = useCallback(() => {
-    if (!value.trim()) return;
-    if (matches(value, q.answer)) {
+    if (!question || !value.trim()) return;
+    if (matches(value, question.answer)) {
       setStatus("correct");
       setRevealed("none");
     } else {
       setStatus("wrong");
     }
-  }, [value, q]);
+  }, [question, value]);
 
   const handleNext = useCallback(() => {
     if (index + 1 < total) {
-      setIndex((i) => i + 1);
+      setIndex((prev) => prev + 1);
       setValue("");
       setStatus("idle");
       setRevealed("none");
     } else {
-      localStorage.removeItem(storageKey);
+      if (typeof window !== "undefined") {
+        window.localStorage.removeItem(storageKey);
+      }
       onComplete();
     }
   }, [index, total, onComplete, storageKey]);
 
-  // Enter = sprawdź / dalej
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        if (status === "correct" || revealed === "answer") handleNext();
-        else handleCheck();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Enter") return;
+      if (status === "correct" || revealed === "answer") {
+        handleNext();
+      } else {
+        handleCheck();
       }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [status, revealed, handleCheck, handleNext]);
 
-  const handleHintOrAnswer = () => {
-    if (revealed === "none") setRevealed("hint");
-    else if (revealed === "hint") setRevealed("answer");
+  const handleReveal = () => {
+    if (revealed === "none") {
+      setRevealed("hint");
+    } else if (revealed === "hint") {
+      setRevealed("answer");
+    }
   };
 
-  if (!q) return <p>Brak zadań typu „uzupełnij luki”.</p>;
+  if (!question) {
+    return <p className="text-sm text-gray-500">Brak zadań typu „Uzupełnij luki”.</p>;
+  }
+
+  const showAnswer = Array.isArray(question.answer)
+    ? question.answer.join(", ")
+    : question.answer;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <ExerciseHeader
         title="Uzupełnij luki"
-        subtitle="Wpisz brakujące słowo"
+        subtitle="Wpisz brakujące słowo lub frazę tak, aby zdanie było poprawne."
         progress={progress}
         current={index + 1}
         total={total}
       />
 
-      <p className="text-lg font-medium text-gray-800">{q.prompt}</p>
-      <input
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-green-500 focus:ring-green-500 
-        hover:border-green-400 transition-colors duration-200 cursor-pointer"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        disabled={status === "correct"}
-      />
+      <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 px-4 py-5 text-sm font-medium text-emerald-900 shadow-inner md:text-base">
+        {question.prompt}
+      </div>
 
-      {/* ✅ Poprawna odpowiedź */}
-      {status === "correct" && (
-        <FeedbackMessage type="correct" message="✅ Dobrze!" />
-      )}
+      <label className="space-y-3">
+        <span className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-500">Twoja odpowiedź</span>
+        <div className="group relative">
+          <input
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            disabled={status === "correct"}
+            placeholder="Przepisz słowo lub frazę..."
+            className="w-full rounded-2xl border border-emerald-100 bg-white px-5 py-3 text-base text-gray-800 shadow-sm transition focus:border-transparent focus:outline-none focus:ring-2 focus:ring-emerald-200 disabled:cursor-not-allowed"
+          />
+          <div className="pointer-events-none absolute inset-0 rounded-2xl border border-transparent bg-gradient-to-r from-emerald-100/20 to-teal-100/20 opacity-0 transition group-focus-within:opacity-100" />
+        </div>
+      </label>
 
-      {/* ❌ Niepoprawna odpowiedź */}
+      {status === "correct" && <FeedbackMessage type="correct" message="Świetnie! To poprawna odpowiedź." />}
+
       {status === "wrong" && revealed === "none" && (
-        <FeedbackMessage
-          type="wrong"
-          message="❌ Nie do końca dobrze. Spróbuj ponownie!"
-        />
+        <FeedbackMessage type="wrong" message="Spróbuj jeszcze raz — zwróć uwagę na kontekst zdania." />
       )}
 
-      {/* 💡 Podpowiedź */}
-      {revealed === "hint" && q.hint && (
-        <FeedbackMessage type="hint" message={`💡 Podpowiedź: ${q.hint}`} />
+      {revealed === "hint" && question.hint && (
+        <FeedbackMessage type="hint" message={`Podpowiedź: ${question.hint}`} />
       )}
 
-      {/* ✅ Pokaż odpowiedź */}
       {revealed === "answer" && (
-        <FeedbackMessage
-          type="wrong"
-          message={`✅ Poprawna odpowiedź: ${
-            Array.isArray(q.answer) ? q.answer.join(", ") : q.answer
-          }`}
-        />
+        <FeedbackMessage type="hint" message={`Poprawna odpowiedź: ${showAnswer}`} />
       )}
 
       <ExerciseFooter
@@ -154,23 +169,13 @@ export default function FillGapsExerciseContainer({
             ? "Pokaż podpowiedź"
             : revealed === "hint"
             ? "Pokaż odpowiedź"
-            : "Odpowiedź pokazana"
+            : "Odpowiedź została pokazana"
         }
-        onLeftClick={handleHintOrAnswer}
+        onLeftClick={handleReveal}
         leftDisabled={revealed === "answer"}
-        rightLabel={
-          status === "correct" || revealed === "answer"
-            ? "Dalej"
-            : "Sprawdź odpowiedź"
-        }
-        onRightClick={
-          status === "correct" || revealed === "answer"
-            ? handleNext
-            : handleCheck
-        }
-        rightDisabled={
-          !value.trim() && revealed !== "answer" && status !== "correct"
-        }
+        rightLabel={status === "correct" || revealed === "answer" ? "Przejdź dalej" : "Sprawdź odpowiedź"}
+        onRightClick={status === "correct" || revealed === "answer" ? handleNext : handleCheck}
+        rightDisabled={!value.trim() && revealed !== "answer" && status !== "correct"}
       />
     </div>
   );

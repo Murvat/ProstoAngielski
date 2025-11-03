@@ -1,17 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../../../../lib/supabase/client/supabaseClient";
-
-export type Course = {
-  id: string;
-  title: string;
-  short_description: string;
-  level: string;
-  duration: string;
-  price: number;     // stored in grosze (e.g. 9900 = 99.00 zł)
-  features: string[]; // array of benefits for that course
-};
+import { supabase } from "@/lib/supabase/client/supabaseClient";
+import { listCourses } from "@/lib/supabase/queries";
+import type { Course } from "@/types";
 
 export function useCourse() {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -20,15 +12,13 @@ export function useCourse() {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const { data, error } = await supabase
-        .from("courses")
-        .select("*")
-        .order("price", { ascending: true }); // cheapest first
+      const { data, error } = await listCourses(supabase);
 
       if (error) {
         setError(error.message);
       } else {
-        setCourses(data as Course[]);
+        setCourses(data);
+        setError(null);
       }
 
       setLoading(false);

@@ -1,8 +1,5 @@
+import BlogPageContainer from "@/app/domains/blog/containers/BlogPageContainer";
 
-function page() {
-  return (
-    <div>page</div>
-  )
+export default function BlogPage() {
+  return <BlogPageContainer />;
 }
-
-export default page

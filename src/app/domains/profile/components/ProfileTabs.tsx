@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { Tab } from "../features/types";
+import type { Tab } from "@/types";
 
 interface ProfileTabsProps {
   activeTab: Tab;
@@ -14,7 +14,7 @@ export const ProfileTabs = ({ activeTab, onChange }: ProfileTabsProps) => {
     { key: "dane", label: "Dane osobiste" },
     { key: "ustalenia", label: "Ustalenia" },
     { key: "platnosci", label: "Płatności" },
-    { key: "mobilna", label: "Mobilna aplikacja" },
+    // { key: "mobilna", label: "Mobilna aplikacja" },
   ];
 
   return (
@@ -27,10 +27,9 @@ export const ProfileTabs = ({ activeTab, onChange }: ProfileTabsProps) => {
               key={tab.key}
               onClick={() => onChange(tab.key)}
               className={`relative px-4 py-2 text-sm sm:text-base font-semibold transition-all duration-300 rounded-md
-                ${
-                  isActive
-                    ? "text-green-700"
-                    : "text-gray-500 hover:text-green-700 hover:bg-green-50/70"
+                ${isActive
+                  ? "text-green-700"
+                  : "text-gray-500 hover:text-green-700 hover:bg-green-50/70"
                 }`}
             >
               {/* Label */}

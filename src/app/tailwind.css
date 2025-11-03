@@ -1,5 +1,34 @@
 
-@import 'tailwindcss';
+@import "tailwindcss";
+
+:root {
+  --lesson-sidebar-width: 20rem;
+  --lesson-chatbot-width: 22rem;
+}
+
+@media (min-width: 768px) {
+  .lesson-content-offset {
+    margin-right: var(--lesson-chatbot-width);
+  }
+
+  .lesson-footer-offset {
+    right: var(--lesson-chatbot-width);
+  }
+
+  .lesson-chatbot-container {
+    width: var(--lesson-chatbot-width);
+  }
+}
+
+@media (min-width: 1024px) {
+  .lesson-content-offset {
+    margin-left: var(--lesson-sidebar-width);
+  }
+
+  .lesson-footer-offset {
+    left: var(--lesson-sidebar-width);
+  }
+}
 
 /* styles/globals.css */
 #htmlContent h1 {

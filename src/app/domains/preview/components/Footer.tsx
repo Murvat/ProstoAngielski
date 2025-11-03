@@ -3,6 +3,30 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FaInstagram, FaFacebook, FaYoutube, FaLinkedin } from "react-icons/fa";
+
+const socialLinks = [
+  {
+    href: "https://www.instagram.com/prostoangielski.pl/",
+    label: "Instagram",
+    Icon: FaInstagram,
+  },
+  {
+    href: "https://www.facebook.com/profile.php?id=61582136725311",
+    label: "Facebook",
+    Icon: FaFacebook,
+  },
+  {
+    href: "https://www.youtube.com/@prostoangielski",
+    label: "YouTube",
+    Icon: FaYoutube,
+  },
+  {
+    href: "https://www.linkedin.com/company/109429439",
+    label: "LinkedIn",
+    Icon: FaLinkedin,
+  },
+];
 
 export default function Footer() {
   const router = useRouter();
@@ -56,7 +80,7 @@ export default function Footer() {
       />
 
       {/* 🌍 Bottom Bar */}
-      <div className="relative z-10 max-w-screen-xl mx-auto py-6 px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-600">
+      <div className="relative z-10 max-w-screen-xl mx-auto py-6 px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-gray-600">
         {/* Links */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -85,6 +109,27 @@ export default function Footer() {
           </Link>
         </motion.div>
 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="flex items-center gap-4 text-xl text-gray-500"
+        >
+          {socialLinks.map(({ href, label, Icon }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={label}
+              className="transition-colors duration-300 hover:text-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded-full"
+            >
+              <Icon />
+            </a>
+          ))}
+        </motion.div>
+
         {/* Copyright */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -93,7 +138,7 @@ export default function Footer() {
           viewport={{ once: true }}
           className="text-gray-500"
         >
-          &copy; {new Date().getFullYear()} EnglishApp. Wszelkie prawa zastrzeżone.
+          &copy; {new Date().getFullYear()} ProstoLang. Wszelkie prawa zastrzeżone.
         </motion.div>
       </div>
     </footer>

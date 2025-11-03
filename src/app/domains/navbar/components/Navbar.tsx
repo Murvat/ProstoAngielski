@@ -15,6 +15,8 @@ type NavbarProps = {
   onGoProfile: () => void;
   onGoContact: () => void;
   onGoPayments: () => void;
+  onGoBlog: () => void;
+  onGoPractices: () => void;
   onLogout: () => void;
   onLogin: () => void;
 };
@@ -28,6 +30,8 @@ export default function Navbar({
   onGoProfile,
   onGoContact,
   onGoPayments,
+  onGoBlog,
+  onGoPractices,
   onLogout,
   onLogin,
 }: NavbarProps) {
@@ -72,6 +76,23 @@ export default function Navbar({
 
         {/* 💻 Desktop Menu */}
         <div className="hidden md:flex items-center gap-6 relative" ref={dropdownRef}>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onGoPractices}
+            className="px-4 py-2 rounded-md bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold shadow-sm hover:from-emerald-400 hover:to-green-500 transition-all"
+          >
+            Strefa praktyk
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onGoBlog}
+            className="px-4 py-2 rounded-md border border-green-600 text-green-700 font-semibold hover:bg-green-100 transition-all"
+          >
+            Blog
+          </motion.button>
+
           {user ? (
             <>
               <motion.button
@@ -105,18 +126,36 @@ export default function Navbar({
                       </li>
                       <li
                         onClick={() => {
-                          onGoContact();
+                          onGoBlog();
                           onCloseDropdown();
                         }}
                         className="px-4 py-2 hover:bg-green-50 text-gray-800 cursor-pointer transition-colors"
                       >
-                        Kontakt
+                        Blog
                       </li>
                       <li
                         onClick={() => {
-                          onGoPayments();
-                          onCloseDropdown();
-                        }}
+                      onGoContact();
+                      onCloseDropdown();
+                    }}
+                    className="px-4 py-2 hover:bg-green-50 text-gray-800 cursor-pointer transition-colors"
+                  >
+                    Kontakt
+                  </li>
+                  <li
+                    onClick={() => {
+                      onGoPractices();
+                      onCloseDropdown();
+                    }}
+                    className="px-4 py-2 hover:bg-green-50 text-gray-800 cursor-pointer transition-colors"
+                  >
+                    Strefa praktyk
+                  </li>
+                  <li
+                    onClick={() => {
+                      onGoPayments();
+                      onCloseDropdown();
+                    }}
                         className="px-4 py-2 hover:bg-green-50 text-gray-800 cursor-pointer transition-colors"
                       >
                         Płatności
@@ -174,6 +213,24 @@ export default function Navbar({
                 <>
                   <li
                     onClick={() => {
+                      onGoBlog();
+                      setMobileOpen(false);
+                    }}
+                    className="hover:text-green-700 transition-colors cursor-pointer"
+                  >
+                    Blog
+                  </li>
+                  <li
+                    onClick={() => {
+                      onGoPractices();
+                      setMobileOpen(false);
+                    }}
+                    className="hover:text-green-700 transition-colors cursor-pointer"
+                  >
+                    Strefa praktyk
+                  </li>
+                  <li
+                    onClick={() => {
                       onGoProfile();
                       setMobileOpen(false);
                     }}
@@ -210,19 +267,39 @@ export default function Navbar({
                   </li>
                 </>
               ) : (
-                <li>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                <>
+                  <li
                     onClick={() => {
-                      onLogin();
+                      onGoBlog();
                       setMobileOpen(false);
                     }}
-                    className="w-full px-4 py-2 border border-green-600 text-green-700 rounded-md hover:bg-green-100 transition-all"
+                    className="hover:text-green-700 transition-colors cursor-pointer"
                   >
-                    Zaloguj się
-                  </motion.button>
-                </li>
+                    Blog
+                  </li>
+                  <li
+                    onClick={() => {
+                      onGoPractices();
+                      setMobileOpen(false);
+                    }}
+                    className="hover:text-green-700 transition-colors cursor-pointer"
+                  >
+                    Strefa praktyk
+                  </li>
+                  <li>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => {
+                        onLogin();
+                        setMobileOpen(false);
+                      }}
+                      className="w-full px-4 py-2 border border-green-600 text-green-700 rounded-md hover:bg-green-100 transition-all"
+                    >
+                      Zaloguj się
+                    </motion.button>
+                  </li>
+                </>
               )}
             </ul>
           </motion.div>

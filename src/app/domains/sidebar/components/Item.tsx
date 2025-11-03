@@ -1,71 +1,62 @@
 "use client";
 
 import React from "react";
-import type { LessonItem } from "../features/types";
+import { BookOpen, PencilLine, Lock, CheckCircle2 } from "lucide-react";
 
- function Item({
+
+type ItemProps = {
+  item: { id: string; type: "lesson" | "exercise" | string; title: string };
+  active: boolean;
+  locked: boolean;
+  completed: boolean;
+  onClick: () => void;
+};
+
+function Item({
   item,
   active,
+  locked,
+  completed,
   onClick,
-  completed = false,
-}: {
-  item: LessonItem;
-  active: boolean;
-  onClick: () => void;
-  completed?: boolean;
-}) {
+}: ItemProps) {
   const isLesson = item.type === "lesson";
 
-  return (
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={onClick}
-      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onClick()}
-      className={`flex justify-between items-center px-4 py-3 rounded-lg cursor-pointer transition-all duration-200
-        ${
-          active
-            ? "bg-green-50 text-green-700 font-semibold shadow-sm"
-            : "hover:bg-gray-50 text-gray-700"
-        }
-      `}
-    >
-      {/* Label */}
-      <span
-        className={`truncate ${
-          isLesson
-            ? "text-sm font-medium tracking-tight"
-            : "text-xs uppercase font-semibold text-gray-500"
-        }`}
-      >
-        {isLesson ? item.title : "Ćwiczenie"}
-      </span>
 
-      {/* Progress indicator */}
-      <span
-        className={`flex items-center justify-center w-5 h-5 rounded-full border text-[10px]
-          ${
-            completed
-              ? "border-green-500 bg-green-500 text-white"
-              : "border-gray-300 bg-white text-gray-400"
-          }
-        `}
-      >
-        {completed && (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-3"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={3}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
-        )}
-      </span>
-    </div>
+  const baseClasses =
+    "flex items-center gap-3.5 w-full px-4 py-2.5 rounded-lg text-left transition-all duration-200 text-sm";
+  const stateClasses = active
+    ? "bg-green-100 text-green-800 font-semibold"
+    : locked
+      ? "text-gray-400 cursor-not-allowed"
+      : "text-gray-700 hover:bg-gray-100 hover:text-gray-900";
+
+  const iconClasses = `w-4 h-4 shrink-0 ${active ? "text-green-700" : locked ? "text-gray-400" : "text-gray-500"
+    }`;
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={locked}
+      className={`${baseClasses} ${stateClasses}`}
+    >
+      {isLesson ? (
+        <BookOpen className={iconClasses} />
+      ) : (
+        <PencilLine className={iconClasses} />
+      )}
+
+      <span className="flex-1 truncate">{item.title}</span>
+
+      {locked ? (
+        <Lock className="w-4 h-4 shrink-0 text-gray-400" />
+      ) : completed ? (
+        <CheckCircle2
+          className={`w-4 h-4 shrink-0 ${active ? "text-green-700" : "text-green-500"
+            }`}
+        />
+      ) : null}
+    </button>
   );
 }
-export default React.memo(Item);
 
+export default React.memo(Item);
