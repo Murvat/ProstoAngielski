@@ -2,12 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-
-type SectionSummary = {
-  total: number;
-  attempted: number;
-  correct: number;
-};
+import type { SectionSummary } from "../utils/progress";
 
 type Props = {
   levelLabel: string;
