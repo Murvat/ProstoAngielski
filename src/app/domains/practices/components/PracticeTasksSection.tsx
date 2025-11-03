@@ -472,6 +472,14 @@ export default function PracticeTasksSection({
     });
   };
 
+  const prettyCorrectAnswer = useMemo(() => {
+    if (!currentTask) return null;
+    const first = currentTask.answers?.[0];
+    if (!first) return null;
+    if (Array.isArray(first)) return first.join(" ");
+    return String(first);
+  }, [currentTask]);
+
   const currentStored =
     currentKey && currentTask
       ? state.answers[currentKey] ?? state.answers[String(currentTask.id)]
@@ -487,14 +495,6 @@ export default function PracticeTasksSection({
       </section>
     );
   }
-
-  const prettyCorrectAnswer = useMemo(() => {
-    if (!currentTask) return null;
-    const first = currentTask.answers?.[0];
-    if (!first) return null;
-    if (Array.isArray(first)) return first.join(" ");
-    return String(first);
-  }, [currentTask]);
 
   return (
     <section className="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm">

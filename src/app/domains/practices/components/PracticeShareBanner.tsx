@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 
 type SectionSummary = {
@@ -25,13 +25,6 @@ export default function PracticeShareBanner({
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [generating, setGenerating] = useState(false);
-
-  const shareText = useMemo(() => {
-    const tasksLine = `Ćwiczenia: ${tasks.correct}/${tasks.total}`;
-    const flashcardsLine = `Fiszki zapamiętane: ${flashcards.correct}/${flashcards.total}`;
-    const vocabLine = `Słownictwo: ${vocabulary.correct}/${vocabulary.total}`;
-    return `Strefa praktyk PROSTOANGIELSKI – poziom ${levelLabel}\n${tasksLine}\n${flashcardsLine}\n${vocabLine}\nSprawdź kurs i dołącz: ${process.env.NEXT_PUBLIC_SITE_URL ?? "https://prostoangielski.pl"}`;
-  }, [flashcards.correct, flashcards.total, levelLabel, tasks.correct, tasks.total, vocabulary.correct, vocabulary.total]);
 
   const createShareImage = useCallback(async () => {
     const canvas = document.createElement("canvas");
