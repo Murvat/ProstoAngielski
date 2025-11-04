@@ -628,11 +628,11 @@ export default function PracticeTasksSection({
             <button
               onClick={() => setAnswerVisible((prev) => !prev)}
               className="rounded-full border border-emerald-200 px-4 py-2 text-xs font-semibold text-emerald-600 transition hover:border-emerald-400 hover:bg-emerald-50"
-              disabled={
+              disabled={Boolean(
                 !answerVisible &&
                 currentTask.hint &&
                 (currentStored?.attempts ?? 0) < 2
-              }
+              )}
             >
               {answerVisible ? "Ukryj rozwiązanie" : "Wyjaśnienie"}
             </button>
