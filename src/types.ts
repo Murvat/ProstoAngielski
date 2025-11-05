@@ -1,5 +1,5 @@
 // Global application types aggregated to avoid duplication across features.
-
+ 
 export type Tab = "kursy" | "dane" | "ustalenia" | "platnosci" ;
 
 export type AppUser = {
