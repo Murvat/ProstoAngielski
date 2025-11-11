@@ -13,8 +13,8 @@ export default function Description() {
     },
     {
       img: "/pay.png",
-      title: "Jednorazowa opłata",
-      text: "Płacisz raz i uczysz się bez limitów, kiedy chcesz i jak chcesz. Bez ukrytych opłat, bez subskrypcji. Prosto, uczciwie i przejrzyście — dokładnie tak, jak powinno być.",
+      title: "Całkowicie darmowy kurs",
+      text: "Otwierasz aplikację i od razu masz dostęp do pełnego kursu, wszystkich lekcji oraz materiałów PDF. Żadnych płatności, abonamentów ani drobnych druczków — po prostu darmowa nauka angielskiego.",
       reverse: true,
     },
     {
@@ -114,4 +114,3 @@ export default function Description() {
     </section>
   );
 }
-

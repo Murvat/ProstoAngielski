@@ -50,10 +50,10 @@ export default function PricesPreview() {
         className="max-w-2xl flex flex-col gap-4 z-10"
       >
         <h2 className="font-sans font-extrabold text-3xl md:text-5xl leading-tight bg-gradient-to-r from-green-700 via-emerald-500 to-teal-400 text-transparent bg-clip-text">
-          Jednorazowa, łatwa opłata.
+          Kurs dostępny całkowicie za darmo.
         </h2>
         <p className="text-gray-700 text-lg md:text-xl leading-relaxed">
-          Nie lubimy abonamentów. Płacisz raz, masz wszystko.
+          Cały projekt, wszystkie lekcje i materiały PDF są darmowe — żadnych opłat, abonamentów ani haczyków.
         </p>
       </motion.div>
 
@@ -110,6 +110,11 @@ export default function PricesPreview() {
                 {c.title}
               </h3>
 
+              {/* Poprzednie wyświetlanie ceny pozostawione w komentarzu dla ewentualnego powrotu:
+              <p className={`font-extrabold ${c.id === "intermediate" ? "text-4xl text-green-700" : "text-3xl text-gray-800"}`}>
+                {c.price / 100} zł
+              </p>
+              */}
               <p
                 className={`font-extrabold ${
                   c.id === "intermediate"
@@ -117,7 +122,7 @@ export default function PricesPreview() {
                     : "text-3xl text-gray-800"
                 }`}
               >
-                {c.price / 100} zł
+                Za darmo
               </p>
 
               <ul className="text-sm md:text-base text-gray-700 leading-relaxed flex flex-col gap-3">
@@ -149,7 +154,7 @@ export default function PricesPreview() {
                     : "bg-orange-500 hover:bg-orange-600"
                 }`}
             >
-              Załóż konto
+              Dołącz za darmo
             </motion.button>
           </motion.div>
         ))}
