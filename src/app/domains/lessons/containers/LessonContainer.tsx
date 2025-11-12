@@ -1,7 +1,5 @@
 import { createClient } from "@/lib/supabase/server/server";
 import { getLessonContentByOrder } from "@/lib/supabase/queries";
-import { resolveCourseAccess } from "@/lib/access/courseAccess";
-import { FREE_LESSON_LIMIT } from "@/app/domains/lessons/constants";
 import { LessonClientWrapper } from "../components/LessonClientWrapper";
 
 export const runtime = "nodejs";
@@ -18,22 +16,6 @@ export async function LessonPageContainer({ id, courseId }: LessonPageContainerP
   }
 
   const supabase = await createClient();
-
-  if (orderIndex > FREE_LESSON_LIMIT) {
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return null;
-    }
-
-    const access = await resolveCourseAccess(supabase, user.id, courseId);
-    if (!access.hasFullAccess) {
-      return null;
-    }
-  }
 
   const { data: lesson, error } = await getLessonContentByOrder(supabase, courseId, orderIndex);
 
@@ -84,4 +66,3 @@ export async function LessonPageContainer({ id, courseId }: LessonPageContainerP
     </div>
   );
 }
-

@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useCourseProgress } from "../features/useCourseProgress";
 import { ProfileTabs } from "../components/ProfileTabs";
 import { ProfileCoursesNew } from "../components/ProfileCoursesNew";
 import { ProfileUserData } from "../components/ProfileUserData";
 import { ProfileSettings } from "../components/ProfileSettings";
-import { ProfilePayments } from "../components/ProfilePayments";
 import { ProfileMobileApp } from "../components/ProfileMobileApp";
 import type {
   Course,
@@ -36,30 +35,7 @@ export default function ProfileClient() {
   });
 
   const { getButtonState } = useCourseProgress(data.progress ?? []);
-  const { user, allCourses, purchases, subscriptions } = data;
-
-  const paidCourseIds = useMemo<Set<string>>(
-    () =>
-      new Set(
-        purchases
-          .filter((purchase) => purchase.payment_status === "paid")
-          .map((purchase) =>
-            typeof purchase.course === "string" ? purchase.course : purchase.course.id
-          )
-      ),
-    [purchases]
-  );
-
-  const hasActiveSubscription = useMemo(
-    () =>
-      subscriptions.some(
-        (subscription) =>
-          subscription.status === "active" &&
-          subscription.period_end &&
-          new Date(subscription.period_end).getTime() > Date.now()
-      ),
-    [subscriptions]
-  );
+  const { user, allCourses } = data;
 
   useEffect(() => {
     let isMounted = true;
@@ -147,9 +123,6 @@ export default function ProfileClient() {
                 </h2>
                 <ProfileCoursesNew
                   newCourses={allCourses}
-                  purchases={purchases}
-                  paidCourseIds={paidCourseIds}
-                  hasActiveSubscription={hasActiveSubscription}
                   getButtonState={getButtonState}
                 />
               </section>
@@ -183,22 +156,6 @@ export default function ProfileClient() {
             </motion.div>
           )}
 
-          {activeTab === "platnosci" && (
-            <motion.div
-              key="platnosci"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-            >
-              <ProfilePayments
-                subscriptions={subscriptions}
-                allCourses={allCourses}
-                purchases={purchases}
-              />
-            </motion.div>
-          )}
-
           {activeTab === "mobilna" && (
             <motion.div
               key="mobilna"
@@ -215,8 +172,6 @@ export default function ProfileClient() {
     </section>
   );
 }
-
-
 
 
 

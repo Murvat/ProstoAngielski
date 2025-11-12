@@ -26,24 +26,5 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}/login?error=no_user`);
   }
 
-  // 🔑 Check purchases instead of courses
-  const { data: purchases, error: purchasesError } = await supabase
-    .from("purchases")
-    .select("id")
-    .eq("user_id", user.id)
-    .eq("payment_status", "paid")
-    .limit(1);
-
-  if (purchasesError) {
-    console.error("Error fetching purchases:", purchasesError.message);
-    return NextResponse.redirect(`${origin}/login?error=db_error`);
-  }
-
-  if (!purchases || purchases.length === 0) {
-    // No paid purchases → redirect to payment
-    return NextResponse.redirect(`${origin}/profile`);
-  }
-
-  // At least one paid purchase → redirect to profile
   return NextResponse.redirect(`${origin}/profile`);
 }

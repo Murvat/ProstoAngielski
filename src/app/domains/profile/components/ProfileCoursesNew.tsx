@@ -1,49 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useMemo } from "react";
-import { PlayCircle, ShoppingCart } from "lucide-react";
-import type { Course, Purchase } from "@/types";
-import { useBuyCourse } from "../features/useBuyCourse";
+import { PlayCircle } from "lucide-react";
+import type { Course } from "@/types";
 import { useLessonRedirect } from "../features/useLessonRedirect";
 
 type ButtonState = { label: string; lessonId: string | null };
 
 interface ProfileCoursesNewProps {
   newCourses: Course[];
-  purchases: Purchase[];
-  paidCourseIds: Set<string>;
-  hasActiveSubscription: boolean;
   getButtonState: (course: Course) => ButtonState;
 }
 
-const resolvePurchaseCourseId = (purchase: Purchase): string | null => {
-  if (typeof purchase.course === "string") {
-    return purchase.course;
-  }
-  return purchase.course?.id ?? null;
-};
-
 export const ProfileCoursesNew = ({
   newCourses,
-  purchases,
-  paidCourseIds,
-  hasActiveSubscription,
   getButtonState,
 }: ProfileCoursesNewProps) => {
-  const { buyCourse, loading } = useBuyCourse();
   const { goToLesson } = useLessonRedirect();
-
-  const purchasesByCourse = useMemo(() => {
-    const map = new Map<string, Purchase>();
-    for (const purchase of purchases) {
-      const id = resolvePurchaseCourseId(purchase);
-      if (id) {
-        map.set(id, purchase);
-      }
-    }
-    return map;
-  }, [purchases]);
 
   if (newCourses.length === 0) {
     return (
@@ -67,14 +40,7 @@ export const ProfileCoursesNew = ({
       className="space-y-6"
     >
       {newCourses.map((course) => {
-        const purchase = purchasesByCourse.get(course.id);
-        const isPurchased =
-          hasActiveSubscription ||
-          paidCourseIds.has(course.id) ||
-          purchase?.payment_status === "paid";
-        const isPending = purchase?.payment_status === "unpaid";
         const accessState = getButtonState(course);
-        const isBuying = loading === `buy-${course.id}`;
 
         return (
           <motion.li
@@ -87,17 +53,9 @@ export const ProfileCoursesNew = ({
             transition={{ duration: 0.3 }}
             className="relative flex flex-col gap-5 rounded-2xl border border-green-100 bg-gradient-to-br from-green-50 to-white p-6 shadow-md transition-all duration-300 hover:border-green-200 hover:shadow-xl"
           >
-            {isPurchased && (
-              <span className="absolute right-4 top-4 inline-flex items-center rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white shadow-md shadow-emerald-200">
-                Oplacono
-              </span>
-            )}
-
-            {!isPurchased && isPending && (
-              <span className="absolute right-4 top-4 inline-flex items-center rounded-full bg-amber-500 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white shadow-md shadow-amber-200">
-                W trakcie
-              </span>
-            )}
+            <span className="absolute right-4 top-4 inline-flex items-center rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white shadow-md shadow-emerald-200">
+              Darmowy dostęp
+            </span>
 
             <div className="flex flex-col gap-2">
               <h3 className="text-lg font-bold text-green-800">{course.title}</h3>
@@ -123,33 +81,16 @@ export const ProfileCoursesNew = ({
                   goToLesson(course.id, accessState.lessonId);
                 }
               }}
-              disabled={!isPurchased && !accessState.lessonId}
+              disabled={!accessState.lessonId}
               className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 px-5 py-2 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:from-green-600 hover:to-green-700 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <PlayCircle className="h-4 w-4" />
-              {isPurchased ? "Rozpocznij kurs" : accessState.label}
+              {accessState.lessonId ? "Rozpocznij kurs" : accessState.label}
             </motion.button>
 
-            {!isPurchased && (
-              <motion.button
-                whileTap={{ scale: 0.96 }}
-                whileHover={{ scale: 1.05 }}
-                onClick={() => buyCourse(course.id)}
-                disabled={isBuying || isPending}
-                className={`mt-2 flex items-center justify-center gap-2 rounded-lg px-5 py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 ${
-                  isBuying || isPending
-                    ? "cursor-not-allowed bg-gray-300 text-gray-100"
-                    : "bg-amber-500 text-white hover:bg-amber-600 active:bg-amber-700 shadow-sm hover:shadow-md"
-                }`}
-              >
-                <ShoppingCart className="h-4 w-4" />
-                {isPending
-                  ? "Platnosc w toku"
-                  : isBuying
-                  ? "Przetwarzanie..."
-                  : "Kup kurs"}
-              </motion.button>
-            )}
+            <p className="text-xs text-gray-500">
+              Wszystkie kursy są teraz w pełni bezpłatne — wystarczy kliknąć, aby zacząć.
+            </p>
           </motion.li>
         );
       })}

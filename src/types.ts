@@ -1,6 +1,6 @@
 // Global application types aggregated to avoid duplication across features.
 
-export type Tab = "kursy" | "dane" | "ustalenia" | "platnosci" | "mobilna";
+export type Tab = "kursy" | "dane" | "ustalenia" | "mobilna";
 
 export type AppUser = {
   id: string;
