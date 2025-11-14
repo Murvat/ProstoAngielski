@@ -27,10 +27,7 @@ export default function page() {
           </h2>
           <ul className="list-disc pl-6 space-y-1">
             <li>Dane rejestracyjne (e-mail, hasło, dane logowania Google)</li>
-            <li>
-              Dane płatnicze (obsługiwane przez Stripe, PayPal – nie
-              przechowujemy kart)
-            </li>
+            <li>Nie zbieramy danych kart płatniczych ani numerów kont.</li>
             <li>Dane dotyczące postępów w kursach</li>
             <li>
               Dane techniczne i diagnostyczne (IP anonimizowane, przeglądarka,
@@ -43,7 +40,7 @@ export default function page() {
           </h2>
           <ul className="list-disc pl-6 space-y-1">
             <li>Świadczenie usług kursów online</li>
-            <li>Obsługa płatności i obowiązków podatkowych</li>
+            <li>Obsługa konta, wsparcie użytkownika i komunikacja</li>
             <li>Zapewnienie bezpieczeństwa i wsparcia technicznego</li>
             <li>
               Analiza ruchu i poprawa działania Serwisu (Plausible Analytics –
@@ -64,10 +61,9 @@ export default function page() {
           </h2>
           <p>
             Dane mogą być przekazywane podmiotom: Supabase (hosting, baza
-            danych), Stripe i PayPal (płatności), Plausible Analytics (anonimowa
-            analityka), usługodawcom IT i księgowym. W przypadku przekazania
-            danych poza EOG stosujemy odpowiednie zabezpieczenia (np. klauzule
-            umowne UE).
+            danych), Plausible Analytics (anonimowa analityka), dostawcom IT i
+            księgowym. W przypadku przekazania danych poza EOG stosujemy
+            odpowiednie zabezpieczenia (np. klauzule umowne UE).
           </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-10">
@@ -75,7 +71,6 @@ export default function page() {
           </h2>
           <ul className="list-disc pl-6 space-y-1">
             <li>Dane konta – do momentu usunięcia</li>
-            <li>Dane płatnicze – min. 5 lat zgodnie z prawem</li>
             <li>
               Dane postępów – do usunięcia konta lub 2 lata nieaktywności
             </li>

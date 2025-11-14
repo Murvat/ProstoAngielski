@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server/server";
-import { getPurchaseForCourse } from "@/lib/supabase/queries";
 
 export async function GET(req: NextRequest) {
   const supabase = await createClient();
@@ -16,24 +15,8 @@ export async function GET(req: NextRequest) {
     error: authError,
   } = await supabase.auth.getUser();
 
-  if (authError || !user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (authError) {
+    return NextResponse.json({ error: "Failed to verify session" }, { status: 500 });
   }
-
-  const { data: purchase, error } = await getPurchaseForCourse(
-    supabase,
-    user.id,
-    courseId
-  );
-
-  if (error) {
-    console.error("Error checking purchase:", error.message);
-    return NextResponse.json({ error: "Failed to verify course" }, { status: 500 });
-  }
-
-  if (!purchase || purchase.payment_status !== "paid") {
-    return NextResponse.json({ error: "Access denied" }, { status: 403 });
-  }
-
-  return NextResponse.json({ user });
+  return NextResponse.json({ user: user ?? null });
 }

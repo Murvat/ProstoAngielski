@@ -11,14 +11,11 @@ import ChatbotSidebar from "../../chatbot/Chatbot";
 import { useCourse } from "../hooks/useCourse";
 import { useProgress } from "../hooks/useProgress";
 import { buildNavItems, getPrevNext, getPath } from "../hooks/navigation";
-import { useBuyCourse } from "../../profile/features/useBuyCourse";
 import { supabase } from "@/lib/supabase/client/supabaseClient";
 import { getLessonHeading } from "@/lib/supabase/queries";
 import { CourseAccessContext } from "@/app/domains/lessons/context/CourseAccessContext";
-import { Lock, ShoppingCart, X, Menu, MessageCircle } from "lucide-react";
+import { Menu, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FREE_LESSON_LIMIT } from "../../lessons/constants";
-const TRIAL_LIMIT = FREE_LESSON_LIMIT;
 
 type ProfileState = {
   user: User | null;
@@ -35,11 +32,9 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
   const courseId = params?.courseId as string;
   const lessonId = params?.lessonId as string;
   const isExercise = pathname?.startsWith("/exercise/");
-  const lessonOrderNumber = Number(lessonId);
 
   const [loading, setLoading] = useState(true);
   const [lessonHeading, setLessonHeading] = useState("");
-  const [showLockModal, setShowLockModal] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
 
@@ -56,9 +51,6 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
   const { course, loading: courseLoading } = useCourse(courseId);
   const { isFinished, handleNext } = useProgress(courseId, lessonId, isExercise);
   const { prev, next } = getPrevNext(course ? buildNavItems(course) : [], lessonId, isExercise);
-  const { buyCourse, loading: buyLoading } = useBuyCourse();
-
-
   useEffect(() => {
     (async () => {
       try {
@@ -80,22 +72,6 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
   }, []);
 
 
-  const paidCourseIds = useMemo(() => {
-    const ids = new Set<string>();
-    for (const p of profile.purchases) {
-      if (p.payment_status === "paid") {
-        if (typeof p.course === "string") ids.add(p.course);
-        else if (typeof p.course === "object" && p.course?.id) ids.add(p.course.id);
-      }
-    }
-    return ids;
-  }, [profile.purchases]);
-
-
-  const hasFullAccess = paidCourseIds.has(courseId);
-  const freeLessonLimit = hasFullAccess ? Infinity : TRIAL_LIMIT;
-
-
   useEffect(() => {
     if (!courseId || !lessonId) return;
     const idx = Number(lessonId);
@@ -111,15 +87,6 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
     })();
   }, [courseId, lessonId]);
 
-
-  useEffect(() => {
-    if (!loading && !hasFullAccess && lessonOrderNumber > freeLessonLimit) {
-      setShowLockModal(true);
-    } else {
-      setShowLockModal(false);
-    }
-  }, [loading, hasFullAccess, lessonOrderNumber, freeLessonLimit]);
-
   useEffect(() => {
     setMobileSidebarOpen(false);
     setMobileChatOpen(false);
@@ -127,11 +94,11 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
 
   const accessContextValue = useMemo(
     () => ({
-      hasFullAccess,
-      accessLoading: loading,
-      freeLessonLimit,
+      hasFullAccess: true,
+      accessLoading: false,
+      freeLessonLimit: Infinity,
     }),
-    [hasFullAccess, loading, freeLessonLimit]
+    []
   );
 
   if (loading || courseLoading) {
@@ -206,8 +173,6 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
                 <SidebarContainer
                   course={course}
                   progress={profile.progress}
-                  hasFullAccess={hasFullAccess}
-                  isAccessLoading={loading}
                   variant="mobile"
                   onClose={() => setMobileSidebarOpen(false)}
                   onNavigate={() => setMobileSidebarOpen(false)}
@@ -270,8 +235,6 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
               <SidebarContainer
                 course={course}
                 progress={profile.progress}
-                hasFullAccess={hasFullAccess}
-                isAccessLoading={loading}
               />
             )}
           </aside>
@@ -307,66 +270,6 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
           />
         )}
 
-        {/* 🔒 Lock Modal */}
-        <AnimatePresence>
-          {showLockModal && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm"
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                className="relative bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center"
-              >
-                <button
-                  onClick={() => setShowLockModal(false)}
-                  className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-
-                <Lock className="h-12 w-12 text-amber-500 mx-auto mb-3" />
-                <h2 className="text-xl font-bold mb-2 text-gray-800">
-                  To jest płatna lekcja 🔒
-                </h2>
-                <p className="text-sm text-gray-600 mb-6">
-                  Możesz korzystać z pierwszych{" "}
-                  <span className="font-semibold text-green-700">{TRIAL_LIMIT}</span> lekcji za darmo.
-                  Aby kontynuować naukę w kursie{" "}
-                  <span className="font-semibold text-green-700">{courseId}</span>, wykup dostęp poniżej.
-                </p>
-
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  whileHover={{ scale: 1.03 }}
-                  onClick={async () => {
-                    try {
-                      await buyCourse(courseId);
-                    } catch (err) {
-                      console.error("Buy course redirect failed:", err);
-                    }
-                  }}
-                  disabled={buyLoading === `buy-${courseId}`}
-                  className={`flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-2 text-sm font-semibold text-white shadow-md transition-all hover:from-amber-600 hover:to-amber-700 focus-visible:ring-2 focus-visible:ring-amber-400 ${buyLoading === `buy-${courseId}` ? "opacity-70 cursor-not-allowed" : ""
-                    }`}
-                >
-                  <ShoppingCart className="h-4 w-4" />
-                  {buyLoading === `buy-${courseId}`
-                    ? "Przekierowywanie..."
-                    : "Kup kurs"}
-                </motion.button>
-
-                <p className="mt-4 text-xs text-gray-400">
-                  Po zakupie natychmiast uzyskasz pełny dostęp do wszystkich lekcji i ćwiczeń.
-                </p>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </main>
     </CourseAccessContext.Provider>
   );

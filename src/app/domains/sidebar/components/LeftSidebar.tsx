@@ -7,20 +7,12 @@ import Item from "./Item";
 import type { CourseWithStructure } from "@/types";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
-import { FREE_LESSON_LIMIT } from "@/app/domains/lessons/constants";
 import { X } from "lucide-react";
 
 type Props = {
   course: CourseWithStructure;
   completedLessons?: Set<string>;
   completedExercises?: Set<string>;
-  hasFullAccess?: boolean;
-  isAccessLoading?: boolean;
-  onLockedLessonAttempt?: (payload: {
-    lessonId: string;
-    lessonOrder: number;
-    isExercise: boolean;
-  }) => void;
   variant?: "desktop" | "mobile";
   className?: string;
   onClose?: () => void;
@@ -31,9 +23,6 @@ export default function LeftSidebar({
   course,
   completedLessons = new Set(),
   completedExercises = new Set(),
-  hasFullAccess = false,
-  isAccessLoading = false,
-  onLockedLessonAttempt,
   variant = "desktop",
   className,
   onClose,
@@ -49,9 +38,6 @@ export default function LeftSidebar({
     const parts = pathname?.split("/") || [];
     return { currentType: parts[1], currentLessonId: parts[3] };
   }, [pathname]);
-
-  let lessonIndexCounter = 0;
-  const gatingEnabled = !hasFullAccess && !isAccessLoading;
 
   useEffect(() => {
     if (!isDesktop) return;
@@ -119,33 +105,16 @@ export default function LeftSidebar({
                 >
                   <ul className="space-y-2 py-2">
                     {chapter.lessons.map((lesson) => {
-                      const isLesson = lesson.type === "lesson";
-                      if (isLesson) lessonIndexCounter += 1;
-
-                      const lessonOrder = lessonIndexCounter;
-                      const isLessonLocked = gatingEnabled && isLesson && lessonOrder > FREE_LESSON_LIMIT;
-
                       const lessonActive = currentType === "lessons" && currentLessonId === lesson.id;
                       const exerciseActive = currentType === "exercise" && currentLessonId === lesson.id;
-
-                      const handleLockedAttempt = (isExercise: boolean) =>
-                        onLockedLessonAttempt?.({
-                          lessonId: lesson.id,
-                          lessonOrder,
-                          isExercise,
-                        });
 
                       return (
                         <li key={lesson.id} className="space-y-1">
                           <Item
                             item={lesson}
                             active={lessonActive}
-                            locked={isLessonLocked}
+                            locked={false}
                             onClick={() => {
-                              if (isLessonLocked) {
-                                handleLockedAttempt(false);
-                                return;
-                              }
                               router.push(`/lessons/${course.id}/${lesson.id}`);
                               handleNavigate();
                             }}
@@ -160,12 +129,8 @@ export default function LeftSidebar({
                                 title: "Ćwiczenie",
                               }}
                               active={exerciseActive}
-                              locked={isLessonLocked}
+                              locked={false}
                               onClick={() => {
-                                if (isLessonLocked) {
-                                  handleLockedAttempt(true);
-                                  return;
-                                }
                                 router.push(`/exercise/${course.id}/${lesson.id}`);
                                 handleNavigate();
                               }}

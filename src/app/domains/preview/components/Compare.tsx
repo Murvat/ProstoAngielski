@@ -117,7 +117,8 @@ export default function ComparePreview() {
       {/* Cards */}
       <div className="flex flex-col lg:flex-row justify-center gap-10">
         {card("Nasza Aplikacja", "green", [
-          "Jednorazowa opłata, bez abonamentu",
+          "Całkowicie darmowy dostęp – kurs, ćwiczenia i materiały PDF",
+          "Zero opłat, zero abonamentu, zero haczyków",
           "Kurs stworzony specjalnie dla Polaków",
           "Gramatyka, słownictwo, wszystko czego potrzebujesz",
           "Proste, jasne wyjaśnienia",

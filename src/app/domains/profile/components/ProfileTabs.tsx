@@ -13,7 +13,6 @@ export const ProfileTabs = ({ activeTab, onChange }: ProfileTabsProps) => {
     { key: "kursy", label: "Kursy" },
     { key: "dane", label: "Dane osobiste" },
     { key: "ustalenia", label: "Ustalenia" },
-    { key: "platnosci", label: "Płatności" },
     // { key: "mobilna", label: "Mobilna aplikacja" },
   ];
 

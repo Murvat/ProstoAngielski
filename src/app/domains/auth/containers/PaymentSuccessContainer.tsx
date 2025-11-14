@@ -2,13 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 type PaymentSuccessProps = {
   purchase: {
     userName: string;
     courseTitle: string;
-    amount: string;
     access: string;
   };
 };
@@ -46,7 +45,7 @@ export default function PaymentSuccessContainer({ purchase }: PaymentSuccessProp
           className="flex justify-center mb-6"
         >
           <div className="p-4 rounded-full bg-green-100 text-green-600 shadow-inner">
-            <CheckCircle2 className="w-12 h-12" />
+            <Sparkles className="w-12 h-12" />
           </div>
         </motion.div>
 
@@ -54,27 +53,27 @@ export default function PaymentSuccessContainer({ purchase }: PaymentSuccessProp
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="text-3xl font-bold text-green-700 mb-2"
+          className="text-3xl font-bold text-green-700 mb-3"
         >
-          Płatność zakończona sukcesem!
+          Masz pełny, darmowy dostęp! 🎉
         </motion.h1>
 
-        <p className="text-gray-600 mb-8 leading-relaxed">
-          Dziękujemy, <span className="font-semibold text-gray-800">{purchase.userName}</span>!
-          <br />
-          Kurs <strong>{purchase.courseTitle}</strong> został pomyślnie zakupiony.
+        <p className="text-gray-600 mb-6 leading-relaxed">
+          Świetna robota, <span className="font-semibold text-gray-800">{purchase.userName}</span>!{" "}
+          Cała platforma ProstoAngielski jest od teraz otwarta dla Ciebie bez żadnych opłat.
+          Korzystaj z kursu <strong>{purchase.courseTitle}</strong> i materiałów wtedy, kiedy chcesz.
         </p>
 
-        {/* 🧾 Purchase Summary */}
+        {/* 🧾 Access Summary */}
         <div className="bg-green-50 border border-green-100 rounded-lg p-4 text-sm text-gray-700 mb-8">
           <p>
-            <strong>Kurs:</strong> {purchase.courseTitle}
+            <strong>Zakres:</strong> {purchase.courseTitle}
           </p>
           <p>
-            <strong>Kwota:</strong> {purchase.amount}
+            <strong>Status:</strong> Darmowy dostęp aktywowany
           </p>
           <p>
-            <strong>Dostęp:</strong> {purchase.access}
+            <strong>Obejmuje:</strong> {purchase.access}
           </p>
         </div>
 

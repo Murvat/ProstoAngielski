@@ -47,20 +47,28 @@ export default function page() {
           </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-10">
-            4. Płatności
+            4. Dostęp i opłaty
           </h2>
-          <ul className="list-disc pl-6 space-y-1">
-            <li>Płatności obsługiwane są przez Stripe i PayPal.</li>
-            <li>Dostęp do kursu przyznawany jest po zaksięgowaniu płatności.</li>
-            <li>Ceny zawierają podatek VAT.</li>
-          </ul>
+          <p>
+            Wszystkie kursy, ćwiczenia i materiały w ProstoAngielski udostępniamy obecnie
+            <strong> bezpłatnie</strong>. Nie pobieramy żadnych opłat ani nie prosimy o dane
+            płatnicze. W każdej chwili możesz zatrzymać naukę lub usunąć konto bez konsekwencji
+            finansowych.
+          </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-10">
             5. Prawo odstąpienia
           </h2>
           <p>
-            Konsument może odstąpić od umowy w ciągu 14 dni, ale traci to prawo
-            po rozpoczęciu kursu (zgodnie z art. 38 ustawy o prawach konsumenta).
+            Ponieważ dostęp nie wiąże się z płatnością, możesz zrezygnować z korzystania z serwisu
+            w dowolnym momencie. W razie pytań napisz do nas na{" "}
+            <a
+              href="mailto:support@prostoangielski.pl"
+              className="text-orange-600 hover:underline"
+            >
+              support@prostoangielski.pl
+            </a>
+            .
           </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-10">
@@ -86,7 +94,8 @@ export default function page() {
           <p>
             Administrator nie gwarantuje pełnej dostępności Serwisu i nie
             odpowiada za szkody powstałe wskutek przerw technicznych lub działań
-            osób trzecich. Odpowiedzialność ograniczona jest do ceny kursu.
+            osób trzecich. Odpowiedzialność jest ograniczona w najszerszym
+            zakresie dopuszczalnym przez prawo.
           </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-10">

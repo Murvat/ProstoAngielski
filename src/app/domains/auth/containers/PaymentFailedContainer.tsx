@@ -14,16 +14,16 @@ export default function PaymentFailedContainer() {
   return (
     <section className="max-w-2xl mx-auto py-12 md:py-20 px-6 flex flex-col items-center gap-8 text-center">
       <PaymentFailedCard
-        message="Coś poszło nie tak i nie udało się przetworzyć płatności."
-        reason="Twoja karta została odrzucona lub sesja wygasła."
+        message="System płatności został wyłączony – cała platforma ProstoAngielski jest teraz dostępna dla Ciebie za darmo."
+        reason="Po prostu przejdź do swojego profilu i rozpocznij naukę."
       />
 
       <button
         onClick={handleRetry}
-        className="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-medium py-3 px-6 rounded-lg 
+        className="bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-medium py-3 px-6 rounded-lg 
         transition-colors duration-200 cursor-pointer"
       >
-        Spróbuj ponownie
+        Przejdź do profilu
       </button>
     </section>
   );

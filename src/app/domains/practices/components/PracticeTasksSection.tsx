@@ -199,8 +199,12 @@ export default function PracticeTasksSection({
   }, [filteredTasks, state.answers]);
 
   useEffect(() => {
-    onSummaryChange(summary);
-  }, [summary, onSummaryChange]);
+    onSummaryChange({
+      total: summary.total,
+      attempted: summary.attempted,
+      correct: summary.correct,
+    });
+  }, [summary.total, summary.attempted, summary.correct, onSummaryChange]);
 
   useEffect(() => {
     try {
@@ -281,17 +285,18 @@ export default function PracticeTasksSection({
         } else if (stored.kind === "builder" && Array.isArray(stored.value)) {
           setSelectedWords(stored.value);
         }
-        
+
+        const attempts = stored.attempts ?? 0;
+        const hasHint = Boolean(task.hint);
         if (stored.isCorrect) {
           setStatus("correct");
           setHintVisible(false);
           setAnswerVisible(false);
         } else {
           setStatus("wrong");
-          if (task.hint) setHintVisible(true);
-          setAnswerVisible(true); 
+          setHintVisible(hasHint && attempts >= 1);
+          setAnswerVisible(!hasHint ? attempts >= 1 : attempts >= 2);
         }
-        
       } else {
         setInputValue("");
         setSelectedOption("");
@@ -420,22 +425,12 @@ export default function PracticeTasksSection({
     if (isHybridSentenceBuilder && normalizedInput.length > 0) {
       // Hibrid tip üçün: Seçilmiş sözün (normalizedInput) tam cavabın (acceptableAnswers)
       // tərkibində olub-olmadığını yoxla.
-      isCorrect = acceptableAnswers.some(answer => answer.includes(normalizedInput));
+      isCorrect = acceptableAnswers.some((answer) => answer.includes(normalizedInput));
     } else {
       // Normal yoxlama: Tam bərabərliyi yoxla
       isCorrect = acceptableAnswers.includes(normalizedInput);
     }
     // -----------------------------
-
-    setStatus(isCorrect ? "correct" : "wrong");
-
-    if (isCorrect) {
-      setHintVisible(false);
-      setAnswerVisible(false); 
-    } else {
-      if (currentTask.hint) setHintVisible(true);
-      setAnswerVisible(true); 
-    }
 
     const kind: StoredAnswer["kind"] =
       currentTask.type === "multiple_choice"
@@ -449,7 +444,7 @@ export default function PracticeTasksSection({
     setState((prev) => {
       const fallback = prev.answers[String(currentTask.id)];
       const existing = prev.answers[currentKey] ?? fallback;
-      const attempts = existing ? existing.attempts + 1 : 1;
+      const nextAttempts = existing ? existing.attempts + 1 : 1;
       const nextAnswers: Record<string, StoredAnswer> = {
         ...prev.answers,
         [currentKey]: {
@@ -460,7 +455,7 @@ export default function PracticeTasksSection({
               ? selectedOption
               : inputValue,
           isCorrect,
-          attempts,
+          attempts: nextAttempts,
           updatedAt: new Date().toISOString(),
           kind,
         },
@@ -470,6 +465,25 @@ export default function PracticeTasksSection({
       }
       return { ...prev, answers: nextAnswers };
     });
+
+    if (isCorrect) {
+      setStatus("correct");
+      setHintVisible(false);
+      setAnswerVisible(false);
+    } else {
+      const hasHint = Boolean(currentTask.hint);
+      const existing = state.answers[currentKey] ?? state.answers[String(currentTask.id)];
+      const previousAttempts = existing?.attempts ?? 0;
+      const nextAttempts = previousAttempts + 1;
+      setStatus("wrong");
+      if (hasHint) {
+        setHintVisible(true);
+        setAnswerVisible(nextAttempts >= 2);
+      } else {
+        setHintVisible(false);
+        setAnswerVisible(true);
+      }
+    }
   };
 
   const prettyCorrectAnswer = useMemo(() => {
@@ -614,6 +628,11 @@ export default function PracticeTasksSection({
             <button
               onClick={() => setAnswerVisible((prev) => !prev)}
               className="rounded-full border border-emerald-200 px-4 py-2 text-xs font-semibold text-emerald-600 transition hover:border-emerald-400 hover:bg-emerald-50"
+              disabled={Boolean(
+                !answerVisible &&
+                currentTask.hint &&
+                (currentStored?.attempts ?? 0) < 2
+              )}
             >
               {answerVisible ? "Ukryj rozwiązanie" : "Wyjaśnienie"}
             </button>
@@ -635,7 +654,7 @@ export default function PracticeTasksSection({
             </div>
           </div>
 
-          {(answerVisible || status === "wrong") && (
+          {(answerVisible || status === "correct") && (
             <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">
               <p className="font-semibold">Prawidłowe odpowiedzi:</p>
               <ul className="mt-2 list-disc pl-5">
