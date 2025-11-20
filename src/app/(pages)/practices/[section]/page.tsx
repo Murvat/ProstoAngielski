@@ -2,14 +2,16 @@ import { notFound } from "next/navigation";
 import PracticeSectionPageContainer from "@/app/domains/practices/containers/PracticeSectionPageContainer";
 import { isPracticeSectionKey } from "@/app/domains/practices/constants";
 
-export default function PracticeSectionPage({
+export default async function PracticeSectionPage({
   params,
 }: {
-  params: { section: string };
+  params: Promise<{ section: string }> | { section: string };
 }) {
-  if (!isPracticeSectionKey(params.section)) {
+  const resolved = await params;
+
+  if (!isPracticeSectionKey(resolved.section)) {
     notFound();
   }
 
-  return <PracticeSectionPageContainer section={params.section} />;
+  return <PracticeSectionPageContainer section={resolved.section} />;
 }
