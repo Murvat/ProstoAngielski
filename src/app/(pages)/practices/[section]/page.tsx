@@ -5,13 +5,13 @@ import { isPracticeSectionKey } from "@/app/domains/practices/constants";
 export default async function PracticeSectionPage({
   params,
 }: {
-  params: Promise<{ section: string }> | { section: string };
+  params: Promise<{ section: string }>;
 }) {
-  const resolved = await params;
+  const { section } = await params;
 
-  if (!isPracticeSectionKey(resolved.section)) {
+  if (!isPracticeSectionKey(section)) {
     notFound();
   }
 
-  return <PracticeSectionPageContainer section={resolved.section} />;
+  return <PracticeSectionPageContainer section={section} />;
 }
