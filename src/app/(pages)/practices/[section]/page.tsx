@@ -2,11 +2,11 @@ import { notFound } from "next/navigation";
 import PracticeSectionPageContainer from "@/app/domains/practices/containers/PracticeSectionPageContainer";
 import { isPracticeSectionKey } from "@/app/domains/practices/constants";
 
-type Props = {
+export default function PracticeSectionPage({
+  params,
+}: {
   params: { section: string };
-};
-
-export default function PracticeSectionPage({ params }: Props) {
+}) {
   if (!isPracticeSectionKey(params.section)) {
     notFound();
   }
