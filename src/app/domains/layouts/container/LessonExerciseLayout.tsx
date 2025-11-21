@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import type { Purchase, Progress, Subscription } from "@/types";
@@ -51,6 +51,43 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
   const { course, loading: courseLoading } = useCourse(courseId);
   const { isFinished, handleNext } = useProgress(courseId, lessonId, isExercise);
   const { prev, next } = getPrevNext(course ? buildNavItems(course) : [], lessonId, isExercise);
+
+  const syncLocalProgress = useCallback(() => {
+    if (!courseId || !lessonId) return;
+
+    const now = new Date().toISOString();
+
+    setProfile((prev) => {
+      const existingIdx = prev.progress.findIndex(
+        (entry) => entry.course === courseId && entry.lesson_id === lessonId
+      );
+
+      const updatedEntry =
+        existingIdx >= 0
+          ? {
+              ...prev.progress[existingIdx],
+              completed_exercises: prev.progress[existingIdx].completed_exercises || isExercise,
+              updated_at: now,
+            }
+          : {
+              id: typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${courseId}-${lessonId}`,
+              user_id: prev.user?.id ?? "",
+              course: courseId,
+              lesson_id: lessonId,
+              completed_exercises: isExercise,
+              updated_at: now,
+              regenerate_count: null,
+            };
+
+      const nextProgress =
+        existingIdx >= 0
+          ? prev.progress.map((entry, idx) => (idx === existingIdx ? updatedEntry : entry))
+          : [...prev.progress, updatedEntry];
+
+      return { ...prev, progress: nextProgress };
+    });
+  }, [courseId, lessonId, isExercise]);
+
   useEffect(() => {
     (async () => {
       try {
@@ -258,6 +295,7 @@ export default function LessonExerciseLayout({ children }: { children: React.Rea
             onPrev={() => prev && router.push(getPath(courseId, prev))}
             onNext={() =>
               handleNext(async () => {
+                syncLocalProgress();
                 await new Promise((r) => setTimeout(r, 150));
                 if (next) router.push(getPath(courseId, next));
               })
